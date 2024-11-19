@@ -24,7 +24,7 @@ function ChatHeader() {
           height={50}
         />
         <div className="flex-col flex ">
-          <span className="font-semibold text-xl flex gap-2 ">
+          <span className="font-semibold text-xl flex gap-2 text-[#CACA8F] ">
             Nischal_Mantri {/* if Online : green offline black dnd */}
             <span className="text-green-400">
               <svg
