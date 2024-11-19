@@ -13,7 +13,7 @@ function Chat() {
         <Contacts />
         {/* Right Side */}
 
-        <div className="grow flex flex-col  border-4 border-l-2 border-[#1E1E1E]">
+        <div className="grow flex flex-col  border-4 border-l-2 border-[#1E1E1E] ">
           <ChatHeader />
           <ChatBody />
           <ChatInput />

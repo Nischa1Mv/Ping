@@ -19,3 +19,31 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Rectangle 8 */
+.chatBox-sender {
+  box-sizing: border-box;
+  background: linear-gradient(
+    104.47deg,
+    rgba(255, 255, 255, 0.1) 14.62%,
+    rgba(255, 255, 255, 0.06) 52.25%
+  );
+  border: 1px solid #8f8fca;
+  box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(20px);
+  /* Note: backdrop-filter has minimal browser support */
+  border-radius: 0px 10px 10px 10px;
+}
+.chatBox-receiver {
+  box-sizing: border-box;
+  background: linear-gradient(
+    104.47deg,
+    rgba(255, 255, 255, 0.1) 14.62%,
+    rgba(255, 255, 255, 0.06) 52.25%
+  );
+  border: 1px solid #8f8fca;
+  box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(20px);
+  /* Note: backdrop-filter has minimal browser support */
+  border-radius: 10px 0px 10px 10px;
+}

@@ -16,10 +16,10 @@ function ChatInput() {
     >
       <input
         type="text"
-        className="w-full px-4 py-2  bg-transpaSrnt text-white focus:outline-none rounded-xl"
+        className="w-full px-4 py-2  bg-transpaSrnt text-[#dedfeb] font-medium  focus:outline-none rounded-xl"
         placeholder="Message"
         style={{
-          background: "rgba(143, 143, 202, 0.05)",
+          background: "rgba(143, 143, 202, 0.005)",
           // boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
           backdropFilter: "blur(4px)",
           WebkitBackdropFilter: "blur(4px)", // Safari-specific property
