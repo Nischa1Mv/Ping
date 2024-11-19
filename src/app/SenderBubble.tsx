@@ -11,7 +11,7 @@ function SenderBubble() {
           src={"https://avatars.githubusercontent.com/u/118107697?v=4&size=64"}
           height={30}
           width={30}
-          alt=""
+          alt="Sender Profile Picture"
         />
       </div>
       <div className="border h-fit px-4 py-1 rounded-xl rounded-tl-md mt-2  chatBox-sender ">

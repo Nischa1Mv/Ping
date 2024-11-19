@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 function ChatHeader() {
@@ -15,11 +16,12 @@ function ChatHeader() {
           //   border: "1px solid rgba(255, 255, 255, 0.18)",
         }}
       >
-        <img
+        <Image
           className=" rounded-full aspect-square   "
           src="https://avatars.githubusercontent.com/u/118107697?v=4&size=64"
-          alt=""
+          alt="Profile Picture"
           width={50}
+          height={50}
         />
         <div className="flex-col flex ">
           <span className="font-semibold text-xl flex gap-2 ">

@@ -14,7 +14,7 @@ function ReceiverBubble() {
           src={"https://avatars.githubusercontent.com/u/118107697?v=4&size=64"}
           height={30}
           width={30}
-          alt=""
+          alt="Receiver Profile Picture"
         />
       </div>
     </div>
