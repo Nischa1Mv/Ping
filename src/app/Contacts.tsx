@@ -2,6 +2,7 @@
 
 import AddFrnd from "./AddFrnd";
 import ContactHeader from "./ContactHeader";
+import FrndList from "./FrndList";
 import Status from "./Status";
 
 export default function Contacts() {
@@ -13,6 +14,7 @@ export default function Contacts() {
         <ContactHeader />
         <AddFrnd />
         <Status />
+        <FrndList />
       </div>
     </>
   );
