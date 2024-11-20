@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import ImageOverlay from "../imageOverlay";
+import ImageOverlay from "./imageOverlay";
 
 interface ProfileProps {
   setIsProfileOpen: React.Dispatch<React.SetStateAction<boolean>>;

@@ -4,7 +4,7 @@ import ChatHeader from "./ChatHeader";
 import ChatInput from "./ChatInput";
 import Contacts from "../contact/Contacts";
 import ChatBody from "./ChatBody";
-import { Profile } from "../profile/page";
+import { Profile } from "../profile";
 import { useState } from "react";
 
 function Chat() {
