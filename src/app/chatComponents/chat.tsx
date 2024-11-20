@@ -2,9 +2,9 @@
 
 import ChatHeader from "./ChatHeader";
 import ChatInput from "./ChatInput";
-import Contacts from "./Contacts";
+import Contacts from "../contact/Contacts";
 import ChatBody from "./ChatBody";
-import Profile from "./Profile";
+import Profile from "../profile/page";
 import { useState } from "react";
 
 interface ChatProps {

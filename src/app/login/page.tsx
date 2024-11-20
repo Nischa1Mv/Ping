@@ -1,14 +1,22 @@
+"use client";
 import React from "react";
 import { Kanit } from "next/font/google";
+import { useRouter } from "next/navigation";
+import { useLogin } from "../Context";
 const kanit = Kanit({
   subsets: ["latin"],
   weight: ["600"],
   style: ["italic"],
 });
-interface LoginProps {
-  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
-}
-function Login({ setIsLogin }: LoginProps) {
+
+function Login() {
+  const router = useRouter();
+  const handleLogin = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsLogin(true);
+    router.push("/");
+  };
+  const { isLogin, setIsLogin } = useLogin();
   return (
     <div className="h-screen bg-[#191a22] flex justify-center items-center">
       <form className="flex flex-col justify-center items-center gap-7 w-[35%] py-10 rounded-lg bg-[#21222e] border-[#1E1E1E]">
@@ -79,8 +87,7 @@ function Login({ setIsLogin }: LoginProps) {
             type="submit"
             value="Login"
             onClick={(e) => {
-              e.preventDefault();
-              setIsLogin(false);
+              handleLogin(e);
             }}
           />
         </div>
