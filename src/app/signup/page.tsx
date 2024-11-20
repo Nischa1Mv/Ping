@@ -3,19 +3,20 @@ import React from "react";
 import { Kanit } from "next/font/google";
 import { useRouter } from "next/navigation";
 import { useLogin } from "../Context";
+
 const kanit = Kanit({
   subsets: ["latin"],
   weight: ["600"],
   style: ["italic"],
 });
 
-function Login() {
+function SignUp() {
   const router = useRouter();
-  const handleLogin = (e: React.MouseEvent) => {
+  const handleSignUp = (e: React.MouseEvent) => {
     e.preventDefault();
-    setIsLogin(true);
-    router.push("/");
+    router.push("/login");
   };
+
   const { isLogin, setIsLogin } = useLogin();
   return (
     <div className="h-screen bg-[#191a22] flex justify-center items-center">
@@ -36,7 +37,7 @@ function Login() {
         </span>
 
         <div className="text-xl font-bold text-[#8F8FCA] italic px-4 gap-2 items-center flex">
-          Login
+          Sign Up
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="24px"
@@ -50,36 +51,49 @@ function Login() {
 
         <div>
           <input
-            className="w-[250px] bg-transparent border-b-2 tracking-wide focus:outline-none focus:border-b-2 border-[#dedfeb] focus:border-b-[#CACA8F] text-white px-2 pt-2 placeholder:text-{#dedfeb]"
+            className="w-[250px] bg-transparent border-b-2 tracking-wide focus:outline-none focus:border-b-2 border-[#dedfeb] focus:border-b-[#CACA8F] text-white px-2 pt-2 placeholder:text-[#dedfeb]"
             type="email"
             placeholder="Email"
           />
         </div>
         <div>
           <input
-            className="w-[250px] bg-transparent border-b-2 tracking-wide focus:outline-none focus:border-b-2 focus:border-b-[#CACA8F] text-white px-2 pt-2 placeholder:text-{#dedfeb]"
+            className="w-[250px] bg-transparent border-b-2 tracking-wide focus:outline-none focus:border-b-2 focus:border-b-[#CACA8F] text-white px-2 pt-2 placeholder:text-[#dedfeb]"
             type="password"
             placeholder="Password"
           />
         </div>
+        <div>
+          <input
+            className="w-[250px] bg-transparent border-b-2 tracking-wide focus:outline-none focus:border-b-2 focus:border-b-[#CACA8F] text-white px-2 pt-2 placeholder:text-[#dedfeb]"
+            type="password"
+            placeholder="Confirm Password"
+          />
+        </div>
+        <div className="flex gap-3">
+          <input type="checkbox" />
+          <label htmlFor="checkbox" className="text-sm">
+            I accept the Terms and Conditions
+          </label>
+        </div>
         <div className="text-xs flex gap-1 text-[#dedfeb] ">
-          Dont Have an Account ?{" "}
+          Already have an account?{" "}
           <span
             className="text-[#CACA8F] cursor-pointer font-semibold"
             onClick={() => {
-              router.push("/signup");
+              router.push("/login");
             }}
           >
-            SignUp
+            Login
           </span>
         </div>
         <div className="transition-transform duration-150 active:scale-95">
           <input
             className="bg-transparent font-medium text-md cursor-pointer tracking-wider bg-[#383a46] focus:outline-none hover:bg-[#8F8FCA] hover:text-[#383a46] text-[#fff] px-6 py-1 rounded-lg login-box"
             type="submit"
-            value="Login"
+            value="Sign Up"
             onClick={(e) => {
-              handleLogin(e);
+              handleSignUp(e);
             }}
           />
         </div>
@@ -88,4 +102,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default SignUp;
