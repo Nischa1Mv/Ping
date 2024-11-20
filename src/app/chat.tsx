@@ -7,7 +7,10 @@ import ChatBody from "./ChatBody";
 import Profile from "./Profile";
 import { useState } from "react";
 
-function Chat() {
+interface ChatProps {
+  setShowImageOverlay: React.Dispatch<React.SetStateAction<boolean>>;
+}
+function Chat({ setShowImageOverlay }: ChatProps) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   return (
     <>
@@ -19,7 +22,10 @@ function Chat() {
         <div className="grow flex flex-col  border-4 border-l-2 border-[#1E1E1E] ">
           {isProfileOpen ? (
             <>
-              <Profile setIsProfileOpen={setIsProfileOpen} />
+              <Profile
+                setIsProfileOpen={setIsProfileOpen}
+                setShowImageOverlay={setShowImageOverlay}
+              />
             </>
           ) : (
             <>
