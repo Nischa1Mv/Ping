@@ -1,19 +1,30 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
+import ImageOverlay from "../imageOverlay";
 
 interface ProfileProps {
   setIsProfileOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowImageOverlay: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function Profile({ setIsProfileOpen, setShowImageOverlay }: ProfileProps) {
+function Profile({ setIsProfileOpen }: ProfileProps) {
+  const [showImageOverlay, setShowImageOverlay] = useState(false);
   const ProfilePicture =
     "https://media-hyd1-1.cdn.whatsapp.net/v/t61.24694-24/379619630_6949750128379753_6172259427711619252_n.jpg?ccb=11-4&oh=01_Q5AaIO2kBGB6JkOO1GOwTcvG9XIDmY-5Vitx5Oo9Mv7P_lPp&oe=674A8A31&_nc_sid=5e03e0&_nc_cat=108";
   const BannerPic =
     "https://media.licdn.com/dms/image/v2/D4D16AQGiuVbiEdaPAg/profile-displaybackgroundimage-shrink_350_1400/profile-displaybackgroundimage-shrink_350_1400/0/1711031992791?e=1737590400&v=beta&t=L6veoyCxeddYWy2STt-4ABQGsbXWvZzwMzWNluS7xok";
   return (
     <>
+      {showImageOverlay && (
+        <div
+          className="w-full h-full bg-[rgba(25,26,34,0.9)] absolute top-0 right-0 flex justify-center items-center z-50"
+          onClick={() => {
+            setShowImageOverlay(false);
+          }}
+        >
+          <ImageOverlay src={ProfilePicture} />
+        </div>
+      )}
       <div className="w-full h-full relative  ">
         <div
           className="flex flex-col border-2 border-[#1f2029] bg-[rgba(143,143,202,0.1)] h-[35%] relative bg-no-repeat bg-center bg-cover"
