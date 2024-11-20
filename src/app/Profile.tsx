@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import ImageOverlay from "./imageOverlay";
 import Image from "next/image";
 
 interface ProfileProps {
