@@ -1,12 +1,11 @@
 "use client";
-// import Chat from "./chat";
-import Profile from "./Profile";
+import Chat from "./chat";
 
 export default function Home() {
   return (
     <>
       <div>
-        <Profile />
+        <Chat />
       </div>
     </>
   );

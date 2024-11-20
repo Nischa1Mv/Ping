@@ -1,7 +1,10 @@
 import Image from "next/image";
 import React from "react";
 
-function ChatHeader() {
+interface ChatHeaderProps {
+  setIsProfileOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+function ChatHeader({ setIsProfileOpen }: ChatHeaderProps) {
   return (
     <>
       {/* Chat Header */}
@@ -17,6 +20,9 @@ function ChatHeader() {
         }}
       >
         <Image
+          onClick={() => {
+            setIsProfileOpen(true);
+          }}
           className=" rounded-full aspect-square   "
           src="https://avatars.githubusercontent.com/u/118107697?v=4&size=64"
           alt="Profile Picture"
