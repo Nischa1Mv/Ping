@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { Kanit } from "next/font/google";
 import { useRouter } from "next/navigation";
 import { useLogin } from "../Context";
@@ -16,6 +16,9 @@ function SignUp() {
     e.preventDefault();
     router.push("/login");
   };
+  useEffect(() => {
+    isLogin && router.push("/");
+  }, []);
 
   const { isLogin, setIsLogin } = useLogin();
   return (

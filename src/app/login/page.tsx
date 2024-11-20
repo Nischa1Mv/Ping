@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { Kanit } from "next/font/google";
 import { useRouter } from "next/navigation";
 import { useLogin } from "../Context";
@@ -16,6 +16,10 @@ function Login() {
     setIsLogin(true);
     router.push("/");
   };
+  useEffect(() => {
+    isLogin && router.push("/");
+  }, []);
+
   const { isLogin, setIsLogin } = useLogin();
   return (
     <div className="h-screen bg-[#191a22] flex justify-center items-center">
