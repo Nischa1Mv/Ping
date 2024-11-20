@@ -13,7 +13,13 @@ function Profile({ setIsProfileOpen, setShowImageOverlay }: ProfileProps) {
   return (
     <>
       <div className="w-full h-full relative  ">
-        <div className="flex flex-col bg-[rgba(143,143,202,0.4)] h-[30%] relative ">
+        <div
+          className="flex flex-col bg-[rgba(143,143,202,0.1)] h-[30%] relative bg-no-repeat bg-cover"
+          style={{
+            backgroundImage: `url(${ProfilePicture},
+)`,
+          }}
+        >
           <div className="flex gap-4 w-full px-4 py-2 bg-transparent">
             <svg
               onClick={() => {
@@ -23,7 +29,7 @@ function Profile({ setIsProfileOpen, setShowImageOverlay }: ProfileProps) {
               height="30px"
               viewBox="0 -960 960 960"
               width="30px"
-              fill="#8F8FCA"
+              fill="#CACA8F"
             >
               <path d="M360-240 120-480l240-240 56 56-144 144h568v80H272l144 144-56 56Z" />
             </svg>
@@ -35,7 +41,7 @@ function Profile({ setIsProfileOpen, setShowImageOverlay }: ProfileProps) {
               height="24px"
               viewBox="0 -960 960 960"
               width="24px"
-              fill="#8F8FCA"
+              fill="#CACA8F"
             >
               <path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z" />
             </svg>
