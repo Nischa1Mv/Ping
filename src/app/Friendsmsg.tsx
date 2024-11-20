@@ -15,7 +15,7 @@ interface FriendsmsgProps {
 
 function Friendsmsg({ name, message, avatar }: FriendsmsgProps) {
   return (
-    <li className="rounded-lg py-2 px-4 bg-[#1f2029] flex gap-3 items-center hover:bg-[#444479] ">
+    <li className="rounded-lg py-2 px-4 bg-[#1f2029] flex gap-4 items-center hover:bg-[#444479] ">
       <div className="min-w-[55px] aspect-square">
         <Image
           src={avatar}
@@ -27,11 +27,11 @@ function Friendsmsg({ name, message, avatar }: FriendsmsgProps) {
       </div>
       <div className="flex flex-col ">
         <h4
-          className={`text-MD font-semibold ${kanit.className} text-[#CACA8F]`}
+          className={`text-lg font-semibold ${kanit.className} text-[#CACA8F]`}
         >
           {name}
         </h4>
-        <p className="text-[0.65rem] line-clamp-2 text-gray-300 overflow-hidden text-ellipsis max-h-[50px]">
+        <p className="text-[0.65rem] tracking-wide line-clamp-2 text-gray-300 overflow-hidden text-ellipsis max-h-[50px]">
           {message}
         </p>
       </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Kanit } from "next/font/google";
 const kanit = Kanit({
   subsets: ["latin"],
@@ -7,11 +7,14 @@ const kanit = Kanit({
 });
 
 function ContactHeader() {
+  const [isSearch, setIsSearch] = useState(false);
   return (
     <div
       className={`flex items-center justify-start  font-semibold  gap-6 p-4 `}
     >
-      <span className={`${kanit.className} text-5xl flex gap-3 text-[#CACA8F]`}>
+      <span
+        className={`${kanit.className} text-5xl flex gap-3 text-[#CACA8F] `}
+      >
         Ping
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -24,24 +27,37 @@ function ContactHeader() {
         </svg>
       </span>
       <span className="grow"></span>
-      <span>
+      <span className="flex gap-2">
+        {isSearch && (
+          <input
+            className={`  bg-transparent tracking-widest text-sm focus:outline-none border-b-2 border-[#CACA8F] text-[#CACA8F`}
+            type="search"
+            placeholder="Search"
+          />
+        )}
         <svg
+          onClick={() => {
+            setIsSearch(!isSearch);
+          }}
+          className={`${isSearch ? "text-[#CACA8F]" : "text-[#8F8FCA]"}
+           hover:text-[#CACA8F]`}
           xmlns="http://www.w3.org/2000/svg"
           height="24px"
           viewBox="0 -960 960 960"
           width="24px"
-          fill="#8F8FCA"
+          fill="currentColor"
         >
           <path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" />
         </svg>
       </span>
       <span>
         <svg
+          className="text-[#8F8FCA] hover:text-[#CACA8F]"
           xmlns="http://www.w3.org/2000/svg"
           height="24px"
           viewBox="0 -960 960 960"
           width="24px"
-          fill="#8F8FCA"
+          fill="currentColor"
         >
           <path d="M120-240v-80h240v80H120Zm0-200v-80h480v80H120Zm0-200v-80h720v80H120Z" />
         </svg>
