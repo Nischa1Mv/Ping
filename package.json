@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "start": "node server/server",
+    "start": "nodemon server/server.js",
     "lint": "next lint"
   },
   "dependencies": {
@@ -13,7 +13,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
-    "mongoose": "^8.8.1",
+    "mongodb": "^6.10.0",
+    "mongoose": "^8.8.2",
     "next": "15.0.3",
     "nodemon": "^3.1.7",
     "react": "19.0.0-rc-66855b96-20241106",
