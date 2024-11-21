@@ -5,7 +5,7 @@ import bcryptjs from "bcryptjs";
 import { sendMail } from "../../../helper/mail";
 connectDB();
 
-export async function post(request: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
     const requestBody = await request.json();
     const { username, email, password } = requestBody;
@@ -38,6 +38,7 @@ export async function post(request: NextRequest) {
     return NextResponse.json({
       message: "User created successfully",
       success: true,
+      savedUser,
     });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
