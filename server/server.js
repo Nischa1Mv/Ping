@@ -1,4 +1,3 @@
-import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import path from "path";
@@ -6,15 +5,22 @@ import path from "path";
 // Specify the path to .env.local in the root folder
 dotenv.config({ path: path.resolve(process.cwd(), ".env.local") });
 
-const app = express();
 const mongoDBUrl = process.env.MONGODB_URL;
 
-const User = mongoose.connect(mongoDBUrl, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-console.log("Connected to MongoDB");
+export async function connectDB() {
+  try {
+    mongoose.connect(mongoDBUrl);
+    const connection = mongoose.connection;
 
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
-});
+    connection.on("connected", () => {
+      console.log("MongoDB connected successfully");
+    });
+
+    connection.on("error", (error) => {
+      console.log("MongoDB connection failed", error);
+      process.exit(1);
+    });
+  } catch (error) {
+    console.log("MongoDB connection failed", error);
+  }
+}
