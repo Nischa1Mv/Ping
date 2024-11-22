@@ -4,6 +4,10 @@ import User from "server/UserModal";
 import { verificationHTML } from "./verificationLink";
 import { resetPasswordHTML } from "./ResetPassword";
 
+const MailTrapUser = process.env.MailTrapUser;
+const MailTrapPass = process.env.MailTrapPass;
+const domain = process.env.DOMAIN;
+
 export const sendMail = async ({ email, emailType, userId }: any) => {
   try {
     const hashToken = await bcryptjs.hash(userId.toString(), 10);
@@ -25,8 +29,8 @@ export const sendMail = async ({ email, emailType, userId }: any) => {
       port: 2525,
       secure: false,
       auth: {
-        user: "2abe58ba1e257b",
-        pass: "********1ca9",
+        user: MailTrapUser,
+        pass: MailTrapPass,
       },
     });
     const mailOptions = {
@@ -35,12 +39,8 @@ export const sendMail = async ({ email, emailType, userId }: any) => {
       subject: emailType === "VERIFY" ? "Verify Email" : "Reset Password",
       html:
         emailType === "VERIFY"
-          ? verificationHTML(
-              `${process.env.DOMAIN}/verifyemail?token=${hashToken}`
-            )
-          : resetPasswordHTML(
-              `${process.env.DOMAIN}/resetpassword?token=${hashToken}`
-            ),
+          ? verificationHTML(`${domain}/verifyemail?token=${hashToken}`)
+          : resetPasswordHTML(`${domain}/resetpassword?token=${hashToken}`),
     };
     const mailResponse = await transporter.sendMail(mailOptions);
     mailResponse;
