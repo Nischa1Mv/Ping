@@ -12,18 +12,22 @@ export const sendMail = async ({ email, emailType, userId }: any) => {
     const hashToken = await bcryptjs.hash(userId.toString(), 10);
 
     if (emailType === "VERIFY") {
-      await User.findByIdAndUpdate(userId, {
-        verifyToken: hashToken,
-        verifyTokenExpires: Date.now() + 3600000,
+      const updatedUser = await User.findByIdAndUpdate(userId, {
+        $set: {
+          verifyToken: hashToken,
+          verifyTokenExpiry: Date.now() + 3600000,
+        },
       });
     } else if (emailType === "RESET") {
       await User.findByIdAndUpdate(userId, {
-        forgotPasswordToken: hashToken,
-        forgotPasswordTokenExpiry: Date.now() + 3600000,
+        $set: {
+          forgotPasswordToken: hashToken,
+          forgotPasswordTokenExpiry: new Date(Date.now() + 3600000),
+        },
       });
     }
 
-    var transporter = nodemailer.createTransport({
+    const transporter = nodemailer.createTransport({
       host: "sandbox.smtp.mailtrap.io",
       port: 2525,
       secure: false,
@@ -42,7 +46,6 @@ export const sendMail = async ({ email, emailType, userId }: any) => {
           : resetPasswordHTML(`${domain}/resetpassword?token=${hashToken}`),
     };
     const mailResponse = await transporter.sendMail(mailOptions);
-    mailResponse;
     return mailResponse;
   } catch (err: any) {
     throw new Error(err.message);
