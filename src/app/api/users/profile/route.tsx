@@ -6,7 +6,7 @@ connectDB();
 
 export async function POST(request: NextRequest) {
   const userId = await getTokenData(request);
-  User.findById({ _id: userId }).select("-password");
+  const user = await User.findById({ _id: userId }).select("-password");
   console.log(userId);
-  return NextResponse.json({ message: "User Found", data: User });
+  return NextResponse.json({ message: "User Found", data: user });
 }
