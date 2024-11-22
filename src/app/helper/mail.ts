@@ -3,7 +3,6 @@ import nodemailer from "nodemailer";
 import User from "server/UserModal";
 import { verificationHTML } from "./verificationLink";
 import { resetPasswordHTML } from "./ResetPassword";
-
 const MailTrapUser = process.env.MailTrapUser;
 const MailTrapPass = process.env.MailTrapPass;
 const domain = process.env.DOMAIN;

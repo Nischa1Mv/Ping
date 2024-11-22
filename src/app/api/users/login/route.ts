@@ -2,11 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "server/server";
 import User from "server/UserModal";
 import bcryptjs from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 connectDB();
 
 export async function POST(request: NextRequest) {
   try {
+    //request data from the json body
     const requestBody = await request.json();
     const { email, password } = requestBody;
 
@@ -18,9 +20,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if the user exists
     const user = await User.findOne({ email });
-
+    // Check if the user exists
     if (!user) {
       return NextResponse.json(
         { error: "User with the email was not found" },
@@ -33,17 +34,29 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Invalid password" }, { status: 401 });
     }
     // Login successful
-    return NextResponse.json(
-      {
-        message: "User logged in successfully",
-        success: true,
-        //have to return the jwt token insted of User
-        user,
-      },
-      { status: 200 }
-    );
+
+    // Create a JWT token
+    const tokenPayload = {
+      id: user._id,
+    };
+    const token = jwt.sign(tokenPayload, process.env.JWT_SECRET!, {
+      expiresIn: "1d",
+    });
+    //token is created with respect to the payload data
+
+    const response = NextResponse.json({
+      message: "User logged in successfully",
+      success: true,
+    });
+
+    // token is sent in the cookies
+    //httpsOnly is so that the token is not accessible by user or js but only by the server
+    response.cookies.set("token", token, { httpOnly: true });
+    return response;
+
+    //response is sent and user is logged in
   } catch (error: any) {
-    // Handle server errors
+    //boom error!
     return NextResponse.json(
       { error: error.message || "Something went wrong" },
       { status: 500 }
