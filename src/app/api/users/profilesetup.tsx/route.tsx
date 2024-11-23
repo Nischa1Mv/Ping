@@ -18,7 +18,9 @@ export async function POST(request: NextRequest) {
     user.profilePicture = profilePicture;
     user.banner = banner;
     user.bio = bio;
-
+    if (user.isProfile) {
+      user.isprofile = undefined;
+    }
     await user.save();
     return NextResponse.json(
       { message: "Profile is completed", Success: true },
