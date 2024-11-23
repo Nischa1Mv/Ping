@@ -8,7 +8,6 @@ const userSchema = new mongoose.Schema(
     },
     username: {
       type: String,
-      required: [true, "Username is required"],
       unique: [true, "Username already exists"],
       trim: true,
       minlength: [3, "Username must be at least 3 characters long"],
@@ -61,6 +60,14 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "Hey there! I'm using this app.",
       maxlength: [150, "Bio cannot exceed 150 characters"],
+    },
+    profilePicture: {
+      type: String,
+      default: "https://example.com/placeholder-profile-pic.png",
+    },
+    banner: {
+      type: String,
+      default: "https://example.com/placeholder-banner.png",
     },
   },
   {
