@@ -2,9 +2,9 @@
 import React, { useState } from "react";
 import ImageOverlay from "../imageOverlay";
 import { useRouter } from "next/navigation";
-import { Profile } from "../profile";
-import ContactHeader from "../contact/ContactHeader";
+import TempProfile from "./tempProfile";
 import ProfileForm from "./profileForm";
+import TempHeader from "./TempHeader";
 
 function ProfileSetup() {
   const router = useRouter();
@@ -54,7 +54,7 @@ function ProfileSetup() {
         <div
           className={` w-[35%] border-4 border-[#1E1E1E] border-r-2  flex flex-col gap-2`}
         >
-          <ContactHeader />
+          <TempHeader />
           <ProfileForm
             setUserName={setUserName}
             setDisplayName={setDisplayName}
@@ -65,7 +65,7 @@ function ProfileSetup() {
           />
         </div>
         <div className="grow flex flex-col  border-4 border-l-2 border-[#1E1E1E] ">
-          <Profile
+          <TempProfile
             setIsProfileOpen={setIsProfileOpen}
             profilePicture={profilePicture}
             bannerPicture={bannerPicture}
