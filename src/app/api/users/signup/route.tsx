@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import User from "server/UserModal";
 import bcryptjs from "bcryptjs";
 import { sendMail } from "../../../helper/mail";
+import { faker } from "@faker-js/faker";
 connectDB();
 
 export async function POST(request: NextRequest) {
@@ -19,6 +20,12 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
+    const firstName = faker.name.firstName();
+    const lastName = faker.name.lastName();
+
+    const randomUsername = `${firstName}${lastName}${Math.floor(
+      Math.random() * 10000
+    )}`;
 
     //hashing password
     const salt = await bcryptjs.genSalt(10);
@@ -27,6 +34,7 @@ export async function POST(request: NextRequest) {
     //saving user to database
     const newUser = new User({
       email,
+      username: randomUsername,
       password: hashedPassword,
     });
     const savedUser = await newUser.save();
