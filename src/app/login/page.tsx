@@ -21,22 +21,39 @@ function Login() {
 
   const [isDisabled, setIsDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const handleLogin = async () => {
     try {
+      if (user.email.length === 0 || user.password.length === 0) {
+        setError(true);
+        toast.error("Email or Password is empty");
+        throw new Error("Email or Password is empty");
+      }
+      setError(false);
       setIsDisabled(true);
       setIsLoading(true);
       const response = await axios.post("/api/users/login", user);
+      if (response.data.user.isProfile === true) {
+        router.push("/profile");
+        toast.success("User Needs to Complete Profile");
+        return;
+      }
       console.log("LoggedIn", response.data);
       router.push("/");
       toast.success("User Is Logged In");
     } catch (error: any) {
+      setError(true);
       console.log("coudnt sign up", error);
       toast.error("Coudn't Sign up.");
+    } finally {
+      setIsDisabled(false);
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
+    setError(false);
     //if email and password are not empty, enable the button
     if (user.email.length > 0 && user.password.length > 0) {
       setIsDisabled(false);
@@ -47,7 +64,7 @@ function Login() {
 
   return (
     <div className="h-screen bg-[#191a22] flex justify-center items-center">
-      {isLoading ? (
+      {isLoading && !error ? (
         <>
           {" "}
           <div
@@ -88,6 +105,7 @@ function Login() {
 
           <div>
             <input
+              required
               value={user.email}
               onChange={(e) => {
                 setUser({ ...user, email: e.target.value });
@@ -99,6 +117,7 @@ function Login() {
           </div>
           <div>
             <input
+              required
               value={user.password}
               onChange={(e) => {
                 setUser({ ...user, password: e.target.value });
@@ -119,6 +138,7 @@ function Login() {
           </div>
           <div className="transition-transform duration-150 active:scale-95">
             <input
+              disabled={isDisabled}
               className="bg-transparent font-medium text-md cursor-pointer tracking-wider bg-[#383a46] focus:outline-none hover:bg-[#8F8FCA] hover:text-[#383a46] text-[#fff] px-6 py-1 rounded-lg login-box"
               type="submit"
               value="Login"
