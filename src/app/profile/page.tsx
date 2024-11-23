@@ -4,11 +4,7 @@ import Image from "next/image";
 import ImageOverlay from "../imageOverlay";
 import { useRouter } from "next/navigation";
 
-interface ProfileProps {
-  setIsProfileOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-function Profile({ setIsProfileOpen }: ProfileProps) {
+function Profile() {
   const router = useRouter();
   const [showImageOverlay, setShowImageOverlay] = useState(false);
   const ProfilePicture =
