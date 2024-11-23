@@ -4,8 +4,7 @@ const userSchema = new mongoose.Schema(
   {
     displayName: {
       type: String,
-      required: [true, "Display name is required"],
-      trim: true, // Removes extra spaces
+      trim: true,
     },
     username: {
       type: String,
