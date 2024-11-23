@@ -44,9 +44,13 @@ export async function POST(request: NextRequest) {
     });
     //token is created with respect to the payload data
 
+    //get user without password
+    const { password: _password, ...userWithoutPassword } = user.toObject();
+
     const response = NextResponse.json({
       message: "User logged in successfully",
       success: true,
+      user: userWithoutPassword,
     });
 
     // token is sent in the cookies

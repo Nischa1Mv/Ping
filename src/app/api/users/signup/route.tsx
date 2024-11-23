@@ -8,7 +8,7 @@ connectDB();
 export async function POST(request: NextRequest) {
   try {
     const requestBody = await request.json();
-    const { username, email, password } = requestBody;
+    const { email, password } = requestBody;
     console.log(requestBody);
 
     //if user already exists, then why signup
@@ -26,7 +26,6 @@ export async function POST(request: NextRequest) {
 
     //saving user to database
     const newUser = new User({
-      username,
       email,
       password: hashedPassword,
     });
@@ -35,6 +34,8 @@ export async function POST(request: NextRequest) {
 
     //send verfication mail
     await sendMail({ email, emailType: "VERIFY", userId: savedUser._id });
+
+    //resopnse json is sent
     return NextResponse.json({
       message: "User created successfully",
       success: true,

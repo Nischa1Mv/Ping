@@ -38,7 +38,7 @@ const userSchema = new mongoose.Schema(
     },
     isProfile: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     forgotPasswordToken: {
       type: String,
