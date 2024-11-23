@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { Kanit } from "next/font/google";
 import { useRouter } from "next/navigation";
-import { useLogin } from "../Context";
 import axios from "axios";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
@@ -46,10 +45,8 @@ function SignUp() {
     } else {
       setIsDisabled(true);
     }
-    isLogin && router.push("/");
   }, [user]);
 
-  const { isLogin, setIsLogin } = useLogin();
   return (
     <div className="h-screen bg-[#191a22] flex justify-center items-center">
       {isLoading ? (
