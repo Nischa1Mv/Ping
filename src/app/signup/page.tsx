@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useLogin } from "../Context";
 import axios from "axios";
 import Link from "next/link";
-import { set } from "mongoose";
+import { toast } from "react-hot-toast";
 
 const kanit = Kanit({
   subsets: ["latin"],
@@ -25,6 +25,7 @@ function SignUp() {
   const handleSignUp = async () => {
     try {
       if (user.password !== ConfirmPassword) {
+        toast.error("Passwords do not match");
         throw new Error("Passwords do not match");
       }
       setIsLoading(true);
@@ -32,8 +33,10 @@ function SignUp() {
       const response = await axios.post("/api/users/signup", user);
       console.log("signed up", response.data);
       router.push("/login");
+      toast.success("User Is Signed Up");
     } catch (error: any) {
       console.log("coudnt sign up", error);
+      toast.error("Coudn't Sign up.");
     }
   };
   useEffect(() => {

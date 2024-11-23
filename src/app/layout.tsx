@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ContextProvider } from "../app/Context"; // Adjust the path as necessary
+import { Toaster } from "react-hot-toast";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -30,6 +31,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {" "}
+        <div>
+          <Toaster />
+        </div>
         <ContextProvider>{children}</ContextProvider>
       </body>
     </html>
