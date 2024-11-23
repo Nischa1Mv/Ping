@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
       "i.pinimg.com",
       "encrypted-tbn0.gstatic.com",
       "media-hyd1-1.cdn.whatsapp.net",
+      "www.google.com",
     ],
   },
 };
