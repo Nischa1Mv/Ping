@@ -1,15 +1,57 @@
 "use client";
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import ImageOverlay from "../imageOverlay";
 import { useRouter } from "next/navigation";
 import TempProfile from "./tempProfile";
 import ProfileForm from "./profileForm";
 import TempHeader from "./TempHeader";
+import axios from "axios";
+import { toast } from "react-hot-toast";
 
 function ProfileSetup() {
   const router = useRouter();
+  const [user, setUser] = useState({
+    userName: "",
+    displayName: "",
+    bio: "",
+    // profilePicture: "",
+    // bannerPicture: "",
+  });
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [data, setData] = useState("nothing");
+
+  const getuser = async () => {
+    try {
+      const response = await axios.get("/api/users/profile");
+      console.log("User Data", response.data.user._id);
+      setData(response.data.user._id);
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+
+  const updateProfile = async () => {
+    try {
+      setError(false);
+      setIsDisabled(true);
+      setIsLoading(true);
+      const response = await axios.post("/api/users/profile", user);
+      console.log("Profile Updated", response.data);
+      toast.success("Profile Updated");
+      router.push("/");
+    } catch (error: any) {
+      setError(true);
+      toast.error("Coudn't Update Profile.");
+      console.log(error);
+    } finally {
+      setIsDisabled(false);
+      setIsLoading(false);
+    }
+  };
+
   const [showImageOverlay, setShowImageOverlay] = useState(false);
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const ProfilePicture =
     "https://media-hyd1-1.cdn.whatsapp.net/v/t61.24694-24/379619630_6949750128379753_6172259427711619252_n.jpg?ccb=11-4&oh=01_Q5AaIO2kBGB6JkOO1GOwTcvG9XIDmY-5Vitx5Oo9Mv7P_lPp&oe=674A8A31&_nc_sid=5e03e0&_nc_cat=108";
   const BannerPic =
@@ -66,7 +108,6 @@ function ProfileSetup() {
         </div>
         <div className="grow flex flex-col  border-4 border-l-2 border-[#1E1E1E] ">
           <TempProfile
-            setIsProfileOpen={setIsProfileOpen}
             profilePicture={profilePicture}
             bannerPicture={bannerPicture}
             userName={userName}

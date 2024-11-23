@@ -5,7 +5,6 @@ import ImageOverlay from "../imageOverlay";
 import placeholderPFP from "../../../public/placeholderPfp.jpeg";
 
 interface tempProfileProps {
-  setIsProfileOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   displayName?: string;
   userName?: string;
   bio?: string;
@@ -14,7 +13,6 @@ interface tempProfileProps {
 }
 
 export default function TempProfile({
-  setIsProfileOpen,
   displayName,
   userName,
   bio,
@@ -85,31 +83,6 @@ export default function TempProfile({
               {bio}
             </div>
           </div>
-          {/* <div className="flex gap-4 flex-col">
-            <h3 className="text-[#8888d5] text-lg font-semibold">Profiles</h3>
-            <ul className="flex flex-col gap-5 px-4 text-md text-[#adaeb7]">
-              <li className="">
-                Github:{" "}
-                <a
-                  target="_blank"
-                  className={`hover:underline text-sm  tracking-widest text-[#8888d5]`}
-                  href="https://github.com/Nischa1Mv"
-                >
-                  Nischa1Mv
-                </a>
-              </li>
-              <li>
-                LinkedIn:{" "}
-                <a
-                  target="_blank"
-                  className=" text-sm hover:underline tracking-widest text-[#8888d5]"
-                  href="https://www.linkedin.com/in/nischalmantri/"
-                >
-                  Nischal Mantri
-                </a>
-              </li>
-            </ul>
-          </div> */}
         </div>
       </div>
     </>
