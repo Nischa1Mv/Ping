@@ -1,4 +1,3 @@
-import { redirect } from "next/dist/server/api-utils";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -25,9 +24,22 @@ function ProfileForm({
   setBannerPicture,
 }: ProfileFormProps) {
   const router = useRouter();
+
+  const handleFormSubmit = () => {
+    // Call the updateProfile function to update the profile
+    updateProfile();
+
+    // Clear all the input fields by resetting the state
+    setDisplayName("");
+    setUserName("");
+    setBio("");
+    setProfilePicture("");
+    setBannerPicture("");
+  };
+
   return (
     <div className="flex flex-col gap-10 items-center px-10 justify-center h-full text-[#adaeb7]">
-      <div className="w-full  flex items-center justify-center text-2xl font-semibold">
+      <div className="w-full flex items-center justify-center text-2xl font-semibold">
         Please Create Your Profile
       </div>
       {/* input for DisplayName */}
@@ -52,7 +64,7 @@ function ProfileForm({
         </label>
         <input
           onChange={(e) => setUserName(e.target.value)}
-          type="text "
+          type="text"
           className="bg-transparent focus:outline-none border-b-2 w-[50%] px-2 border-[#adaeb7]"
           placeholder="Enter User Name"
         />
@@ -102,9 +114,7 @@ function ProfileForm({
       </div>
       <div>
         <button
-          onClick={() => {
-            updateProfile();
-          }}
+          onClick={handleFormSubmit}
           value="save"
           className="bg-transparent hover:font-bold cursor-pointer tracking-wider focus:outline-none hover:bg-[#8F8FCA] hover:text-[#383a46] text-[#fff] px-6 py-1 rounded-lg login-box active:scale-95 transition-transform duration-150 active:bg-[#9696cd]  "
         >
