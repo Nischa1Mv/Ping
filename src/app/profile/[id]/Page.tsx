@@ -68,6 +68,16 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       const response = await axios.post("/api/users/profile", updatedUser);
       console.log("Profile Updated", response.data);
       toast.success("Profile Updated");
+
+      setUser((prevUser) => ({
+        ...prevUser,
+        ...updatedUser,
+      }));
+      setUserName("");
+      setDisplayName("");
+      setBio("");
+      setProfilePicture("");
+      setBannerPicture("");
       //   router.push("/");
     } catch (error: any) {
       setError(true);
