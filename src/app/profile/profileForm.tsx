@@ -2,6 +2,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 
 interface ProfileFormProps {
+  isDisabled: boolean;
   updateProfile: () => void;
   setDisplayName: React.Dispatch<React.SetStateAction<string>>;
   setUserName: React.Dispatch<React.SetStateAction<string>>;
@@ -15,6 +16,7 @@ interface ProfileFormProps {
 }
 
 function ProfileForm({
+  isDisabled,
   updateProfile,
   setDisplayName,
   setUserName,
@@ -114,9 +116,15 @@ function ProfileForm({
       </div>
       <div>
         <button
+          disabled={isDisabled}
           onClick={handleFormSubmit}
           value="save"
-          className="bg-transparent hover:font-bold cursor-pointer tracking-wider focus:outline-none hover:bg-[#8F8FCA] hover:text-[#383a46] text-[#fff] px-6 py-1 rounded-lg login-box active:scale-95 transition-transform duration-150 active:bg-[#9696cd]  "
+          className={`bg-transparent tracking-wider cursor-pointer focus:outline-none text-[#fff] px-6 py-1 rounded-lg login-box transition-transform duration-150 
+    ${
+      isDisabled
+        ? "cursor-not-allowed opacity-50"
+        : "hover:font-bold hover:bg-[#8F8FCA] hover:text-[#383a46] active:scale-95 active:bg-[#9696cd]"
+    }`}
         >
           Save
         </button>

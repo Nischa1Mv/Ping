@@ -41,7 +41,7 @@ export default function TempProfile({
               setOverlayImage(bannerPicture!);
             }}
             className="w-full h-full object-cover"
-            src={bannerPicture!}
+            src={bannerPicture! || "/banner.jpg"}
             height={150}
             width={150}
             alt="banner"
@@ -55,7 +55,7 @@ export default function TempProfile({
               setShowImageOverlay(true);
               setOverlayImage(profilePicture!);
             }}
-            src={profilePicture!}
+            src={profilePicture! || "/profile.png"}
             height={150}
             width={150}
             alt="ProfilePicture"

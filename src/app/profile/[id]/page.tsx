@@ -6,6 +6,7 @@ import ProfileForm from "../profileForm";
 import TempHeader from "../TempHeader";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import { set } from "mongoose";
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
@@ -51,6 +52,8 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   }, [id]); // Fetch user data on page load
 
   const updateProfile = async () => {
+    setError(false);
+    setIsDisabled(true);
     const updatedUser = {
       username: userName ? userName : user.username,
       displayName: displayName ? displayName : user.displayName,
@@ -61,8 +64,6 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     setUpdatedUser(updatedUser);
     console.log("Updated User", updatedUser);
     try {
-      setError(false);
-      setIsDisabled(true);
       setIsLoading(true);
       const response = await axios.post("/api/users/profile", updatedUser);
       console.log("Profile Updated", response.data);
@@ -83,7 +84,9 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       toast.error("Coudn't Update Profile.");
       console.log(error);
     } finally {
-      setIsDisabled(false);
+      setTimeout(() => {
+        setIsDisabled(false);
+      }, 5000);
       setIsLoading(false);
     }
   };
@@ -121,6 +124,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             handleImageChange={handleImageChange}
             setProfilePicture={setProfilePicture}
             setBanner={setBanner}
+            isDisabled={isDisabled}
           />
         </div>
         <div className="grow flex flex-col  border-4 border-l-2 border-[#1E1E1E] ">
