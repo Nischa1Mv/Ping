@@ -40,7 +40,7 @@ function Login() {
         return;
       }
       console.log("LoggedIn", response.data);
-      router.push("/"); //have to change this to "/"
+      router.push("/");
       toast.success("User Is Logged In");
     } catch (error: any) {
       setError(true);

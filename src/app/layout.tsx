@@ -32,7 +32,7 @@ export default function RootLayout({
       >
         {" "}
         <div>
-          <Toaster />
+          <Toaster position="top-center" reverseOrder={false} />
         </div>
         <ContextProvider>{children}</ContextProvider>
       </body>
