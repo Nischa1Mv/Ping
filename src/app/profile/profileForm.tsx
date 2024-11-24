@@ -93,7 +93,7 @@ function ProfileForm({
           type="file"
           className="bg-transparent w-[50%] text-sm"
           placeholder="Enter User Name"
-          accept="image/png"
+          accept="image/*"
         />
       </div>
       {/* banner picture input */}
@@ -109,7 +109,7 @@ function ProfileForm({
           type="file"
           className="bg-transparent w-[50%] text-sm"
           placeholder="Enter User Name"
-          accept="image/png"
+          accept="image/*"
         />
       </div>
       <div>
