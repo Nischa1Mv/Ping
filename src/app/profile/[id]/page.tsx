@@ -1,6 +1,6 @@
 "use client";
 import React, { use, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import TempProfile from "../tempProfile";
 import ProfileForm from "../profileForm";
 import TempHeader from "../TempHeader";
@@ -86,7 +86,10 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       setBio("");
       setProfilePicture("");
       setBanner("");
-      //   router.push("/");
+      setTimeout(() => {
+        router.push("/");
+      }, 3000);
+      toast.success("Redirecting to Home Page in 3 seconds");
     } catch (error: any) {
       setError(true);
       toast.error("Coudn't Update Profile.");
