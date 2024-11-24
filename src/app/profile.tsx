@@ -1,8 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
 import Image from "next/image";
 import ImageOverlay from "./imageOverlay";
 import placeholderPFP from "../../public/placeholderPfp.jpeg";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 interface ProfileProps {
   setIsProfileOpen?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -24,6 +27,22 @@ export function Profile({
   const [showImageOverlay, setShowImageOverlay] = useState(false);
   const placeholderBanner =
     "https://i.pinimg.com/originals/7e/4d/32/7e4d32670b1c82c23820e96c6070a39f.jpg";
+
+  const [isDisabled, setIsDisabled] = useState(false);
+  const router = useRouter();
+
+  const Logout = async () => {
+    setIsDisabled(true);
+    try {
+      const response = await axios.get("/api/users/logout");
+      console.log(response.data);
+      toast.success("User Is Logged Out");
+      router.push("/login");
+      setIsDisabled(false);
+    } catch (err: any) {
+      console.log(err);
+    }
+  };
 
   return (
     <>
@@ -138,31 +157,20 @@ export function Profile({
               {bio}
             </div>
           </div>
-          {/* <div className="flex gap-4 flex-col">
-            <h3 className="text-[#8888d5] text-lg font-semibold">Profiles</h3>
-            <ul className="flex flex-col gap-5 px-4 text-md text-[#adaeb7]">
-              <li className="">
-                Github:{" "}
-                <a
-                  target="_blank"
-                  className={`hover:underline text-sm  tracking-widest text-[#8888d5]`}
-                  href="https://github.com/Nischa1Mv"
-                >
-                  Nischa1Mv
-                </a>
-              </li>
-              <li>
-                LinkedIn:{" "}
-                <a
-                  target="_blank"
-                  className=" text-sm hover:underline tracking-widest text-[#8888d5]"
-                  href="https://www.linkedin.com/in/nischalmantri/"
-                >
-                  Nischal Mantri
-                </a>
-              </li>
-            </ul>
-          </div> */}
+          <div className="w-full flex justify-end px-4 py-4  ">
+            <button
+              disabled={isDisabled}
+              onClick={() => {
+                Logout();
+              }}
+              value="logout"
+              className={`bg-transparent tracking-wider cursor-pointer focus:outline-none text-[#fff] px-6 py-1 rounded-lg login-box transition-transform duration-150 
+    
+         hover:font-bold hover:bg-[#8F8FCA] hover:text-[#383a46] active:scale-95 active:bg-[#9696cd]`}
+            >
+              Logout
+            </button>
+          </div>
         </div>
       </div>
     </>
