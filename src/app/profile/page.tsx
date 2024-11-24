@@ -33,7 +33,7 @@ function ProfileSetup() {
   // Handle file input changes
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex h-screen items-center justify-center">
       {" "}
       <div
         className={`${kanit.className} text-xl  text-[#CACA8F] tracking-widest`}
