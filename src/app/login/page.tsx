@@ -34,6 +34,11 @@ function Login() {
       setIsDisabled(true);
       setIsLoading(true);
       const response = await axios.post("/api/users/login", user);
+      if (!response.data.user) {
+        setError(true);
+        toast.error("User Not Found");
+        throw new Error("User Not Found");
+      }
       if (response.data.user.isProfile === true) {
         router.push("/profile");
         toast.success("User Needs to Complete Profile");
@@ -45,7 +50,7 @@ function Login() {
     } catch (error: any) {
       setError(true);
       console.log("coudnt sign up", error);
-      toast.error("Coudn't Sign up.");
+      toast.error("failed to login");
     } finally {
       setIsDisabled(false);
       setIsLoading(false);
@@ -131,7 +136,7 @@ function Login() {
             Dont Have an Account ?{" "}
             <Link
               className="text-[#CACA8F] cursor-pointer font-semibold"
-              href={`/login`}
+              href={`/signup`}
             >
               SignUp
             </Link>

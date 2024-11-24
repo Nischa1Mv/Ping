@@ -32,10 +32,10 @@ function SignUp() {
       const response = await axios.post("/api/users/signup", user);
       console.log("signed up", response.data);
       router.push("/login");
-      toast.success("User Is Signed Up");
+      toast.success("Account Created Successfully");
     } catch (error: any) {
       console.log("coudnt sign up", error);
-      toast.error("Coudn't Sign up.");
+      toast.error("Failed to create account");
     }
   };
   useEffect(() => {
