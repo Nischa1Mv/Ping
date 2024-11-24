@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 
 interface ProfileFormProps {
+  updateProfile: () => void;
   setDisplayName: React.Dispatch<React.SetStateAction<string>>;
   setUserName: React.Dispatch<React.SetStateAction<string>>;
   setBio: React.Dispatch<React.SetStateAction<string>>;
@@ -15,6 +16,7 @@ interface ProfileFormProps {
 }
 
 function ProfileForm({
+  updateProfile,
   setDisplayName,
   setUserName,
   setBio,
@@ -101,7 +103,7 @@ function ProfileForm({
       <div>
         <button
           onClick={() => {
-            router.push("/");
+            updateProfile();
           }}
           value="save"
           className="bg-transparent hover:font-bold cursor-pointer tracking-wider focus:outline-none hover:bg-[#8F8FCA] hover:text-[#383a46] text-[#fff] px-6 py-1 rounded-lg login-box active:scale-95 transition-transform duration-150 active:bg-[#9696cd]  "

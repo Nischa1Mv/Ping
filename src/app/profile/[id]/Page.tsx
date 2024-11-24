@@ -7,6 +7,7 @@ import ProfileForm from "../profileForm";
 import TempHeader from "../TempHeader";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import { set } from "mongoose";
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
@@ -14,8 +15,24 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const [isDisabled, setIsDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
+
+  //   form states
+  const [userName, setUserName] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [bio, setBio] = useState("");
+  const [profilePicture, setProfilePicture] = useState<string>("");
+  const [bannerPicture, setBannerPicture] = useState<string>("");
+
   const [user, setUser] = useState({
-    userName: "",
+    username: "",
+    displayName: "",
+    bio: "",
+    // profilePicture: "",
+    // bannerPicture: "",
+  });
+
+  const [updatedUser, setUpdatedUser] = useState({
+    username: "",
     displayName: "",
     bio: "",
     // profilePicture: "",
@@ -36,14 +53,23 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   }, [id]); // Fetch user data on page load
 
   const updateProfile = async () => {
+    const updatedUser = {
+      username: userName ? userName : `{user.username}`,
+      displayName: displayName ? displayName : `{user.displayName}`,
+      bio: bio ? bio : `{user.bio}`,
+      // profilePicture: "",
+      // bannerPicture: "",
+    };
+    setUpdatedUser(updatedUser);
+    console.log("Updated User", updatedUser);
     try {
       setError(false);
       setIsDisabled(true);
       setIsLoading(true);
-      const response = await axios.post("/api/users/profile", user);
+      const response = await axios.post("/api/users/profile", updatedUser);
       console.log("Profile Updated", response.data);
       toast.success("Profile Updated");
-      router.push("/");
+      //   router.push("/");
     } catch (error: any) {
       setError(true);
       toast.error("Coudn't Update Profile.");
@@ -58,12 +84,6 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     "https://media-hyd1-1.cdn.whatsapp.net/v/t61.24694-24/379619630_6949750128379753_6172259427711619252_n.jpg?ccb=11-4&oh=01_Q5AaIO2kBGB6JkOO1GOwTcvG9XIDmY-5Vitx5Oo9Mv7P_lPp&oe=674A8A31&_nc_sid=5e03e0&_nc_cat=108";
   const BannerPic =
     "https://media.licdn.com/dms/image/v2/D4D16AQGiuVbiEdaPAg/profile-displaybackgroundimage-shrink_350_1400/profile-displaybackgroundimage-shrink_350_1400/0/1711031992791?e=1737590400&v=beta&t=L6veoyCxeddYWy2STt-4ABQGsbXWvZzwMzWNluS7xok";
-
-  const [userName, setUserName] = useState("");
-  const [displayName, setDisplayName] = useState("");
-  const [bio, setBio] = useState("");
-  const [profilePicture, setProfilePicture] = useState<string>("");
-  const [bannerPicture, setBannerPicture] = useState<string>("");
 
   // Handle file input changes
   const handleImageChange = (
@@ -100,6 +120,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         >
           <TempHeader />
           <ProfileForm
+            updateProfile={updateProfile}
             setUserName={setUserName}
             setDisplayName={setDisplayName}
             setBio={setBio}
@@ -112,9 +133,9 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           <TempProfile
             profilePicture={profilePicture}
             bannerPicture={bannerPicture}
-            userName={userName}
-            displayName={displayName}
-            bio={bio}
+            userName={userName || user.username}
+            displayName={displayName || user.displayName}
+            bio={bio || user.bio}
           />
         </div>
 
