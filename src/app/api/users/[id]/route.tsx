@@ -3,14 +3,15 @@ import { connectDB } from "../../../../../server/server";
 import User from "server/UserModal";
 connectDB();
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest) {
   try {
-    const userId = params.id;
-    const user = await User.findById(userId).select("-password");
+    const url = new URL(request.url);
+    const id = url.pathname.split("/").pop(); // Extract ID from URL path
 
+    if (!id) {
+      return NextResponse.json({ error: "ID is required" }, { status: 400 });
+    }
+    const user = await User.findById(id).select("-password");
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
@@ -21,6 +22,6 @@ export async function GET(
       { status: 200 }
     );
   } catch (error: any) {
-    NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
