@@ -60,7 +60,7 @@ export default function TempProfile({
             alt="ProfilePicture"
           />
         </div>
-        <div className="flex justify-end p-8 mt-7 gap-10"></div>
+        <div className="flex justify-end p-8 gap-10 h-[15%] "></div>
         <div className="font-bold  text-2xl flex gap-4 text-[#CACA8F] items-center pl-4 mt-4 ">
           <label
             className="focus:outline-none bg-transparent text-[#CACA8F] font-bold
