@@ -19,8 +19,6 @@ export default function TempProfile({
   bannerPicture,
 }: tempProfileProps) {
   const [showImageOverlay, setShowImageOverlay] = useState(false);
-  const placeholderBanner =
-    "https://i.pinimg.com/originals/7e/4d/32/7e4d32670b1c82c23820e96c6070a39f.jpg";
   const [overlayImage, setOverlayImage] = useState<string | null>(null);
 
   return (
