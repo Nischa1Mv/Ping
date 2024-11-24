@@ -7,7 +7,6 @@ import ProfileForm from "../profileForm";
 import TempHeader from "../TempHeader";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { set } from "mongoose";
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
