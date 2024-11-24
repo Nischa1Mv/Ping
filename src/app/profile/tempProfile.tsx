@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import ImageOverlay from "../imageOverlay";
-import placeholderPFP from "../../../public/placeholderPfp.jpeg";
 
 interface tempProfileProps {
   displayName?: string;

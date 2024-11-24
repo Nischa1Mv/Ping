@@ -1,6 +1,5 @@
 "use client";
 import React, { use, useEffect, useState } from "react";
-import ImageOverlay from "../../imageOverlay";
 import { useRouter } from "next/navigation";
 import TempProfile from "../tempProfile";
 import ProfileForm from "../profileForm";
