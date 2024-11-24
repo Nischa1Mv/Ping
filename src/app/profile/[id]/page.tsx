@@ -52,6 +52,14 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   }, [id]); // Fetch user data on page load
 
   const updateProfile = async () => {
+    setIsDisabled(true);
+    if (!userName && !displayName && !bio && !profilePicture && !banner) {
+      toast.error("Please fill atleast one field to update profile");
+      setTimeout(() => {
+        setIsDisabled(false);
+      }, 3000);
+      return;
+    }
     setError(false);
     setIsDisabled(true);
     const updatedUser = {

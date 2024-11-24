@@ -48,11 +48,12 @@ function ProfileForm({
       <div className="flex gap-4 w-full ">
         <label
           className="w-[50%] text-[#9696cd] font-semibold px-2 "
-          htmlFor=""
+          htmlFor="Display Name"
         >
           Display Name
         </label>
         <input
+          required
           onChange={(e) => setDisplayName(e.target.value)}
           type="text"
           className="bg-transparent focus:outline-none border-b-2 w-[50%] px-2 border-[#adaeb7]"
@@ -61,10 +62,14 @@ function ProfileForm({
       </div>
       {/* input for UserName */}
       <div className="flex gap-4 w-full">
-        <label className="w-[50%] text-[#9696cd] font-semibold px-2" htmlFor="">
+        <label
+          className="w-[50%] text-[#9696cd] font-semibold px-2"
+          htmlFor="label"
+        >
           User Name
         </label>
         <input
+          required
           onChange={(e) => setUserName(e.target.value)}
           type="text"
           className="bg-transparent focus:outline-none border-b-2 w-[50%] px-2 border-[#adaeb7]"
