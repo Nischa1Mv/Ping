@@ -22,6 +22,7 @@ export default function TempProfile({
   const [showImageOverlay, setShowImageOverlay] = useState(false);
   const placeholderBanner =
     "https://i.pinimg.com/originals/7e/4d/32/7e4d32670b1c82c23820e96c6070a39f.jpg";
+  const [overlayImage, setOverlayImage] = useState<string | null>(null);
 
   return (
     <>
@@ -32,20 +33,22 @@ export default function TempProfile({
             setShowImageOverlay(false);
           }}
         >
-          <ImageOverlay
-            src={profilePicture ? profilePicture : placeholderPFP}
-          />
+          <ImageOverlay src={overlayImage!} />
         </div>
       )}
       <div className="w-full h-full relative flex flex-col ">
-        <div
-          className="flex flex-col border-2 border-[#1f2029] bg-[rgba(143,143,202,0.1)] h-[35%] relative bg-no-repeat bg-center bg-cover"
-          style={{
-            backgroundImage: `url(${
-              bannerPicture ? bannerPicture : placeholderBanner
-            })`, // Ternary for backgroundImage
-          }}
-        >
+        <div className="flex flex-col border-2 border-[#1f2029] bg-[rgba(143,143,202,0.1)] h-[35%] relative bg-no-repeat bg-center bg-cover">
+          <Image
+            onClick={() => {
+              setShowImageOverlay(true);
+              setOverlayImage(bannerPicture!);
+            }}
+            className="w-full h-full object-cover"
+            src={bannerPicture! || ""}
+            height={150}
+            width={150}
+            alt="banner"
+          />
           <div className="flex gap-4 w-full px-4 py-2 bg-transparent"></div>
           <div className="flex grow"></div>
           <div className="justify-end w-full flex  px-4 py-2"></div>
@@ -53,8 +56,9 @@ export default function TempProfile({
             className="rounded-full aspect-square absolute bottom-[-40%] left-4 border-[6px] z-20 border-[#191a22] "
             onClick={() => {
               setShowImageOverlay(true);
+              setOverlayImage(profilePicture!);
             }}
-            src={profilePicture ? profilePicture : placeholderPFP}
+            src={profilePicture || ""}
             height={150}
             width={150}
             alt="ProfilePicture"

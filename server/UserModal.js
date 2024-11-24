@@ -67,11 +67,11 @@ const userSchema = new mongoose.Schema(
     },
     profilePicture: {
       type: String,
-      default: "https://example.com/placeholder-profile-pic.png",
+      default: "",
     },
     banner: {
       type: String,
-      default: "https://example.com/placeholder-banner.png",
+      default: "",
     },
   },
   {

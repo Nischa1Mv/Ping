@@ -11,7 +11,7 @@ interface ProfileFormProps {
     setImage: React.Dispatch<React.SetStateAction<string>>
   ) => void;
   setProfilePicture: React.Dispatch<React.SetStateAction<string>>;
-  setBannerPicture: React.Dispatch<React.SetStateAction<string>>;
+  setBanner: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function ProfileForm({
@@ -21,7 +21,7 @@ function ProfileForm({
   setBio,
   handleImageChange,
   setProfilePicture,
-  setBannerPicture,
+  setBanner,
 }: ProfileFormProps) {
   const router = useRouter();
 
@@ -34,7 +34,7 @@ function ProfileForm({
     setUserName("");
     setBio("");
     setProfilePicture("");
-    setBannerPicture("");
+    setBanner("");
   };
 
   return (
@@ -105,7 +105,7 @@ function ProfileForm({
           Banner
         </label>
         <input
-          onChange={(e) => handleImageChange(e, setBannerPicture)}
+          onChange={(e) => handleImageChange(e, setBanner)}
           type="file"
           className="bg-transparent w-[50%] text-sm"
           placeholder="Enter User Name"
