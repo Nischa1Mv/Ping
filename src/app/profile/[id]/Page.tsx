@@ -53,9 +53,9 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 
   const updateProfile = async () => {
     const updatedUser = {
-      username: userName ? userName : `{user.username}`,
-      displayName: displayName ? displayName : `{user.displayName}`,
-      bio: bio ? bio : `{user.bio}`,
+      username: userName ? userName : user.username,
+      displayName: displayName ? displayName : user.displayName,
+      bio: bio ? bio : user.bio,
       // profilePicture: "",
       // bannerPicture: "",
     };
