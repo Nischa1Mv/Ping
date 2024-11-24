@@ -8,8 +8,9 @@ import TempHeader from "../TempHeader";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 
-export default function Page({ params }: { params: { id: string } }) {
+export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
+  const { id } = use(params);
   const [isDisabled, setIsDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -22,11 +23,18 @@ export default function Page({ params }: { params: { id: string } }) {
   });
 
   useEffect(() => {
-    try {
-    } catch (error: any) {
-      console.log(error);
-    }
-  }, []); // Fetch user data on page load
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(`/api/users/${id}`);
+        console.log("User Data", response.data);
+        setUser(response.data.user);
+      } catch (error: any) {
+        console.log(error);
+      }
+    };
+    if (id) fetchUser();
+  }, [id]); // Fetch user data on page load
+
   const updateProfile = async () => {
     try {
       setError(false);
