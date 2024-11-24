@@ -34,11 +34,6 @@ function Login() {
       setIsDisabled(true);
       setIsLoading(true);
       const response = await axios.post("/api/users/login", user);
-      if (!response.data.user) {
-        setError(true);
-        toast.error("User Not Found");
-        throw new Error("User Not Found");
-      }
       if (response.data.user.isProfile === true) {
         router.push("/profile");
         toast.success("User Needs to Complete Profile");
