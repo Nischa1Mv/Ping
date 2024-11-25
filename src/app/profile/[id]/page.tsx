@@ -1,12 +1,11 @@
 "use client";
 import React, { use, useEffect, useState } from "react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import TempProfile from "../tempProfile";
 import ProfileForm from "../profileForm";
 import TempHeader from "../TempHeader";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { set } from "mongoose";
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
@@ -28,6 +27,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     bio: "",
     profilePicture: "",
     banner: "",
+    isProfile: false,
   });
 
   const [updatedUser, setUpdatedUser] = useState({
@@ -140,6 +140,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         </div>
         <div className="grow flex flex-col  border-4 border-l-2 border-[#1E1E1E] ">
           <TempProfile
+            isProfile={user.isProfile}
             profilePicture={
               profilePicture ? profilePicture : user.profilePicture
             }

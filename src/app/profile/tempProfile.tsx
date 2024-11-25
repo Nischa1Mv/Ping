@@ -1,7 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import Image from "next/image";
 import ImageOverlay from "../imageOverlay";
+import { useRouter } from "next/navigation";
 
 interface tempProfileProps {
   displayName?: string;
@@ -9,6 +10,7 @@ interface tempProfileProps {
   bio?: string;
   profilePicture?: string;
   bannerPicture?: string;
+  isProfile?: boolean;
 }
 
 export default function TempProfile({
@@ -17,9 +19,11 @@ export default function TempProfile({
   bio,
   profilePicture,
   bannerPicture,
+  isProfile,
 }: tempProfileProps) {
   const [showImageOverlay, setShowImageOverlay] = useState(false);
   const [overlayImage, setOverlayImage] = useState<string | null>(null);
+  const router = useRouter();
 
   return (
     <>
@@ -34,6 +38,21 @@ export default function TempProfile({
         </div>
       )}
       <div className="w-full h-full relative flex flex-col ">
+        {!isProfile && (
+          <svg
+            className="absolute top-4 left-4 z-50"
+            onClick={() => {
+              router.push("/");
+            }}
+            xmlns="http://www.w3.org/2000/svg"
+            height="30px"
+            viewBox="0 -960 960 960"
+            width="30px"
+            fill="#CACA8F"
+          >
+            <path d="M360-240 120-480l240-240 56 56-144 144h568v80H272l144 144-56 56Z" />
+          </svg>
+        )}
         <div className="flex flex-col border-2 border-[#1f2029] bg-[rgba(143,143,202,0.1)] h-[35%] relative bg-no-repeat bg-center bg-cover">
           <Image
             onClick={() => {
@@ -46,7 +65,7 @@ export default function TempProfile({
             width={150}
             alt="banner"
           />
-          <div className="flex gap-4 w-full px-4 py-2 bg-transparent"></div>
+          <div className="flex gap-4 w-full px-4 py-2 bg-transparent"> </div>
           <div className="flex grow"></div>
           <div className="justify-end w-full flex  px-4 py-2"></div>
           <Image
