@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
+import { set } from "mongoose";
 
 const kanit = Kanit({
   subsets: ["latin"],
@@ -14,6 +15,7 @@ const kanit = Kanit({
 
 function SignUp() {
   const router = useRouter();
+
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -34,8 +36,26 @@ function SignUp() {
       router.push("/login");
       toast.success("Account Created Successfully");
     } catch (error: any) {
-      console.log("coudnt sign up", error);
-      toast.error("Failed to create account");
+      if (error.response) {
+        if (error.response.status === 400) {
+          //if user already exists
+          toast.error("User already exists");
+          console.log("User already exists");
+          setIsLoading(false);
+        } else {
+          console.log("Server Error: ", error.response.data.error);
+          setIsLoading(false);
+          toast.error("Something went wrong. Please try again later");
+        }
+      } else if (error.request) {
+        console.log("No response received", error.request);
+        toast.error("Network error. Please check your connection");
+        setIsLoading(false);
+      } else {
+        console.log("Error setting up the request ", error.message);
+        toast.error("Unexpected error occurred. Please try again.");
+        setIsLoading(false);
+      }
     }
   };
   useEffect(() => {
