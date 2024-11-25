@@ -77,6 +77,27 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: banner,
     },
+    // friends: [
+    //   {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "Users", // Reference to the User collection
+    //   },
+    // ],
+    // conversations: [
+    //   {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "Conversations", // Reference to the Conversations collection
+    //   },
+    // ],
+    // lastLogin: {
+    //   type: Date,
+    //   default: Date.now,
+    // },
+    // status: {
+    //   type: String,
+    //   enum: ["online", "offline", "away"],
+    //   default: "offline",
+    // },
   },
   {
     timestamps: true,
