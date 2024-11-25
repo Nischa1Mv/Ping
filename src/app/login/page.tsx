@@ -43,9 +43,25 @@ function Login() {
       router.push("/");
       toast.success("User Is Logged In");
     } catch (error: any) {
-      setError(true);
-      console.log("coudnt sign up", error);
-      toast.error("failed to login");
+      if (error.response) {
+        if (error.response.status == 400) {
+          console.log("Please fill all the fields");
+          toast.error("Please fill all the fields");
+          setIsLoading(false);
+        } else if (error.response.status == 404) {
+          console.log("User with the email was not found");
+          toast.error("User not found");
+          setIsLoading(false);
+        } else if (error.response.status == 401) {
+          console.log("Invalid password");
+          toast.error("Invalid password");
+          setIsLoading(false);
+        }
+      } else {
+        setError(true);
+        console.log("coudnt sign up", error.message);
+        toast.error("Something went wrong");
+      }
     } finally {
       setIsDisabled(false);
       setIsLoading(false);
