@@ -40,7 +40,8 @@ export function Profile({
       router.push("/login");
       setIsDisabled(false);
     } catch (err: any) {
-      console.log(err);
+      console.log(err.message);
+      toast.error(err.message);
     }
   };
 
