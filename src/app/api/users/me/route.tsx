@@ -10,3 +10,9 @@ export async function POST(request: NextRequest) {
   console.log(userId);
   return NextResponse.json({ message: "User Found", data: user });
 }
+export async function GET(request: NextRequest) {
+  const userId = await getTokenData(request);
+  const user = await User.findById({ _id: userId }).select("-password");
+  console.log(userId);
+  return NextResponse.json({ message: "User Found", data: user });
+}
