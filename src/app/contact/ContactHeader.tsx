@@ -32,7 +32,7 @@ function ContactHeader() {
           <input
             className={`  bg-transparent tracking-widest text-sm focus:outline-none border-b-2 border-[#CACA8F] text-[#CACA8F`}
             type="search"
-            placeholder="Search"
+            placeholder="Search Friends..."
           />
         )}
         <svg
