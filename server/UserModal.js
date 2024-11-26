@@ -78,6 +78,18 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: banner,
     },
+    sentRequests: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "FriendRequests",
+      },
+    ],
+    receivedRequests: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "FriendRequests",
+      },
+    ],
     friends: [
       {
         type: mongoose.Schema.Types.ObjectId,
