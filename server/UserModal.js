@@ -86,7 +86,7 @@ const userSchema = new mongoose.Schema(
     ],
     conversations: [
       {
-        type: string, //uuid will be stored
+        type: String, //uuid will be stored
         ref: "Conversations", // Reference to the Conversations collection
       },
     ],
