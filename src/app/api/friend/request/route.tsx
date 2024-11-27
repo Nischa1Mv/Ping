@@ -2,11 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import FriendRequest from "server/FriendReq";
 import { connectDB } from "server/server";
 import User from "server/UserModal";
+import { getTokenData } from "src/app/helper/getTokenData";
 connectDB();
 
 export async function POST(request: NextRequest) {
   const requestBody = await request.json();
-  const { receiverId, senderId } = requestBody;
+  const { receiverId } = requestBody;
+  const senderId = getTokenData(request);
   if (!receiverId || !senderId) {
     return NextResponse.json(
       { error: "Receiver or Sender not found" },
@@ -14,6 +16,17 @@ export async function POST(request: NextRequest) {
     );
   }
   try {
+    //if already exits then return error
+    const existingRequest = await FriendRequest.findOne({
+      sender: senderId,
+      receiver: receiverId,
+    });
+    if (existingRequest) {
+      return NextResponse.json(
+        { error: "Friend request already sent." },
+        { status: 400 }
+      );
+    }
     //store the data of the req like sender and receiver in friend request collection
     const friendRequest = await FriendRequest.create({
       sender: senderId,

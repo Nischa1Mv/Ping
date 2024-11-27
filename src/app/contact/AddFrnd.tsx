@@ -1,15 +1,19 @@
 import axios from "axios";
 import Image from "next/image";
+import { NextResponse } from "next/server";
 import React, { useEffect, useState } from "react";
+import { getTokenData } from "../helper/getTokenData";
 
 function AddFrnd() {
   const [query, setQuery] = useState(""); // State for search query
-  const [users, setUsers] = useState([{ username: "", profilePicture: "" }]); // State for storing user search results
+  const [users, setUsers] = useState([
+    { username: "", profilePicture: "", _id: "" },
+  ]); // State for storing user search results
   const [isSearch, setIsSearch] = useState(false); // State to toggle search visibility
 
   // Function to search users based on query
   const searchUser = async () => {
-    setUsers([{ username: "", profilePicture: "" }]); // Clear previous results
+    setUsers([{ username: "", profilePicture: "", _id: "" }]); // Clear previous results
     try {
       const response = await axios.get(`/api/users/search`, {
         params: { query }, // Send query as parameter
@@ -25,9 +29,22 @@ function AddFrnd() {
     if (query) {
       searchUser();
     } else {
-      setUsers([{ username: "", profilePicture: "" }]); // Clear users if query is empty
+      setUsers([{ username: "", profilePicture: "", _id: "" }]); // Clear users if query is empty
     }
   }, [query]);
+
+  const sendRequest = async (receiverId: string) => {
+    try {
+      if (!receiverId) {
+        console.error("Receiver not found");
+        return;
+      }
+      const response = await axios.post("/api/friend/request", { receiverId });
+      console.log("Friend request sent:", response.data);
+    } catch (error: any) {
+      console.error("Error sending friend request:", error.message);
+    }
+  };
 
   return (
     <>
@@ -83,7 +100,9 @@ function AddFrnd() {
                       <div className="flex grow"></div>
                       <div className="hover:text-[#caca8f] ">
                         <svg
-                          onClick={() => {}} // Placeholder for sending friend request
+                          onClick={() => {
+                            sendRequest(user._id);
+                          }} // Placeholder for sending friend request
                           xmlns="http://www.w3.org/2000/svg"
                           height="24px"
                           viewBox="0 -960 960 960"
