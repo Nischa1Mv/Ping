@@ -62,6 +62,7 @@ function ContactHeader() {
 
   const handleRequests = async () => {
     setFriendRequest(!FriendRequests);
+    setIsSent(true);
     if (!FriendRequests == true) {
       sentRequests(), toast.success("Fetching Friend Requests");
     }
@@ -111,8 +112,9 @@ function ContactHeader() {
       </span>
       <span className="relative">
         <svg
-          className="text-[#8F8FCA] hover:text-[#CACA8F]
-          "
+          className={`text-[#8F8FCA] hover:text-[#CACA8F] ${
+            FriendRequests && "text-[#CACA8F]"
+          } `}
           onClick={() => {
             handleRequests();
           }}
