@@ -3,6 +3,8 @@ import Image from "next/image";
 import { NextResponse } from "next/server";
 import React, { useEffect, useState } from "react";
 import { getTokenData } from "../helper/getTokenData";
+import { set } from "mongoose";
+import toast from "react-hot-toast";
 
 function AddFrnd() {
   const [query, setQuery] = useState(""); // State for search query
@@ -41,7 +43,12 @@ function AddFrnd() {
       }
       const response = await axios.post("/api/friend/request", { receiverId });
       console.log("Friend request sent:", response.data);
+      toast.success("Friend request sent");
     } catch (error: any) {
+      if (error.response.data.error === "Friend request already sent.") {
+        toast.error("Friend request already sent");
+        return;
+      }
       console.error("Error sending friend request:", error.message);
     }
   };
