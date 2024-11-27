@@ -4,6 +4,7 @@ import FriendReq from "./friendReq";
 import axios from "axios";
 
 import toast from "react-hot-toast";
+import { set } from "mongoose";
 const kanit = Kanit({
   subsets: ["latin"],
   weight: ["600"],
@@ -23,33 +24,48 @@ function ContactHeader() {
   const [isSent, setIsSent] = useState(true);
   const [loading, setLoading] = useState(false);
 
-  const handleRequests = async () => {
-    toast.success("Fetching Friend Requests");
-
+  const sentRequests = async () => {
+    setLoading(false);
     setSentReq([{ username: "", profilePicture: "", id: "" }]);
-    setReceivedReq([{ username: "", profilePicture: "", id: "" }]);
-
     try {
       setLoading(true);
-      const sentresponse = await axios.get("/api/friend/request/sent");
-      // const receivedresponse = await axios.get("/api/friend/request/received");
-      if (sentresponse.data.length > 0) {
-        setSentReq(sentresponse.data);
-        // setReceivedReq(receivedresponse.data);
-        setShowFriends(true);
-        setLoading(false);
-        toast.success("Friend Requests Fetched");
-      } else {
-        setLoading(false);
-        setShowFriends(false);
-        console.log("No Friend Requests");
+      const response = await axios.get("/api/friend/request/sent");
+      console.log(response.data);
+      toast.success("Fetching Sent Requests");
+      if (response.data.length > 0) {
+        setSentReq(response.data);
       }
-    } catch (error: any) {
       setLoading(false);
+      setShowFriends(true);
+    } catch (error: any) {
       console.log(error.message);
+      setLoading(false);
     }
+  };
+  const receiveRequests = async () => {
+    setLoading(false);
+    setReceivedReq([{ username: "", profilePicture: "", id: "" }]);
+    try {
+      setLoading(true);
+      const response = await axios.get("/api/friend/request/received");
+      console.log(response.data);
+      toast.success("Fetching Received Requests");
+      if (response.data.length > 0) {
+        setReceivedReq(response.data);
+      }
+      setLoading(false);
+      setShowFriends(true);
+    } catch (error: any) {
+      console.log(error.message);
+      setLoading(false);
+    }
+  };
 
+  const handleRequests = async () => {
     setFriendRequest(!FriendRequests);
+    if (!FriendRequests == true) {
+      sentRequests(), toast.success("Fetching Friend Requests");
+    }
   };
 
   return (
@@ -122,26 +138,32 @@ function ContactHeader() {
             <div className="w-full text-xs font-semibold flex border border-gray-500">
               <span
                 onClick={() => {
-                  setIsSent(true); // Switch to 'Sent' requests
+                  setIsSent(true);
+                  sentRequests();
                 }}
                 className={`grow flex items-center justify-center border-r cursor-pointer py-1 hover:bg-[#3c3c60] ${
                   isSent ? "bg-[#1b1b2e]" : ""
-                }`} // Add active class when 'Sent' tab is selected
+                }`}
               >
                 Sent
               </span>
               <span
                 onClick={() => {
-                  setIsSent(false); // Switch to 'Received' requests
+                  setIsSent(false);
+                  receiveRequests();
                 }}
                 className={`grow flex items-center justify-center py-1 cursor-pointer hover:bg-[#3c3c60] ${
                   !isSent ? "bg-[#1b1b2e]" : ""
-                }`} // Add active class when 'Received' tab is selected
+                }`}
               >
                 Received
               </span>
             </div>
-
+            {loading && (
+              <div className="text-xs font-normal flex  items-center justify-center h-full text-[#9e9e9e]">
+                Loading...
+              </div>
+            )}
             {showFriends ? (
               (isSent && (
                 <>
