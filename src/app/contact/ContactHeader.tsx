@@ -5,6 +5,7 @@ import axios from "axios";
 
 import toast from "react-hot-toast";
 import { set } from "mongoose";
+import { an } from "node_modules/@faker-js/faker/dist/airline-BLb3y-7w";
 const kanit = Kanit({
   subsets: ["latin"],
   weight: ["600"],
@@ -25,41 +26,23 @@ function ContactHeader() {
   const [loading, setLoading] = useState(false);
 
   const sentRequests = async () => {
-    setLoading(false);
-    setSentReq([{ username: "", profilePicture: "", id: "" }]);
     try {
-      setLoading(true);
       const response = await axios.get("/api/friend/request/sent");
-      console.log(response.data);
-      toast.success("Fetching Sent Requests");
       if (response.data.length > 0) {
         setSentReq(response.data);
+        setLoading(false);
+        setShowFriends(true);
+      } else {
+        setSentReq([]);
+        setLoading(false);
+        setShowFriends(true);
       }
-      setLoading(false);
-      setShowFriends(true);
     } catch (error: any) {
       console.log(error.message);
-      setLoading(false);
     }
   };
-  const receiveRequests = async () => {
-    setLoading(false);
-    setReceivedReq([{ username: "", profilePicture: "", id: "" }]);
-    try {
-      setLoading(true);
-      const response = await axios.get("/api/friend/request/received");
-      console.log(response.data);
-      toast.success("Fetching Received Requests");
-      if (response.data.length > 0) {
-        setReceivedReq(response.data);
-      }
-      setLoading(false);
-      setShowFriends(true);
-    } catch (error: any) {
-      console.log(error.message);
-      setLoading(false);
-    }
-  };
+
+  const receiveRequests = async () => {};
 
   const handleRequests = async () => {
     setFriendRequest(!FriendRequests);

@@ -5,7 +5,7 @@ import User from "server/UserModal";
 import { getTokenData } from "src/app/helper/getTokenData";
 connectDB();
 
-export async function POST(request: NextRequest) {
+export async function GET(request: NextRequest) {
   const requestBody = await request.json();
   const { receiverId } = requestBody;
   const senderId = getTokenData(request);
