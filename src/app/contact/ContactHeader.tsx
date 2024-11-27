@@ -42,7 +42,22 @@ function ContactHeader() {
     }
   };
 
-  const receiveRequests = async () => {};
+  const receiveRequests = async () => {
+    try {
+      const response = await axios.get("/api/friend/request/received");
+      if (response.data.length > 0) {
+        setReceivedReq(response.data);
+        setLoading(false);
+        setShowFriends(true);
+      } else {
+        setReceivedReq([]);
+        setLoading(false);
+        setShowFriends(true);
+      }
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  };
 
   const handleRequests = async () => {
     setFriendRequest(!FriendRequests);
