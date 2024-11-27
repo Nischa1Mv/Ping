@@ -14,8 +14,6 @@ export async function GET(request: NextRequest) {
     const users = await User.find({
       username: { $regex: query, $options: "i" },
     });
-    if (users.length === 0)
-      return NextResponse.json({ error: "No user found" }, { status: 404 });
     return NextResponse.json(users, { status: 200 }); //users is an array of obj , acess it will users[0].username
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
