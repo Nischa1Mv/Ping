@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Kanit } from "next/font/google";
-import profilePicture from "./../../../public/placeholderPfp.jpeg";
 import FriendReq from "./friendReq";
+import axios from "axios";
+
+import toast from "react-hot-toast";
 const kanit = Kanit({
   subsets: ["latin"],
   weight: ["600"],
@@ -12,6 +14,43 @@ function ContactHeader() {
   const [isSearch, setIsSearch] = useState(false);
   const [showFriends, setShowFriends] = useState(false);
   const [FriendRequests, setFriendRequest] = useState(false);
+  const [sentReq, setSentReq] = useState([
+    { username: "", profilePicture: "", id: "" },
+  ]);
+  const [receivedReq, setReceivedReq] = useState([
+    { username: "", profilePicture: "", id: "" },
+  ]);
+  const [isSent, setIsSent] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  const handleRequests = async () => {
+    toast.success("Fetching Friend Requests");
+
+    setSentReq([{ username: "", profilePicture: "", id: "" }]);
+    setReceivedReq([{ username: "", profilePicture: "", id: "" }]);
+
+    try {
+      setLoading(true);
+      const sentresponse = await axios.get("/api/friend/request/sent");
+      // const receivedresponse = await axios.get("/api/friend/request/received");
+      if (sentresponse.data.length > 0) {
+        setSentReq(sentresponse.data);
+        // setReceivedReq(receivedresponse.data);
+        setShowFriends(true);
+        setLoading(false);
+        toast.success("Friend Requests Fetched");
+      } else {
+        setLoading(false);
+        setShowFriends(false);
+        console.log("No Friend Requests");
+      }
+    } catch (error: any) {
+      setLoading(false);
+      console.log(error.message);
+    }
+
+    setFriendRequest(!FriendRequests);
+  };
 
   return (
     <div
@@ -60,7 +99,7 @@ function ContactHeader() {
           className="text-[#8F8FCA] hover:text-[#CACA8F]
           "
           onClick={() => {
-            setShowFriends(!showFriends);
+            handleRequests();
           }}
           xmlns="http://www.w3.org/2000/svg"
           height="24px"
@@ -70,25 +109,66 @@ function ContactHeader() {
         >
           <path d="M160-200v-80h80v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v28q80 20 130 84.5T720-560v280h80v80H160Zm320-300Zm0 420q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM320-280h320v-280q0-66-47-113t-113-47q-66 0-113 47t-47 113v280Z" />
         </svg>
-        {showFriends && (
+        {FriendRequests && (
           <div
             style={{ boxShadow: "rgba(149, 157, 165, 0.3) 0px 0px 10px" }}
             className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 items-center
              h-[400px] w-[300px] overflow-x-hidden overflow-y-auto flex flex-col 
-             gap-2  px-2py-2 z-50  bg-[rgba(33,34,46,0.9)] rounded-xl  scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-500"
+              z-50  bg-[rgba(33,34,46,1)] rounded-xl  scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-500"
           >
-            <div className="bg-[#27273e] w-full justify-center items-center flex py-2 mb-2">
+            <div className="bg-[#CACA8F]  w-full justify-center items-center flex py-1  text-[#000]">
               Friend Requests
             </div>
-            {FriendRequests ? (
-              <>
-                {" "}
-                <FriendReq profilePicture={profilePicture} />
-                <FriendReq profilePicture={profilePicture} />
-                <FriendReq profilePicture={profilePicture} />
-                <FriendReq profilePicture={profilePicture} />
-                <FriendReq profilePicture={profilePicture} />
-              </>
+            <div className="w-full text-xs font-semibold flex border border-gray-500">
+              <span
+                onClick={() => {
+                  setIsSent(true); // Switch to 'Sent' requests
+                }}
+                className={`grow flex items-center justify-center border-r cursor-pointer py-1 hover:bg-[#3c3c60] ${
+                  isSent ? "bg-[#1b1b2e]" : ""
+                }`} // Add active class when 'Sent' tab is selected
+              >
+                Sent
+              </span>
+              <span
+                onClick={() => {
+                  setIsSent(false); // Switch to 'Received' requests
+                }}
+                className={`grow flex items-center justify-center py-1 cursor-pointer hover:bg-[#3c3c60] ${
+                  !isSent ? "bg-[#1b1b2e]" : ""
+                }`} // Add active class when 'Received' tab is selected
+              >
+                Received
+              </span>
+            </div>
+
+            {showFriends ? (
+              (isSent && (
+                <>
+                  {" "}
+                  {sentReq.map((req) => (
+                    <FriendReq
+                      key={req.id}
+                      sent={true}
+                      profilePicture={req.profilePicture}
+                      username={req.username}
+                    />
+                  ))}
+                </>
+              )) ||
+              (!isSent && (
+                <>
+                  {" "}
+                  {receivedReq.map((req) => (
+                    <FriendReq
+                      key={req.id}
+                      sent={false}
+                      profilePicture={req.profilePicture}
+                      username={req.username}
+                    />
+                  ))}
+                </>
+              ))
             ) : (
               <div className="text-xs font-normal flex  items-center justify-center h-full text-[#9e9e9e]">
                 No Pending Friend Request

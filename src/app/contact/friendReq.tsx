@@ -1,21 +1,23 @@
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import React from "react";
 interface friendReqProps {
-  profilePicture: StaticImageData;
+  profilePicture: string;
+  sent: boolean;
+  username: string;
 }
 
-function FriendReq({ profilePicture }: friendReqProps) {
+function FriendReq({ profilePicture, sent, username }: friendReqProps) {
   return (
     <div className="flex flex-col w-[85%] bg-[#191a22] py-2 px-4 rounded-xl m-auto">
       <li className="flex gap-4 hover:text-[#caca8f] py-2 cursor-pointer text-xs bg-[#191a22] hover:bg-[#1b1c29] px-4 rounded-lg  items-center font-semibold tracking-wider ">
         <Image
           className="rounded-full aspect-square"
-          src={profilePicture}
+          src={profilePicture || "/default-profile-picture.jpg"}
           height={25}
           width={25}
           alt="profilePicture"
         />
-        @ user.username
+        @ {username}
       </li>
       <div className="flex gap-4 text-sm">
         <div
