@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import { Kanit } from "next/font/google";
 import FriendReq from "./friendReq";
 import axios from "axios";
-
 import toast from "react-hot-toast";
 import { set } from "mongoose";
-import { an } from "node_modules/@faker-js/faker/dist/airline-BLb3y-7w";
+
 const kanit = Kanit({
   subsets: ["latin"],
   weight: ["600"],
@@ -27,35 +26,37 @@ function ContactHeader() {
 
   const sentRequests = async () => {
     try {
+      setLoading(true);
+      setShowFriends(false);
       const response = await axios.get("/api/friend/request/sent");
       if (response.data.length > 0) {
         setSentReq(response.data);
-        setLoading(false);
         setShowFriends(true);
       } else {
         setSentReq([]);
-        setLoading(false);
-        setShowFriends(true);
       }
     } catch (error: any) {
       console.log(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   const receiveRequests = async () => {
     try {
+      setLoading(true);
+      setShowFriends(false);
       const response = await axios.get("/api/friend/request/received");
       if (response.data.length > 0) {
         setReceivedReq(response.data);
-        setLoading(false);
         setShowFriends(true);
       } else {
         setReceivedReq([]);
-        setLoading(false);
-        setShowFriends(true);
       }
     } catch (error: any) {
       console.log(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
