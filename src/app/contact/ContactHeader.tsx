@@ -11,7 +11,7 @@ const kanit = Kanit({
 function ContactHeader() {
   const [isSearch, setIsSearch] = useState(false);
   const [showFriends, setShowFriends] = useState(false);
-  const [FriendRequests, setFriendRequest] = useState(true);
+  const [FriendRequests, setFriendRequest] = useState(false);
 
   return (
     <div
@@ -73,10 +73,13 @@ function ContactHeader() {
         {showFriends && (
           <div
             style={{ boxShadow: "rgba(149, 157, 165, 0.3) 0px 0px 10px" }}
-            className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2  items-center
+            className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 items-center
              h-[400px] w-[300px] overflow-x-hidden overflow-y-auto flex flex-col 
-             gap-4 py-2 z-50 px-4 bg-[rgba(33,34,46,0.9)] rounded-xl scrollbar-default "
+             gap-2  px-2py-2 z-50  bg-[rgba(33,34,46,0.9)] rounded-xl  scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-500"
           >
+            <div className="bg-[#27273e] w-full justify-center items-center flex py-2 mb-2">
+              Friend Requests
+            </div>
             {FriendRequests ? (
               <>
                 {" "}

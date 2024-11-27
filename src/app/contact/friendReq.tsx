@@ -6,8 +6,8 @@ interface friendReqProps {
 
 function FriendReq({ profilePicture }: friendReqProps) {
   return (
-    <div className="flex flex-col gap-4 bg-[#191a22] py-4 px-4 rounded-xl">
-      <li className="flex gap-4 hover:text-[#caca8f]  cursor-pointer bg-[#191a22] hover:bg-[#1b1c29] px-4 rounded-lg py-2 items-center font-semibold tracking-wider text-sm">
+    <div className="flex flex-col w-[85%] bg-[#191a22] py-2 px-4 rounded-xl m-auto">
+      <li className="flex gap-4 hover:text-[#caca8f] py-2 cursor-pointer text-xs bg-[#191a22] hover:bg-[#1b1c29] px-4 rounded-lg  items-center font-semibold tracking-wider ">
         <Image
           className="rounded-full aspect-square"
           src={profilePicture}
