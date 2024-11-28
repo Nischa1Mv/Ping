@@ -19,20 +19,22 @@ function FriendReq({ profilePicture, sent, username }: friendReqProps) {
         />
         @ {username}
       </li>
-      <div className="flex gap-4 text-sm">
-        <div
-          onClick={() => {}}
-          className="w-full bg-green-500 text-black flex items-center justify-center rounded-lg cursor-pointer"
-        >
-          Accept
-        </div>{" "}
-        <div
-          onClick={() => {}}
-          className="w-full bg-red-400 text-black flex items-center justify-center rounded-lg cursor-pointer"
-        >
-          Reject
+      {!sent && (
+        <div className="flex gap-4 text-sm">
+          <div
+            onClick={() => {}}
+            className="w-full bg-green-500 text-black flex items-center justify-center rounded-lg cursor-pointer"
+          >
+            Accept
+          </div>{" "}
+          <div
+            onClick={() => {}}
+            className="w-full bg-red-400 text-black flex items-center justify-center rounded-lg cursor-pointer"
+          >
+            Reject
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
