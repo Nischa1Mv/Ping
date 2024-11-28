@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Kanit } from "next/font/google";
 import FriendReq from "./friendReq";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { set } from "mongoose";
+import Image from "next/image";
+import FriendSearch from "./FriendSearch";
 
 const kanit = Kanit({
   subsets: ["latin"],
@@ -12,6 +14,7 @@ const kanit = Kanit({
 });
 
 function ContactHeader() {
+  const [isQuery, setIsQuery] = useState("");
   const [isSearch, setIsSearch] = useState(false);
   const [showFriends, setShowFriends] = useState(false);
   const [FriendRequests, setFriendRequest] = useState(false);
@@ -94,6 +97,35 @@ function ContactHeader() {
     }
   };
 
+  const [Friends, setFriends] = useState([
+    { username: "", profilePicture: "", id: "" },
+  ]);
+
+  useEffect(() => {
+    if (isQuery != "") {
+      friendSearch();
+    }
+  }, [isQuery]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const friendSearch = async () => {
+    setIsLoading(true);
+    try {
+      if (isQuery == "")
+        return setFriends([{ username: "", profilePicture: "", id: "" }]);
+      const response = await axios.get(`/api/friend/search?query=${isQuery}`);
+      if (response.data.length > 0) {
+        setFriends(response.data);
+      } else {
+        setFriends([{ username: "", profilePicture: "", id: "" }]);
+      }
+    } catch (error: any) {
+      console.log(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div
       className={`flex items-center justify-start  font-semibold  gap-4 p-4 `}
@@ -113,13 +145,38 @@ function ContactHeader() {
         </svg>
       </span>
       <span className="grow"></span>
-      <span className="flex gap-2">
+      <span className="flex gap-2 relative">
         {isSearch && (
           <input
+            onChange={(e) => {
+              setIsQuery(e.target.value);
+            }}
             className={`  bg-transparent tracking-widest text-sm focus:outline-none border-b-2 border-[#CACA8F] text-[#CACA8F`}
             type="search"
             placeholder="Search Friends..."
           />
+        )}
+        {isQuery != "" && isSearch && (
+          <>
+            <div className="flex flex-col gap-2 absolute left-1/2 transform -translate-x-1/2 top-full mt-2 px-4 py-4 w-[150%] bg-[#21222e]">
+              {isLoading ? (
+                <p className="text-gray-400 text-sm font-normal">Loading...</p>
+              ) : Friends.length === 0 || Friends[0].username === "" ? (
+                <p className="text-gray-400 text-sm font-normal">
+                  No friends found
+                </p>
+              ) : (
+                Friends.map((friend) => (
+                  <FriendSearch
+                    key={friend.id}
+                    username={friend.username}
+                    profilePicture={friend.profilePicture}
+                    id={friend.id}
+                  />
+                ))
+              )}
+            </div>
+          </>
         )}
         <svg
           onClick={() => {
