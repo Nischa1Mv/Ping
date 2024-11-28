@@ -31,8 +31,8 @@ export async function POST(request: NextRequest) {
     //if already exits then return error
     const existingRequest = await FriendRequest.findOne({
       $or: [
-        { sender: senderId, receiver: receiverId },
-        { sender: receiverId, receiver: senderId },
+        { sender: senderId, receiver: receiverId, status: "pending" },
+        { sender: receiverId, receiver: senderId, status: "pending" },
       ],
     });
     if (existingRequest) {
