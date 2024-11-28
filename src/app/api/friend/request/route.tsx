@@ -18,12 +18,14 @@ export async function POST(request: NextRequest) {
   try {
     //if already exits then return error
     const existingRequest = await FriendRequest.findOne({
-      sender: senderId,
-      receiver: receiverId,
+      $or: [
+        { sender: senderId, receiver: receiverId },
+        { sender: receiverId, receiver: senderId },
+      ],
     });
     if (existingRequest) {
       return NextResponse.json(
-        { error: "Friend request already sent." },
+        { error: "A Pending Friend request already Exists" },
         { status: 400 }
       );
     }
@@ -45,13 +47,6 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(friendRequest, { status: 201 });
   } catch (error: any) {
-    if (error.code === 11000) {
-      // Unique constraint violation
-      return NextResponse.json(
-        { error: "Friend request already exists." },
-        { status: 400 }
-      );
-    }
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
