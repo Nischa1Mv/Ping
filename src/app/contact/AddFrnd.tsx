@@ -45,6 +45,10 @@ function AddFrnd() {
       console.log("Friend request sent:", response.data);
       toast.success("Friend request sent");
     } catch (error: any) {
+      if ((error.response.data.error = "Your are already friends")) {
+        toast.error("You are already friends");
+        return;
+      }
       if (
         error.response.data.error === "A Pending Friend request already Exists"
       ) {

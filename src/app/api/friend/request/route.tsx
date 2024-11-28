@@ -16,6 +16,18 @@ export async function POST(request: NextRequest) {
     );
   }
   try {
+    const sender = await User.findById(senderId);
+    const receiver = await User.findById(receiverId);
+    if (
+      sender.friends.includes(receiverId) ||
+      receiver.friends.includes(senderId)
+    ) {
+      return NextResponse.json(
+        { error: "Your are already friends" },
+        { status: 400 }
+      );
+    }
+
     //if already exits then return error
     const existingRequest = await FriendRequest.findOne({
       $or: [
