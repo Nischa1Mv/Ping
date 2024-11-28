@@ -9,6 +9,7 @@ connectDB();
 export async function POST(request: NextRequest) {
   const requestbody = await request.json();
   const { friendRequestId, action } = requestbody;
+  console.log(requestbody);
   if (!friendRequestId || !action)
     return NextResponse.json({ message: "Invalid request" }, { status: 400 });
 
@@ -40,7 +41,7 @@ export async function POST(request: NextRequest) {
         sender.friends.includes(receiver._id) ||
         receiver.friends.includes(sender._id)
       ) {
-        await FriendRequest.findByIdAndDelete(friendRequestId);
+        await FriendRequest.findById(friendRequestId);
         return NextResponse.json(
           { message: "Already friends" },
           { status: 400 }
@@ -59,7 +60,7 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json({ message: "Request accepted" });
     } else if (action == "reject") {
-      await response.findByIdAndDelete(friendRequestId);
+      await FriendRequest.findByIdAndDelete(friendRequestId);
 
       return NextResponse.json(
         { message: "Request Rejected" },
@@ -69,6 +70,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: "Invalid action" }, { status: 400 });
     }
   } catch (error: any) {
+    console.error("API Error:", error);
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }
