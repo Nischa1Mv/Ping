@@ -57,12 +57,12 @@ export async function POST(request: NextRequest) {
 
       await FriendRequest.findByIdAndDelete(friendRequestId);
 
-      return NextResponse.json({ message: "Request updated" });
+      return NextResponse.json({ message: "Request accepted" });
     } else if (action == "reject") {
       await response.findByIdAndDelete(friendRequestId);
 
       return NextResponse.json(
-        { message: "Friend Request Rejected" },
+        { message: "Request Rejected" },
         { status: 200 }
       );
     } else {

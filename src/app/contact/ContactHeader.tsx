@@ -68,6 +68,32 @@ function ContactHeader() {
     }
   };
 
+  const handleAction = async (action: string, id: string) => {
+    try {
+      const response = await axios.post("/api/friend/request/action", {
+        friendRequestId: id,
+        action: action,
+      });
+      if (response.data.message === "Already friends") {
+        toast.error("Already friends");
+        return;
+      }
+      if (response.data.message === "Request accepted") {
+        toast.success("Request accepted");
+        return;
+      }
+      if (response.data.message === "Request rejected") {
+        toast.success("Request rejected");
+        return;
+      }
+    } catch (error: any) {
+      console.log(error.message);
+    } finally {
+      sentRequests();
+      receiveRequests();
+    }
+  };
+
   return (
     <div
       className={`flex items-center justify-start  font-semibold  gap-4 p-4 `}
@@ -171,7 +197,9 @@ function ContactHeader() {
                   {" "}
                   {sentReq.map((req) => (
                     <FriendReq
+                      handleAction={handleAction}
                       key={req.id}
+                      id={req.id}
                       sent={true}
                       profilePicture={req.profilePicture}
                       username={req.username}
@@ -184,7 +212,9 @@ function ContactHeader() {
                   {" "}
                   {receivedReq.map((req) => (
                     <FriendReq
+                      handleAction={handleAction}
                       key={req.id}
+                      id={req.id}
                       sent={false}
                       profilePicture={req.profilePicture}
                       username={req.username}
