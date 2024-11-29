@@ -46,6 +46,10 @@ const conversationSchema = new mongoose.Schema(
         },
       },
     ],
+    closed: {
+      type: Boolean,
+      default: false, // Initially, conversations are open
+    },
   },
   {
     timestamps: true, // Automatically create `createdAt` and `updatedAt` fields

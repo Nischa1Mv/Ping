@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ContextProvider } from "../app/Context"; // Adjust the path as necessary
 import { Toaster } from "react-hot-toast";
+import Head from "next/head";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,6 +32,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Head>
+        <script
+          src="https://cdn.socket.io/4.8.1/socket.io.min.js"
+          integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+"
+          crossOrigin="anonymous"
+        ></script>
+      </Head>
+
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
