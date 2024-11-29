@@ -4,9 +4,16 @@ interface FriendSearchProps {
   username: string;
   profilePicture: string;
   id: string;
+  startChat: (id: string) => void;
 }
 
-function FriendSearch({ username, profilePicture, id }: FriendSearchProps) {
+function FriendSearch({
+  username,
+  profilePicture,
+  id,
+  startChat,
+}: FriendSearchProps) {
+  console.log(id);
   return (
     <div
       className=" pl-4 px-2 py-1 flex gap-4 items-center hover:text-[#caca8f] text-[#8F8FCA] cursor-pointer border-2 border-gray-600  hover:border-[#caca8f]  "
@@ -30,6 +37,9 @@ function FriendSearch({ username, profilePicture, id }: FriendSearchProps) {
       </span>
       <span className="flex grow"></span>
       <svg
+        onClick={() => {
+          startChat(id);
+        }}
         xmlns="http://www.w3.org/2000/svg"
         height="18px"
         viewBox="0 -960 960 960"

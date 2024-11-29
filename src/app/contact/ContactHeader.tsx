@@ -96,7 +96,7 @@ function ContactHeader() {
   };
 
   const [Friends, setFriends] = useState([
-    { username: "", profilePicture: "", id: "" },
+    { username: "", profilePicture: "", _id: "" },
   ]);
 
   useEffect(() => {
@@ -110,12 +110,12 @@ function ContactHeader() {
     setIsLoading(true);
     try {
       if (isQuery == "")
-        return setFriends([{ username: "", profilePicture: "", id: "" }]);
+        return setFriends([{ username: "", profilePicture: "", _id: "" }]);
       const response = await axios.get(`/api/friend/search?query=${isQuery}`);
       if (response.data.length > 0) {
         setFriends(response.data);
       } else {
-        setFriends([{ username: "", profilePicture: "", id: "" }]);
+        setFriends([{ username: "", profilePicture: "", _id: "" }]);
       }
     } catch (error: any) {
       console.log(error.message);
@@ -147,6 +147,21 @@ function ContactHeader() {
       }
     } finally {
       sentRequests();
+    }
+  };
+
+  const startChat = async (id: string) => {
+    console.log(id);
+    try {
+      const chat = await axios.post("/api/conversation", { friendId: id });
+      if (chat.data.message === "conversation already exists") {
+        toast.success("Conversation Opened");
+        return;
+      }
+      toast.success("Conversation Created");
+    } catch (error: any) {
+      console.log(error.message);
+      toast.error("Failed to start conversation");
     }
   };
 
@@ -192,12 +207,13 @@ function ContactHeader() {
                   No friends found
                 </p>
               ) : (
-                Friends.map((friend) => (
+                Friends.map((friend, id) => (
                   <FriendSearch
-                    key={friend.id}
+                    key={id}
+                    startChat={startChat}
                     username={friend.username}
                     profilePicture={friend.profilePicture}
-                    id={friend.id}
+                    id={friend._id}
                   />
                 ))
               )}
