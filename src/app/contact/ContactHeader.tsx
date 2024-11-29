@@ -3,7 +3,6 @@ import { Kanit } from "next/font/google";
 import FriendReq from "./friendReq";
 import axios from "axios";
 import toast from "react-hot-toast";
-
 import FriendSearch from "./FriendSearch";
 
 const kanit = Kanit({
