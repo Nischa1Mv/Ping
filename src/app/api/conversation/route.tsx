@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Conversation from "server/MessageSchema";
 import { connectDB } from "server/server";
-import { getTokenData } from "src/app/helper/getTokenData";
 connectDB();
 
 export async function POST(request: NextRequest) {
@@ -21,7 +20,10 @@ export async function POST(request: NextRequest) {
       participants: { $all: participants },
     });
     //if existing then return the conversation
+
     if (existingConversation) {
+      existingConversation.closed = false;
+      await existingConversation.save();
       return NextResponse.json(existingConversation, {
         status: 200,
       });
