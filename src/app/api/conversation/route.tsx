@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import Conversation from "server/MessageSchema";
 import { connectDB } from "server/server";
+import { getTokenData } from "src/app/helper/getTokenData";
 connectDB();
 
 export async function POST(request: NextRequest) {
   const requestBody = await request.json();
-  const { userId, friendId } = requestBody;
+  const userId = getTokenData(request);
+  const { friendId } = requestBody;
   if (!userId || !friendId) {
     return NextResponse.json(
       { message: "user Id or FriendId not found" },
@@ -24,9 +26,10 @@ export async function POST(request: NextRequest) {
     if (existingConversation) {
       existingConversation.closed = false;
       await existingConversation.save();
-      return NextResponse.json(existingConversation, {
-        status: 200,
-      });
+      return NextResponse.json(
+        { message: "conversation already exists" },
+        { status: 200 }
+      );
     }
 
     //create new conversation
