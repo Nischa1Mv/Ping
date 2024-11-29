@@ -20,13 +20,14 @@ export async function POST(request: NextRequest) {
     const existingConversation = await Conversation.findOne({
       participants: { $all: participants },
     });
-
+    //if existing then return the conversation
     if (existingConversation) {
-      return NextResponse.json(
-        { message: "Conversation already exists" },
-        { status: 200 }
-      );
+      return NextResponse.json(existingConversation, {
+        status: 200,
+      });
     }
+
+    //create new conversation
     const conversation = new Conversation({
       participants,
     });
@@ -58,7 +59,7 @@ export async function GET(request: NextRequest) {
     if (conversations.length === 0) {
       return NextResponse.json(
         { message: "No unclosed conversations found" },
-        { status: 404 }
+        { status: 200 }
       );
     }
     return NextResponse.json(conversations, { status: 200 });
