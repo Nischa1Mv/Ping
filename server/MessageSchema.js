@@ -8,31 +8,52 @@ const conversationSchema = new mongoose.Schema(
       default: uuidv4, // Automatically generate a UUID for the conversation ID
       unique: true,
     },
-    participants: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
+    participants: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
+      ],
+      validate: {
+        validator: (v) => v.length === 2, // Ensure exactly two participants for one-to-one chat
+        message: "A conversation must have exactly two participants.",
       },
-    ],
+    },
     messages: [
       {
         sender: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "User",
+          required: true,
         },
-        content: String,
+        content: {
+          type: String,
+          required: true,
+        },
         timestamp: {
           type: Date,
           default: Date.now,
+        },
+        read: {
+          type: Boolean,
+          default: false,
+        },
+        deleted: {
+          type: Boolean,
+          default: false,
         },
       },
     ],
   },
   {
-    timestamps: true,
+    timestamps: true, // Automatically create `createdAt` and `updatedAt` fields
   }
 );
+
+// Add index for participants to optimize queries
+conversationSchema.index({ participants: 1 });
 
 const Conversation =
   mongoose.models.Conversation ||
