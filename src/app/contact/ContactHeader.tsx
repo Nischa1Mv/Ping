@@ -158,11 +158,13 @@ function ContactHeader() {
         )}
         {isQuery != "" && isSearch && (
           <>
-            <div className="flex flex-col gap-2 absolute left-1/2 transform -translate-x-1/2 top-full mt-2 px-4 py-4 w-[150%] bg-[#21222e]">
+            <div className="flex flex-col gap-2 absolute left-1/2 transform -translate-x-1/2 top-full mt-2 px-4 py-4 w-[150%] bg-[#27283c] z-50 ">
               {isLoading ? (
-                <p className="text-gray-400 text-sm font-normal">Loading...</p>
+                <p className="text-gray-400  font-normal text-xs ">
+                  Loading...
+                </p>
               ) : Friends.length === 0 || Friends[0].username === "" ? (
-                <p className="text-gray-400 text-sm font-normal">
+                <p className="text-gray-400 text-xs font-normal">
                   No friends found
                 </p>
               ) : (

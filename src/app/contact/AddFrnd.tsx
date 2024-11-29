@@ -1,9 +1,8 @@
 import axios from "axios";
 import Image from "next/image";
-import { NextResponse } from "next/server";
+
 import React, { useEffect, useState } from "react";
-import { getTokenData } from "../helper/getTokenData";
-import { set } from "mongoose";
+
 import toast from "react-hot-toast";
 
 function AddFrnd() {
@@ -63,7 +62,7 @@ function AddFrnd() {
     <>
       <div
         // Toggle search input visibility
-        className="cursor-pointer   text-[#8F8FCA] relative font-semibold flex  flex-col justify-center items-center border-[#8F8FCA] border rounded-xl mx-auto min-w-fit w-[80%] py-2 gap-4 "
+        className={` ${isSearch} && " text-[#caca8f]"  cursor-pointer hover:text-[#caca8f]   text-[#8F8FCA] relative font-semibold flex  flex-col justify-center items-center border-[#8F8FCA] border rounded-xl mx-auto min-w-fit w-[80%] py-2 gap-4 `}
       >
         <div className="flex gap-4" onClick={() => setIsSearch(!isSearch)}>
           <svg
