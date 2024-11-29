@@ -6,7 +6,8 @@ interface friendReqProps {
   sent: boolean;
   username: string;
   id: string;
-  handleAction: (action: string, id: string) => void;
+  handleAction?: (action: string, id: string) => void;
+  handleDelete?: (id: string) => void;
 }
 
 function FriendReq({
@@ -15,6 +16,7 @@ function FriendReq({
   username,
   id,
   handleAction,
+  handleDelete,
 }: friendReqProps) {
   return (
     <div
@@ -36,7 +38,7 @@ function FriendReq({
         <div className="flex gap-4 text-sm">
           <button
             onClick={() => {
-              handleAction("accept", id);
+              if (handleAction) handleAction("accept", id);
             }}
             className="w-full bg-green-500  text-black flex items-center justify-center rounded-lg cursor-pointer"
           >
@@ -44,7 +46,7 @@ function FriendReq({
           </button>{" "}
           <div
             onClick={() => {
-              handleAction("reject", id);
+              if (handleAction) handleAction("reject", id);
             }}
             className="w-full bg-red-400 text-black flex items-center justify-center rounded-lg cursor-pointer"
           >
@@ -53,7 +55,12 @@ function FriendReq({
         </div>
       ) : (
         <>
+          {" "}
           <svg
+            onClick={() => {
+              if (handleDelete) handleDelete(id);
+              console.log("delete");
+            }}
             xmlns="http://www.w3.org/2000/svg"
             height="18px"
             viewBox="0 -960 960 960"

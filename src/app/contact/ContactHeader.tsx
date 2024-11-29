@@ -3,8 +3,7 @@ import { Kanit } from "next/font/google";
 import FriendReq from "./friendReq";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { set } from "mongoose";
-import Image from "next/image";
+
 import FriendSearch from "./FriendSearch";
 
 const kanit = Kanit({
@@ -123,6 +122,32 @@ function ContactHeader() {
       console.log(error.message);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      const response = await axios.post("/api/friend/request/delete", {
+        friendRequestId: id,
+      });
+      if (
+        response.status === 200 &&
+        response.data.message === "Request deleted"
+      ) {
+        toast.success("Request deleted");
+      } else {
+        toast.error("Failed to delete the request");
+      }
+    } catch (error: any) {
+      console.error(error.message);
+
+      if (error.response) {
+        toast.error(`Error: ${error.response.data.message}`);
+      } else {
+        toast.error("Something went wrong. Please try again later.");
+      }
+    } finally {
+      sentRequests();
     }
   };
 
@@ -256,7 +281,7 @@ function ContactHeader() {
                   {" "}
                   {sentReq.map((req) => (
                     <FriendReq
-                      handleAction={handleAction}
+                      handleDelete={handleDelete}
                       key={req.id}
                       id={req.id}
                       sent={true}
