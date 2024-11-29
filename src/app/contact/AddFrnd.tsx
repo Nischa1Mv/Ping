@@ -62,76 +62,80 @@ function AddFrnd() {
   return (
     <>
       <div
-        onClick={() => setIsSearch(!isSearch)} // Toggle search input visibility
-        className="cursor-pointer hover:bg-[#8F8FCA] text-[#8F8FCA] hover:text-[#191A22] font-semibold flex justify-center items-center border-[#8F8FCA] border rounded-xl mx-auto min-w-fit w-[80%] py-1 gap-4"
+        // Toggle search input visibility
+        className="cursor-pointer   text-[#8F8FCA] relative font-semibold flex  flex-col justify-center items-center border-[#8F8FCA] border rounded-xl mx-auto min-w-fit w-[80%] py-2 gap-4 "
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="24px"
-          viewBox="0 -960 960 960"
-          width="24px"
-          fill="currentcolor"
-        >
-          <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
-        </svg>
-        <span>
-          Find a Friend to <span className="italic">Ping</span>
-        </span>
-      </div>
-
-      {isSearch && (
-        <>
-          {/* Search Input Field */}
-          <div className="flex gap-5 mt-2 w-full items-center justify-center relative">
-            <input
-              type="search"
-              placeholder="Search users..."
-              value={query}
-              onChange={(e) => setQuery(e.target.value)} // Update query on input change
-              className="border-b-2 px-2 bg-transparent focus:outline-none border-[#CACA8F]"
-            />
-          </div>
-
-          {/* Render Search Results */}
-          {query && users[0]?.username !== "" && (
-            <div className="w-full flex flex-col items-center justify-center relative ">
-              <ul className="absolute top-0 bg-[#21222e] p-4 flex flex-col gap-4 rounded-lg">
-                {users.length > 0 &&
-                  users.map((user, index) => (
-                    <li
-                      key={index}
-                      className="flex gap-4 hover:text-[#caca8f]  cursor-pointer bg-[#313244] hover:bg-[#474862] px-4 rounded-xl py-2 items-center font-semibold tracking-wider text-sm"
-                    >
-                      <Image
-                        className="rounded-full aspect-square"
-                        src={user.profilePicture}
-                        height={25}
-                        width={25}
-                        alt="profilePicture"
-                      />
-                      @ {user.username}
-                      <div className="flex grow"></div>
-                      <div className="hover:text-[#caca8f] ">
-                        <svg
-                          onClick={() => {
-                            sendRequest(user._id);
-                          }} // Placeholder for sending friend request
-                          xmlns="http://www.w3.org/2000/svg"
-                          height="24px"
-                          viewBox="0 -960 960 960"
-                          width="24px"
-                          fill="currentcolor"
-                        >
-                          <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
-                        </svg>
-                      </div>
-                    </li>
-                  ))}
-              </ul>
+        <div className="flex gap-4" onClick={() => setIsSearch(!isSearch)}>
+          <svg
+            className={`${
+              isSearch ? "rotate-45" : ""
+            } transition-transform duration-200 ease-in-out`}
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="currentcolor"
+          >
+            <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
+          </svg>
+          <span>
+            Add a Friend to <span className="italic">Ping</span>
+          </span>
+        </div>
+        {isSearch && (
+          <>
+            {/* Search Input Field */}
+            <div className="flex gap-5   items-center justify-center ">
+              <input
+                type="search"
+                placeholder="Search users..."
+                value={query}
+                onChange={(e) => setQuery(e.target.value)} // Update query on input change
+                className="text-white px-2 bg-transparent focus:outline-none font-medium tracking-wider border-b-2 border-[#8F8FCA]"
+              />
             </div>
-          )}
-        </>
-      )}
+
+            {/* Render Search Results */}
+            <div className="w-full flex gap-4 items-center justify-center scrollbar-thin  max-h-[150px] ">
+              {query && users[0]?.username !== "" && (
+                <ul className=" w-fit p-2 grid grid-cols-2 grid-rows-3 gap-2 rounded-lg py-4 ">
+                  {users.length > 0 &&
+                    users.map((user, index) => (
+                      <li
+                        key={index}
+                        className="flex gap-2 hover:text-[#caca8f]  cursor-pointer bg-[#313244] hover:bg-[#474862] px-4 rounded-xl py-2 items-center font-semibold tracking-wider text-xs"
+                      >
+                        <Image
+                          className="rounded-full aspect-square"
+                          src={user.profilePicture}
+                          height={25}
+                          width={25}
+                          alt="profilePicture"
+                        />
+                        @ {user.username}
+                        <div className="flex grow"></div>
+                        <div className="hover:text-[#caca8f] ">
+                          <svg
+                            onClick={() => {
+                              sendRequest(user._id);
+                            }} // Placeholder for sending friend request
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="24px"
+                            viewBox="0 -960 960 960"
+                            width="24px"
+                            fill="currentcolor"
+                          >
+                            <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
+                          </svg>
+                        </div>
+                      </li>
+                    ))}
+                </ul>
+              )}
+            </div>
+          </>
+        )}
+      </div>
     </>
   );
 }
