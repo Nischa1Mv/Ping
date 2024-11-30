@@ -1,11 +1,36 @@
 "use client";
-
+import { Conversation } from "./../contact/types";
 import AddFrnd from "./AddFrnd";
 import ContactHeader from "./ContactHeader";
 import FrndList from "./FrndList";
 import Status from "./Status";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 export default function Contacts() {
+  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [loading, setLoading] = useState(true);
+  const fetchConversations = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get<Conversation[]>(
+        "/api/conversation/current"
+      );
+      console.log("Conversations:", response.data);
+      setConversations(response.data);
+      toast.success("Conversations fetched successfully");
+    } catch (err) {
+      console.error("Error fetching conversations:", err);
+      toast.error("Error fetching conversations");
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchConversations();
+  }, []);
+
   return (
     <>
       <div
@@ -14,7 +39,11 @@ export default function Contacts() {
         <ContactHeader />
         <AddFrnd />
         <Status />
-        <FrndList />
+        <FrndList
+          conversations={conversations}
+          loading={loading}
+          fetchConversations={fetchConversations}
+        />
       </div>
     </>
   );
