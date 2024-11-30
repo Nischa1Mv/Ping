@@ -27,6 +27,24 @@ export default function Contacts() {
       setLoading(false);
     }
   };
+
+  const startChat = async (id: string) => {
+    console.log(id);
+    try {
+      const chat = await axios.post("/api/conversation", { friendId: id });
+      if (chat.data.message === "conversation already exists") {
+        toast.success("Conversation Opened");
+        fetchConversations();
+        return;
+      }
+      fetchConversations();
+      toast.success("Conversation Created");
+    } catch (error: any) {
+      console.log(error.message);
+      toast.error("Failed to start conversation");
+    }
+  };
+
   useEffect(() => {
     fetchConversations();
   }, []);
@@ -36,8 +54,7 @@ export default function Contacts() {
       <div
         className={` w-[35%]    border-4 border-[#1E1E1E] border-r-2  flex flex-col gap-2`}
       >
-        <ContactHeader fetchConversations={fetchConversations} />
-        <AddFrnd />
+        <ContactHeader startChat={startChat} /> <AddFrnd />
         <Status />
         <FrndList
           conversations={conversations}

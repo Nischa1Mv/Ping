@@ -12,10 +12,10 @@ const kanit = Kanit({
 });
 
 interface ContactHeaderProps {
-  fetchConversations: () => void;
+  startChat: (id: string) => void;
 }
 
-function ContactHeader({ fetchConversations }: ContactHeaderProps) {
+function ContactHeader({ startChat }: ContactHeaderProps) {
   const [isQuery, setIsQuery] = useState("");
   const [isSearch, setIsSearch] = useState(false);
   const [showFriends, setShowFriends] = useState(false);
@@ -151,22 +151,6 @@ function ContactHeader({ fetchConversations }: ContactHeaderProps) {
       }
     } finally {
       sentRequests();
-    }
-  };
-
-  const startChat = async (id: string) => {
-    console.log(id);
-    try {
-      const chat = await axios.post("/api/conversation", { friendId: id });
-      if (chat.data.message === "conversation already exists") {
-        toast.success("Conversation Opened");
-        return;
-      }
-      fetchConversations();
-      toast.success("Conversation Created");
-    } catch (error: any) {
-      console.log(error.message);
-      toast.error("Failed to start conversation");
     }
   };
 
