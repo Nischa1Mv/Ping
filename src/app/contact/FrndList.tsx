@@ -8,9 +8,11 @@ interface FrndListProps {
   conversations: Conversation[];
   loading: boolean;
   fetchConversations: () => void;
+  message: string;
 }
 
 function FrndList({
+  message,
   conversations,
   loading,
   fetchConversations,
@@ -29,17 +31,14 @@ function FrndList({
     }
   };
 
-  // Handle "no conversations" condition directly in the render
-  if (conversations.message === "No unclosed conversations found") {
-    return (
-      <div className="h-full items-center  justify-center  px-4 py-2 flex flex-col gap-3 overflow-y-auto scrollbar-hide">
-        <p>Click On the Search Icon to Start Conversation</p>
-      </div>
-    );
-  }
-
   return (
     <ul className="h-full px-4 py-2 flex flex-col gap-3 overflow-y-auto scrollbar-hide">
+      {message && (
+        <div className="h-full items-center justify-center flex flex-col gap-3">
+          <p>{message}</p>
+          <p>Click On the Search Icon to Start a Conversation</p>
+        </div>
+      )}
       {conversations.map((chat) => (
         <Friendsmsg
           removeChat={() => removeChat(chat._id)}

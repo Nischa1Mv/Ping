@@ -9,14 +9,22 @@ import toast from "react-hot-toast";
 import axios from "axios";
 
 export default function Contacts() {
+  const [message, setMessage] = useState<string>("");
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [loading, setLoading] = useState(true);
+
   const fetchConversations = async () => {
     try {
       setLoading(true);
-      const response = await axios.get<Conversation[]>(
-        "/api/conversation/current"
-      );
+      const response = await axios.get("/api/conversation/current");
+      if (response.data.message)
+        if (response.data.message === "No unclosed conversations found") {
+          setMessage(response.data.message);
+          setConversations([]);
+          toast.success("No conversations found");
+          return;
+        }
+      setMessage("");
       console.log("Conversations:", response.data);
       setConversations(response.data);
       toast.success("Conversations fetched successfully");
@@ -57,6 +65,7 @@ export default function Contacts() {
         <ContactHeader startChat={startChat} /> <AddFrnd />
         <Status />
         <FrndList
+          message={message}
           conversations={conversations}
           loading={loading}
           fetchConversations={fetchConversations}
