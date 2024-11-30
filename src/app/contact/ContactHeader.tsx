@@ -11,7 +11,11 @@ const kanit = Kanit({
   style: ["italic"],
 });
 
-function ContactHeader() {
+interface ContactHeaderProps {
+  fetchConversations: () => void;
+}
+
+function ContactHeader({ fetchConversations }: ContactHeaderProps) {
   const [isQuery, setIsQuery] = useState("");
   const [isSearch, setIsSearch] = useState(false);
   const [showFriends, setShowFriends] = useState(false);
@@ -158,6 +162,7 @@ function ContactHeader() {
         toast.success("Conversation Opened");
         return;
       }
+      fetchConversations();
       toast.success("Conversation Created");
     } catch (error: any) {
       console.log(error.message);

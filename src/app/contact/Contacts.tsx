@@ -36,7 +36,7 @@ export default function Contacts() {
       <div
         className={` w-[35%]    border-4 border-[#1E1E1E] border-r-2  flex flex-col gap-2`}
       >
-        <ContactHeader />
+        <ContactHeader fetchConversations={fetchConversations} />
         <AddFrnd />
         <Status />
         <FrndList

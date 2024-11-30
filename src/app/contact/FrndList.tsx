@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import axios from "axios";
 import Friendsmsg from "./Friendsmsg";
 import { Conversation } from "./types";
@@ -9,6 +9,7 @@ interface FrndListProps {
   loading: boolean;
   fetchConversations: () => void;
 }
+
 function FrndList({
   conversations,
   loading,
@@ -28,10 +29,18 @@ function FrndList({
     }
   };
 
+  // Handle "no conversations" condition directly in the render
+  if (conversations.message === "No unclosed conversations found") {
+    return (
+      <div className="h-full items-center  justify-center  px-4 py-2 flex flex-col gap-3 overflow-y-auto scrollbar-hide">
+        <p>Click On the Search Icon to Start Conversation</p>
+      </div>
+    );
+  }
+
   return (
     <ul className="h-full px-4 py-2 flex flex-col gap-3 overflow-y-auto scrollbar-hide">
       {conversations.map((chat) => (
-        // You may need to adjust this part depending on how your `participantDetails` are structured
         <Friendsmsg
           removeChat={() => removeChat(chat._id)}
           key={chat._id}
