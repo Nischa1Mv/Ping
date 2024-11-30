@@ -11,8 +11,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ message: "User not found" }, { status: 400 });
   }
 
-  console.log(userId);
   try {
+    // Fetch all unclosed conversations involving the current user
     const conversations = await Conversation.find({
       participants: userId,
       closed: false,
@@ -25,12 +25,28 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    return NextResponse.json(conversations, { status: 200 });
+    // Extract conversation IDs
+    const conversationIds = conversations.map((conv) => conv._id);
+
+    // Aggregate to join participant data with user collection
+    const result = await Conversation.aggregate([
+      { $match: { _id: { $in: conversationIds } } },
+      {
+        $lookup: {
+          from: "users", // Name of the users collection
+          localField: "participants", // Field in Conversation (array of IDs)
+          foreignField: "_id", // Field in Users
+          as: "participantDetails", // Output array with matched user details
+        },
+      },
+    ]);
+
+    return NextResponse.json(result, { status: 200 });
   } catch (err) {
-    console.error(err); // Log the error for debugging
+    console.error("Error fetching conversations:", err);
     return NextResponse.json(
-      { message: "conversation not found" },
-      { status: 400 }
+      { message: "Error fetching conversations" },
+      { status: 500 }
     );
   }
 }
