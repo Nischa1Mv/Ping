@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Conversation from "server/MessageSchema";
 import { connectDB } from "server/server";
 import { getTokenData } from "src/app/helper/getTokenData";
+import mongoose from "mongoose";
 
 connectDB();
 
@@ -12,9 +13,12 @@ export async function GET(request: NextRequest) {
   }
 
   try {
+    // Ensure `userId` is an ObjectId
+    const userObjectId = new mongoose.Types.ObjectId(userId);
+
     // Fetch all unclosed conversations involving the current user
     const conversations = await Conversation.find({
-      participants: userId,
+      participants: userObjectId,
       closed: false,
     });
 
@@ -37,6 +41,17 @@ export async function GET(request: NextRequest) {
           localField: "participants", // Field in Conversation (array of IDs)
           foreignField: "_id", // Field in Users
           as: "participantDetails", // Output array with matched user details
+        },
+      },
+      {
+        $addFields: {
+          participantDetails: {
+            $filter: {
+              input: "$participantDetails", // Array to filter
+              as: "participant", // Alias for each item
+              cond: { $ne: ["$$participant._id", userObjectId] }, // Condition to exclude current user
+            },
+          },
         },
       },
     ]);
