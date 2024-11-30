@@ -11,11 +11,12 @@ interface FriendsmsgProps {
   name: string;
   message?: string;
   avatar?: string;
+  username?: string;
 }
 
-function Friendsmsg({ name, message, avatar }: FriendsmsgProps) {
+function Friendsmsg({ name, message, avatar, username }: FriendsmsgProps) {
   return (
-    <li className="rounded-lg py-2 px-4 bg-[#1f2029] flex gap-4 items-center hover:bg-[#444479] ">
+    <li className=" cursor-pointer rounded-lg py-2 px-4 bg-[#1f2029] flex gap-4 items-center hover:bg-[#444479] ">
       <div className="min-w-[55px] aspect-square">
         <Image
           src={avatar || "/avatar.jpg"}
@@ -30,6 +31,7 @@ function Friendsmsg({ name, message, avatar }: FriendsmsgProps) {
           className={`text-lg font-semibold ${kanit.className} text-[#CACA8F]`}
         >
           {name}
+          <span className="text-xs font-light text-gray-500">@{username}</span>
         </h4>
         <p className="text-[0.65rem] tracking-wide line-clamp-2 text-gray-300 overflow-hidden text-ellipsis max-h-[50px]">
           {message}
