@@ -9,8 +9,8 @@ const kanit = Kanit({
 });
 interface FriendsmsgProps {
   name: string;
-  message: string;
-  avatar: string;
+  message?: string;
+  avatar?: string;
 }
 
 function Friendsmsg({ name, message, avatar }: FriendsmsgProps) {
@@ -18,7 +18,7 @@ function Friendsmsg({ name, message, avatar }: FriendsmsgProps) {
     <li className="rounded-lg py-2 px-4 bg-[#1f2029] flex gap-4 items-center hover:bg-[#444479] ">
       <div className="min-w-[55px] aspect-square">
         <Image
-          src={avatar}
+          src={avatar || "/avatar.jpg"}
           width={55}
           height={55}
           alt="Friend avatar"
