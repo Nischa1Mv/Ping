@@ -1,25 +1,38 @@
 "use client";
-import { ReactNode, useState, useContext, createContext } from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 
-interface ContextProps {
-  isLogin: boolean;
-  setIsLogin: (value: boolean) => void;
+import { Conversation } from "./contact/types";
+
+// Define the context type for ChatContext
+interface ChatContextType {
+  activeChat: Conversation | null;
+  setActiveChat: React.Dispatch<React.SetStateAction<Conversation | null>>;
 }
 
-const LoginContext = createContext<ContextProps | undefined>(undefined);
+// Create the ChatContext
+const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
-export const ContextProvider = ({ children }: { children: ReactNode }) => {
-  const [isLogin, setIsLogin] = useState(false);
+// Define the type for ChatProvider props
+interface ChatProviderProps {
+  children: ReactNode;
+}
+
+// ChatProvider component to manage and provide the activeChat state
+export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
+  const [activeChat, setActiveChat] = useState<Conversation | null>(null);
+
   return (
-    <LoginContext.Provider value={{ isLogin, setIsLogin }}>
+    <ChatContext.Provider value={{ activeChat, setActiveChat }}>
       {children}
-    </LoginContext.Provider>
+    </ChatContext.Provider>
   );
 };
-export function useLogin() {
-  const context = useContext(LoginContext);
+
+// Custom hook to use the ChatContext
+export const useChat = (): ChatContextType => {
+  const context = useContext(ChatContext);
   if (!context) {
-    throw new Error("useLogin must be used within a LoginProvider");
+    throw new Error("useChat must be used within a ChatProvider");
   }
   return context;
-}
+};

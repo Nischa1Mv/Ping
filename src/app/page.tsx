@@ -38,6 +38,7 @@ export default function Home() {
 
   return (
     <>
+      {" "}
       <div className="relative">
         <Chat user={user} />
       </div>

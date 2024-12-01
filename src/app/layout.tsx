@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { ContextProvider } from "../app/Context"; // Adjust the path as necessary
+import { ChatProvider } from "./Context";
 import { Toaster } from "react-hot-toast";
 import Head from "next/head";
 
@@ -47,7 +47,7 @@ export default function RootLayout({
         <div>
           <Toaster position="top-center" reverseOrder={false} />
         </div>
-        <ContextProvider>{children}</ContextProvider>
+        <ChatProvider>{children}</ChatProvider>
       </body>
     </html>
   );
