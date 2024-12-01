@@ -3,6 +3,7 @@ import axios from "axios";
 import Friendsmsg from "./Friendsmsg";
 import { Conversation } from "./types";
 import toast from "react-hot-toast";
+import { useChat } from "../Context";
 
 interface FrndListProps {
   conversations: Conversation[];
@@ -30,6 +31,13 @@ function FrndList({
       toast.error("Error deleting chat");
     }
   };
+  const { setActiveChat } = useChat();
+
+  const openChat = async (chatId: string) => {
+    const activeChat = conversations.filter((chat) => chat._id === chatId);
+    setActiveChat(activeChat[0]);
+    toast.success(activeChat[0].participantDetails[0].username);
+  };
 
   return (
     <ul className="h-full px-4 py-2 flex flex-col gap-3 overflow-y-auto scrollbar-hide">
@@ -51,6 +59,7 @@ function FrndList({
           }
           avatar={chat.participantDetails[0]?.profilePicture}
           username={chat.participantDetails[0]?.username || "knownUser"}
+          openChat={(chatId) => openChat(chatId)}
         />
       ))}
     </ul>

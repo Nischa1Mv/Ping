@@ -6,6 +6,7 @@ import Contacts from "../contact/Contacts";
 import ChatBody from "./ChatBody";
 import Profile from "./../profile";
 import { useState } from "react";
+import { useChat } from "../Context";
 
 interface ChatProps {
   user: {
@@ -20,6 +21,8 @@ interface ChatProps {
 }
 
 function Chat({ user }: ChatProps) {
+  const { activeChat, setActiveChat } = useChat();
+
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   return (
     <>
@@ -36,7 +39,14 @@ function Chat({ user }: ChatProps) {
           ) : (
             <>
               {" "}
-              <ChatHeader setIsProfileOpen={setIsProfileOpen} />
+              <ChatHeader
+                setIsProfileOpen={setIsProfileOpen}
+                displayName={activeChat?.participantDetails[0]?.displayName}
+                username={activeChat?.participantDetails[0]?.username}
+                profilePicture={
+                  activeChat?.participantDetails[0]?.profilePicture
+                }
+              />
               <ChatBody />
               <ChatInput />
             </>

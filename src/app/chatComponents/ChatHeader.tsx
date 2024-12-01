@@ -3,8 +3,16 @@ import React from "react";
 
 interface ChatHeaderProps {
   setIsProfileOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  displayName: string | undefined;
+  username: string | undefined;
+  profilePicture: string | undefined;
 }
-function ChatHeader({ setIsProfileOpen }: ChatHeaderProps) {
+function ChatHeader({
+  setIsProfileOpen,
+  displayName,
+  username,
+  profilePicture,
+}: ChatHeaderProps) {
   return (
     <>
       {/* Chat Header */}
@@ -25,14 +33,14 @@ function ChatHeader({ setIsProfileOpen }: ChatHeaderProps) {
             setIsProfileOpen(true);
           }}
           className=" rounded-full aspect-square   "
-          src="https://avatars.githubusercontent.com/u/118107697?v=4&size=64"
+          src={profilePicture || "/avatar.jpg"}
           alt="Profile Picture"
           width={50}
           height={50}
         />
         <div className="flex-col flex ">
           <span className="font-semibold text-xl flex gap-2 text-[#CACA8F] ">
-            Nischal_Mantri {/* if Online : green offline black dnd */}
+            {displayName} {/* if Online : green offline black dnd */}
             <span className="text-green-400">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -46,6 +54,9 @@ function ChatHeader({ setIsProfileOpen }: ChatHeaderProps) {
             </span>
           </span>
           <span className="text-xs text-green-500 shadow-sm">Online</span>
+        </div>
+        <div className="text-gray-500 font-semibold text-xs  h-full flex items-center ">
+          @{username}
         </div>
         <div className="grow"> </div>
         <div className="text-[#8F8FCA] hover:text-[#CACA8F]">

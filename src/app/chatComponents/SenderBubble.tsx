@@ -2,7 +2,11 @@
 import Image from "next/image";
 import React from "react";
 
-function SenderBubble() {
+interface SenderBubbleProps {
+  message: string;
+}
+
+function SenderBubble({ message }: SenderBubbleProps) {
   return (
     <div className="flex gap-1 ">
       <div>
@@ -15,7 +19,7 @@ function SenderBubble() {
         />
       </div>
       <div className="border h-fit px-4 py-1 rounded-xl rounded-tl-md mt-2  chatBox-sender ">
-        Hey there! How can I help you today?
+        {message}
       </div>
     </div>
   );

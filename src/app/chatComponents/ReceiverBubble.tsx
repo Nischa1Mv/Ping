@@ -2,11 +2,14 @@
 import React from "react";
 import Image from "next/image";
 
-function ReceiverBubble() {
+interface ReceiverBubbleProps {
+  message: string;
+}
+function ReceiverBubble({ message }: ReceiverBubbleProps) {
   return (
     <div className="flex gap-1 justify-end ">
       <div className="border h-fit px-4 py-1 rounded-xl rounded-tl-md mt-2  chatBox-receiver ">
-        Yo ! i am making this amazing chat app
+        {message}
       </div>
       <div>
         <Image

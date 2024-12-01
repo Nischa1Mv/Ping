@@ -10,10 +10,11 @@ const kanit = Kanit({
 interface FriendsmsgProps {
   chatId: string;
   name: string;
-  message?: string;
+  message?: string[];
   avatar?: string;
   username?: string;
   removeChat: () => void;
+  openChat: (chatId: string) => void;
 }
 
 function Friendsmsg({
@@ -22,9 +23,16 @@ function Friendsmsg({
   avatar,
   username,
   removeChat,
+  openChat,
+  chatId,
 }: FriendsmsgProps) {
   return (
-    <li className=" cursor-pointer rounded-lg  pl-4 bg-[#1f2029] flex gap-4 items-center hover:bg-[#444479] ">
+    <li
+      className=" cursor-pointer rounded-lg  pl-4 bg-[#1f2029] flex gap-4 items-center hover:bg-[#444479]  "
+      onClick={() => {
+        openChat(chatId);
+      }}
+    >
       <div className="min-w-[55px] aspect-square py-2">
         <Image
           src={avatar || "/avatar.jpg"}
