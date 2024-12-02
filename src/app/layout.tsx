@@ -38,6 +38,7 @@ export default function RootLayout({
           integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+"
           crossOrigin="anonymous"
         ></script>
+        <script src="/socket.io/socket.io.js"></script>
       </Head>
 
       <body

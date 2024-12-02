@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev --turbopack &&   nodemon server/server.js",
     "build": "next build",
-    "start": "nodemon server/server.js",
+    "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
@@ -18,7 +18,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.10.0",
     "mongoose": "^8.8.2",
-    "next": "15.0.3",
+    "next": "^15.0.3",
     "nodemailer": "^6.9.16",
     "nodemon": "^3.1.7",
     "react": "^18.3.1",
