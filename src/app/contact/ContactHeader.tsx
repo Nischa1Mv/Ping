@@ -104,10 +104,12 @@ function ContactHeader({ startChat }: ContactHeaderProps) {
   ]);
 
   useEffect(() => {
+    if (!isSearch) setIsQuery("");
     if (isQuery != "") {
       friendSearch();
     }
-  }, [isQuery]);
+  }, [isQuery, isSearch]);
+
   const [isLoading, setIsLoading] = useState(false);
 
   const friendSearch = async () => {
