@@ -2,9 +2,11 @@
 import Chat from "./chatComponents/chat";
 import axios from "axios";
 import { useEffect, useState } from "react";
+// import { io } from "socket.io-client";
 
 export default function Home() {
   interface User {
+    _id: string;
     username: string;
     displayName: string;
     bio: string;
@@ -14,6 +16,7 @@ export default function Home() {
     isAdmin: boolean;
   }
   const [user, setUser] = useState<User>({
+    _id: "",
     username: "",
     displayName: "",
     bio: "",
@@ -35,6 +38,9 @@ export default function Home() {
   useEffect(() => {
     getUser();
   }, []);
+  // useEffect(() => {
+  //   const socket = io("http://localhost:3001");
+  // }, []);
 
   return (
     <>

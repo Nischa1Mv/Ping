@@ -1,7 +1,49 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
+import { useChat } from "../Context";
+import toast from "react-hot-toast";
+import { useSocket } from "../SocketContext";
 
-function ChatInput() {
+interface ChatInputProps {
+  user: {
+    _id: String;
+    username: string;
+    displayName: string;
+    bio: string;
+    profilePicture: string;
+    banner: string;
+    isVerified: boolean;
+    isAdmin: boolean;
+  };
+}
+
+function ChatInput({ user }: ChatInputProps) {
+  const { activeChat } = useChat();
+
+  const socket = useSocket();
+  const [messageContent, setMessageContent] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
+
+  const sendMessage = () => {
+    if (messageContent.trim() && socket) {
+      const message = {
+        sender: user._id,
+        content: messageContent,
+        timestamp: new Date().toISOString(),
+      };
+
+      // Emit the message to the server
+      socket.emit("message:send", {
+        conversationId: activeChat?._id,
+        sender: user._id,
+        content: messageContent,
+      });
+
+      // Clear the input after sending the message
+      setMessageContent("");
+    }
+  };
+
   return (
     <div
       className=" px-6 py-2 pt-4 flex  items-center gap-6  "
@@ -15,6 +57,7 @@ function ChatInput() {
       }}
     >
       <input
+        onChange={(e) => setMessageContent(e.target.value)}
         type="text"
         className="w-full px-4 py-2  bg-transpaSrnt text-[#dedfeb] font-medium  focus:outline-none rounded-xl"
         placeholder="Message"
@@ -29,6 +72,7 @@ function ChatInput() {
       />
       <div>
         <svg
+          onClick={sendMessage}
           xmlns="http://www.w3.org/2000/svg"
           height="35px"
           viewBox="0 -960 960 960"

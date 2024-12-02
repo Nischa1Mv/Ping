@@ -4,6 +4,7 @@ import "./globals.css";
 import { ChatProvider } from "./Context";
 import { Toaster } from "react-hot-toast";
 import Head from "next/head";
+import { SocketProvider } from "./SocketContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -48,7 +49,9 @@ export default function RootLayout({
         <div>
           <Toaster position="top-center" reverseOrder={false} />
         </div>
-        <ChatProvider>{children}</ChatProvider>
+        <SocketProvider>
+          <ChatProvider>{children}</ChatProvider>
+        </SocketProvider>
       </body>
     </html>
   );

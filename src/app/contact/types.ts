@@ -23,3 +23,10 @@ export interface Conversation {
   updatedAt: string;
   participantDetails: ParticipantDetails[];
 }
+export interface Message {
+  sender: string; // The sender's identifier (user's ID)
+  content: string; // The message content
+  timestamp: string; // Timestamp when the message was sent
+  read: boolean; // Whether the message has been read
+  deleted: boolean; // Whether the message has been deleted
+}
