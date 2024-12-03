@@ -14,6 +14,7 @@ export interface ParticipantDetails {
 }
 
 export interface Conversation {
+  _v: number;
   _id: string;
   participants: string[];
   closed: boolean;

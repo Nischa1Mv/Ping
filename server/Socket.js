@@ -1,4 +1,3 @@
-import { connectDB } from "./server.js";
 import { Server } from "socket.io";
 import express from "express";
 import { createServer } from "node:http";
@@ -27,14 +26,9 @@ export async function SocketServer() {
 
     //to join a conversation
 
-    socket.on("joinConversation", async (conversationId) => {
-      const conversation = await Conversation.findOne({ conversationId });
-      if (conversation) {
-        socket.join(conversationId);
-        console.log(`User ${socket.id} joined conversation: ${conversationId}`);
-      } else {
-        socket.emit("error", "Conversation not found");
-      }
+    socket.on("conversation:join", async ({ conversationId }) => {
+      console.log("User joined conversation", conversationId);
+      socket.join(conversationId);
     });
 
     //to send message in a conversation
@@ -82,10 +76,6 @@ export async function SocketServer() {
 
 async function startServer() {
   try {
-    // Connect to the database
-    await connectDB();
-    console.log("Database connected successfully");
-
     // Call the SocketServer function after DB connection
     await SocketServer();
   } catch (error) {

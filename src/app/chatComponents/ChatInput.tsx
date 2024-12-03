@@ -1,8 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import { useChat } from "../Context";
-import toast from "react-hot-toast";
-import { useSocket } from "../SocketContext";
+// import { useChat } from "../Context";
+import { Socket } from "socket.io-client";
 
 interface ChatInputProps {
   user: {
@@ -15,34 +14,34 @@ interface ChatInputProps {
     isVerified: boolean;
     isAdmin: boolean;
   };
+  socket: Socket | null;
 }
 
-function ChatInput({ user }: ChatInputProps) {
-  const { activeChat } = useChat();
+function ChatInput({ user, socket }: ChatInputProps) {
+  // const { activeChat } = useChat();
 
-  const socket = useSocket();
-  const [messageContent, setMessageContent] = useState<string>("");
-  const [error, setError] = useState<string | null>(null);
+  // const [messageContent, setMessageContent] = useState<string>("");
+  // const [error, setError] = useState<string | null>(null);
 
-  const sendMessage = () => {
-    if (messageContent.trim() && socket) {
-      const message = {
-        sender: user._id,
-        content: messageContent,
-        timestamp: new Date().toISOString(),
-      };
+  // const sendMessage = () => {
+  //   if (messageContent.trim() && socket) {
+  //     const message = {
+  //       sender: user._id,
+  //       content: messageContent,
+  //       timestamp: new Date().toISOString(),
+  //     };
 
-      // Emit the message to the server
-      socket.emit("message:send", {
-        conversationId: activeChat?._id,
-        sender: user._id,
-        content: messageContent,
-      });
+  //     // Emit the message to the server
+  //     socket.emit("message:send", {
+  //       conversationId: activeChat?._id,
+  //       sender: user._id,
+  //       content: messageContent,
+  //     });
 
-      // Clear the input after sending the message
-      setMessageContent("");
-    }
-  };
+  //     // Clear the input after sending the message
+  //     setMessageContent("");
+  //   }
+  // };
 
   return (
     <div
@@ -57,7 +56,7 @@ function ChatInput({ user }: ChatInputProps) {
       }}
     >
       <input
-        onChange={(e) => setMessageContent(e.target.value)}
+        // onChange={(e) => setMessageContent(e.target.value)}
         type="text"
         className="w-full px-4 py-2  bg-transpaSrnt text-[#dedfeb] font-medium  focus:outline-none rounded-xl"
         placeholder="Message"
@@ -72,7 +71,7 @@ function ChatInput({ user }: ChatInputProps) {
       />
       <div>
         <svg
-          onClick={sendMessage}
+          // onClick={sendMessage}
           xmlns="http://www.w3.org/2000/svg"
           height="35px"
           viewBox="0 -960 960 960"

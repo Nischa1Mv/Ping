@@ -7,9 +7,7 @@ import ChatBody from "./ChatBody";
 import Profile from "./../profile";
 import { useEffect, useState } from "react";
 import { useChat } from "../Context";
-import { io } from "socket.io-client";
 import { useSocket } from "../SocketContext";
-import toast from "react-hot-toast";
 import { Message } from "../contact/types";
 
 interface ChatProps {
@@ -28,31 +26,34 @@ interface ChatProps {
 function Chat({ user }: ChatProps) {
   const { activeChat, setActiveChat } = useChat();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const socket = useSocket(); // Access the socket from context
   const [messages, setMessages] = useState<Message[]>([]);
+  const socket = useSocket();
+  const { conversations } = useChat();
 
   useEffect(() => {
-    if (socket && activeChat) {
-      // Join the conversation once the socket is available
-      socket.emit("joinConversation", activeChat._id);
-
-      // Listen for incoming messages
-      socket.on("message:receive", (message: Message) => {
-        setMessages((prevMessages) => [...prevMessages, message]);
-      });
-
-      // Cleanup listeners on unmount
-      return () => {
-        socket.off("message:receive");
-      };
+    console.log("changed");
+    //await this make this work after the socket is conneetd
+    if (socket?.connected) {
+      console.log("Socket is connected.");
+      console.log("this is the array abject", conversations);
     }
-  }, [activeChat?._id, socket]);
+  }, [socket?.connected]);
+  // Join the conversation once the socket is available
+
+  // socket.emit("joinConversation", activeChat._id);
+
+  // Listen for incoming messages
+  // socket.on("message:receive", (message: Message) => {
+  //   setMessages((prevMessages) => [...prevMessages, message]);
+  // });
+
+  // Cleanup listeners on unmount
 
   return (
     <>
       <div className="bg-[#191A22] w-screen h-screen flex  p-4">
         {/* Left Side */}
-        <Contacts />
+        <Contacts socket={socket} />
         {/* Right Side */}
 
         <div className="grow flex flex-col  border-4 border-l-2 border-[#1E1E1E] ">
@@ -72,11 +73,12 @@ function Chat({ user }: ChatProps) {
                 }
               />
               <ChatBody
+                socket={socket}
                 conversationId={activeChat?._id}
                 messages={messages}
                 user={user}
               />
-              <ChatInput user={user} />
+              <ChatInput socket={socket} user={user} />
             </>
           )}
         </div>

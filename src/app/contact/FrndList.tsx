@@ -34,6 +34,7 @@ function FrndList({
   const { setActiveChat } = useChat();
 
   const openChat = async (chatId: string) => {
+    console.log(conversations);
     const activeChat = conversations.filter((chat) => chat._id === chatId)[0];
     setActiveChat(activeChat);
     toast.success(activeChat._id);

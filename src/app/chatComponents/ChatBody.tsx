@@ -6,6 +6,7 @@ import { useChat } from "../Context";
 import toast from "react-hot-toast";
 import { useSocket } from "../SocketContext";
 import { Message } from "../contact/types";
+import { Socket } from "socket.io-client";
 
 interface ChatBodyProps {
   conversationId: string | undefined;
@@ -20,18 +21,20 @@ interface ChatBodyProps {
     isVerified: boolean;
     isAdmin: boolean;
   };
+  socket: Socket | null;
 }
 
-function ChatBody({ messages, user, conversationId }: ChatBodyProps) {
-  const socket = useSocket();
+function ChatBody({ messages, user, conversationId, socket }: ChatBodyProps) {
   const { activeChat } = useChat();
   useEffect(() => {
     if (!socket) return;
     if (!activeChat) {
       toast.error("Select a chat to start messaging");
     }
-
     socket.emit("joinConversation", conversationId);
+    socket.on("message:receive", (message: Message) => {
+      messages.push(message);
+    });
   }, [activeChat]);
   return (
     <div className="flex grow relative flex-col p-4 gap-2">

@@ -1,5 +1,4 @@
 "use client";
-import { Conversation } from "./../contact/types";
 import AddFrnd from "./AddFrnd";
 import ContactHeader from "./ContactHeader";
 import FrndList from "./FrndList";
@@ -7,10 +6,16 @@ import Status from "./Status";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { useChat } from "../Context";
+import { Socket } from "socket.io-client";
 
-export default function Contacts() {
+interface contactProps {
+  socket: Socket | null;
+}
+
+export default function Contacts({ socket }: contactProps) {
   const [message, setMessage] = useState<string>("");
-  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const { setConversations, conversations } = useChat();
   const [loading, setLoading] = useState(true);
 
   const fetchConversations = async () => {
@@ -27,6 +32,7 @@ export default function Contacts() {
       setMessage("");
       console.log("Conversations:", response.data);
       setConversations(response.data);
+
       toast.success("Conversations fetched successfully");
     } catch (err) {
       console.error("Error fetching conversations:", err);
@@ -54,8 +60,25 @@ export default function Contacts() {
   };
 
   useEffect(() => {
-    fetchConversations();
-  }, []);
+    console.log("Conversations fetched successfully", conversations);
+    if (socket?.connected) {
+      fetchConversations();
+      console.log("Socket connecfasdfasted");
+      // socket?.emit(
+      //   "conversation:join",
+      //   conversations.map((c) => c.conversationId)
+      // );
+    }
+  }, [socket?.connected]);
+
+  useEffect(() => {
+    if (socket?.connected) {
+      conversations.forEach((c) => {
+        console.log(c.conversationId);
+        socket.emit("conversation:join", { conversationId: c.conversationId });
+      });
+    }
+  }, [conversations]);
 
   return (
     <>
