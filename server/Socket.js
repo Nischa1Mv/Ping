@@ -10,8 +10,9 @@ export async function SocketServer() {
 
   const io = new Server(server, {
     cors: {
-      origin: "https://localhost:3000",
+      origin: "http://localhost:3000", // Correct the protocol to match the frontend
       methods: ["GET", "POST"],
+      credentials: true, // Allow cookies and headers if needed
     },
   });
   if (!io) {
