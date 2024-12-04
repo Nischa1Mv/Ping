@@ -27,6 +27,7 @@ interface ChatBodyProps {
 function ChatBody({ user, conversationId, socket }: ChatBodyProps) {
   const { activeChat } = useChat();
   const [message, setMessage] = useState<Message[] | null>(null);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     if (!socket) return;
     if (!activeChat) {
@@ -41,11 +42,8 @@ function ChatBody({ user, conversationId, socket }: ChatBodyProps) {
   }, []);
 
   const fetchMessages = async () => {
+    setLoading(true);
     try {
-      // Show loading state here
-      // setLoading(true);
-
-      // Fetch messages from API
       const response = await axios.get(
         `/api/conversation/message/?conversationId=${conversationId}`
       );
@@ -53,7 +51,7 @@ function ChatBody({ user, conversationId, socket }: ChatBodyProps) {
       // Check if messages exist in the response
       if (!response.data) {
         toast.error("No messages found");
-        setMessage([]); // Clear any existing messages
+        setMessage([]);
         return;
       }
 
@@ -63,10 +61,9 @@ function ChatBody({ user, conversationId, socket }: ChatBodyProps) {
     } catch (err: any) {
       console.error("Error fetching messages:", err);
       toast.error("Error fetching messages");
-      setMessage([]); // Handle error by clearing messages
+      setMessage([]);
     } finally {
-      // Hide loading state here
-      // setLoading(false);
+      setLoading(false);
     }
   };
 
@@ -75,12 +72,19 @@ function ChatBody({ user, conversationId, socket }: ChatBodyProps) {
   }, [activeChat]);
 
   return (
-    <div className="flex grow relative flex-col p-4 gap-2 overflow-auto">
-      {activeChat && !message ? (
+    <div className="flex grow relative flex-col p-4 gap-2 overflow-auto justify-end">
+      {loading ? (
+        // Display loading state
+        <div className="w-full flex items-center justify-center text-[#8f8fca] italic py-1 text-xs ">
+          Loading...
+        </div>
+      ) : activeChat && !message ? (
+        // Show "Be the first to Ping⚡" if no messages are present
         <div className="w-full flex items-center justify-center text-[#8f8fca] italic border border-gray-700 py-1">
           Be the first to Ping⚡
-        </div> // Show message if there are no messages
+        </div>
       ) : activeChat ? (
+        // Render chat messages
         message?.map((msg) =>
           msg.sender === user._id ? (
             <ReceiverBubble key={msg.timestamp} message={msg.content} />
@@ -89,6 +93,7 @@ function ChatBody({ user, conversationId, socket }: ChatBodyProps) {
           )
         )
       ) : (
+        // Prompt user to start a chat
         <div className="flex items-center justify-center h-full flex-col gap-3">
           <p>Click on a chat to start messaging</p>
           <p>Click on the search icon to start a conversation</p>
