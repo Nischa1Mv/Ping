@@ -49,6 +49,8 @@ function ChatInput({ user, socket }: ChatInputProps) {
       console.error("Error sending message:", err);
       toast.error("Error sending message");
       setError("Error sending message");
+    } finally {
+      setMessageContent("");
     }
   };
 
@@ -65,6 +67,7 @@ function ChatInput({ user, socket }: ChatInputProps) {
       }}
     >
       <input
+        value={messageContent}
         onChange={(e) => setMessageContent(e.target.value)}
         type="text"
         className="w-full px-4 py-2  bg-transpaSrnt text-[#dedfeb] font-medium  focus:outline-none rounded-xl"
