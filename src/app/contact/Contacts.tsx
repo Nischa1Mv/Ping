@@ -64,10 +64,6 @@ export default function Contacts({ socket }: contactProps) {
     if (socket?.connected) {
       fetchConversations();
       console.log("Socket connecfasdfasted");
-      // socket?.emit(
-      //   "conversation:join",
-      //   conversations.map((c) => c.conversationId)
-      // );
     }
   }, [socket?.connected]);
 

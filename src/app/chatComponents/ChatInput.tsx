@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 // import { useChat } from "../Context";
 import { Socket } from "socket.io-client";
+import { useChat } from "../Context";
+import toast from "react-hot-toast";
 
 interface ChatInputProps {
   user: {
@@ -18,30 +20,37 @@ interface ChatInputProps {
 }
 
 function ChatInput({ user, socket }: ChatInputProps) {
-  // const { activeChat } = useChat();
+  const { activeChat } = useChat();
 
-  // const [messageContent, setMessageContent] = useState<string>("");
-  // const [error, setError] = useState<string | null>(null);
+  const [messageContent, setMessageContent] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
 
-  // const sendMessage = () => {
-  //   if (messageContent.trim() && socket) {
-  //     const message = {
-  //       sender: user._id,
-  //       content: messageContent,
-  //       timestamp: new Date().toISOString(),
-  //     };
+  const sendMessage = () => {
+    try {
+      if (messageContent.trim() && socket) {
+        const message = {
+          sender: user._id,
+          content: messageContent,
+        };
 
-  //     // Emit the message to the server
-  //     socket.emit("message:send", {
-  //       conversationId: activeChat?._id,
-  //       sender: user._id,
-  //       content: messageContent,
-  //     });
+        // Emit the message to the server
+        socket.emit("message:send", {
+          conversationId: activeChat?.conversationId,
+          sender: user._id,
+          content: message.content,
+        });
 
-  //     // Clear the input after sending the message
-  //     setMessageContent("");
-  //   }
-  // };
+        // Clear the input after sending the message
+        setMessageContent("");
+      } else {
+        console.log("No active chat selected");
+      }
+    } catch (err) {
+      console.error("Error sending message:", err);
+      toast.error("Error sending message");
+      setError("Error sending message");
+    }
+  };
 
   return (
     <div
@@ -56,7 +65,7 @@ function ChatInput({ user, socket }: ChatInputProps) {
       }}
     >
       <input
-        // onChange={(e) => setMessageContent(e.target.value)}
+        onChange={(e) => setMessageContent(e.target.value)}
         type="text"
         className="w-full px-4 py-2  bg-transpaSrnt text-[#dedfeb] font-medium  focus:outline-none rounded-xl"
         placeholder="Message"
@@ -71,7 +80,7 @@ function ChatInput({ user, socket }: ChatInputProps) {
       />
       <div>
         <svg
-          // onClick={sendMessage}
+          onClick={sendMessage}
           xmlns="http://www.w3.org/2000/svg"
           height="35px"
           viewBox="0 -960 960 960"
