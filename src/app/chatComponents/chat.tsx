@@ -43,7 +43,7 @@ function Chat({ user }: ChatProps) {
     <>
       <div className="bg-[#191A22] w-screen h-screen flex p-4">
         {/* Left Side */}
-        <Contacts socket={socket} />
+        <Contacts user={user} socket={socket} />
 
         {/* Right Side */}
         <div className="grow flex flex-col border-l-2 border-[#1E1E1E]">

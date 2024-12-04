@@ -11,9 +11,19 @@ import { Socket } from "socket.io-client";
 
 interface contactProps {
   socket: Socket | null;
+  user: {
+    _id: string;
+    username: string;
+    displayName: string;
+    bio: string;
+    profilePicture: string;
+    banner: string;
+    isVerified: boolean;
+    isAdmin: boolean;
+  };
 }
 
-export default function Contacts({ socket }: contactProps) {
+export default function Contacts({ socket, user }: contactProps) {
   const [message, setMessage] = useState<string>("");
   const { setConversations, conversations } = useChat();
   const [loading, setLoading] = useState(true);
@@ -81,7 +91,8 @@ export default function Contacts({ socket }: contactProps) {
       <div
         className={` w-[35%]    border-4 border-[#1E1E1E] border-r-2  flex flex-col gap-2`}
       >
-        <ContactHeader startChat={startChat} /> <AddFrnd />
+        <ContactHeader userPic={user.profilePicture} startChat={startChat} />{" "}
+        <AddFrnd />
         <Status />
         <FrndList
           message={message}

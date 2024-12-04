@@ -4,6 +4,8 @@ import FriendReq from "./friendReq";
 import axios from "axios";
 import toast from "react-hot-toast";
 import FriendSearch from "./FriendSearch";
+import Image from "next/image";
+import User from "server/UserModal";
 
 const kanit = Kanit({
   subsets: ["latin"],
@@ -13,9 +15,10 @@ const kanit = Kanit({
 
 interface ContactHeaderProps {
   startChat: (id: string) => void;
+  userPic: string;
 }
 
-function ContactHeader({ startChat }: ContactHeaderProps) {
+function ContactHeader({ startChat, userPic }: ContactHeaderProps) {
   const [isQuery, setIsQuery] = useState("");
   const [isSearch, setIsSearch] = useState(false);
   const [showFriends, setShowFriends] = useState(false);
@@ -320,17 +323,14 @@ function ContactHeader({ startChat }: ContactHeaderProps) {
           </div>
         )}
       </span>
-      <span>
-        <svg
-          className="text-[#8F8FCA] hover:text-[#CACA8F]"
-          xmlns="http://www.w3.org/2000/svg"
-          height="24px"
-          viewBox="0 -960 960 960"
-          width="24px"
-          fill="currentColor"
-        >
-          <path d="M120-240v-80h240v80H120Zm0-200v-80h480v80H120Zm0-200v-80h720v80H120Z" />
-        </svg>
+      <span className="cursor-pointer transform transition-transform duration-300 hover:scale-110 hover:outline rounded-full hover:outline-1 hover:outline-[#caca8f] hover:outline-offset-2">
+        <Image
+          src={userPic || "/profile.png"}
+          alt="profile"
+          width={30}
+          height={30}
+          className="rounded-full"
+        />
       </span>
     </div>
   );
