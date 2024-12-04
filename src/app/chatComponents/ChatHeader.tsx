@@ -2,22 +2,22 @@ import Image from "next/image";
 import React from "react";
 
 interface ChatHeaderProps {
-  setIsProfileOpen: React.Dispatch<React.SetStateAction<boolean>>;
   displayName: string | undefined;
   username: string | undefined;
   profilePicture: string | undefined;
+  profile: (user: boolean) => void;
 }
 function ChatHeader({
-  setIsProfileOpen,
   displayName,
   username,
   profilePicture,
+  profile,
 }: ChatHeaderProps) {
   return (
     <>
       {/* Chat Header */}
       <div
-        onClick={() => setIsProfileOpen(true)}
+        onClick={() => profile(false)}
         className=" px-6 py-2  flex  items-center gap-6 cursor-pointer "
         style={{
           background: "rgba(143, 143, 202, 0.07)",
@@ -29,9 +29,6 @@ function ChatHeader({
         }}
       >
         <Image
-          onClick={() => {
-            setIsProfileOpen(true);
-          }}
           className=" rounded-full aspect-square   "
           src={profilePicture || "/avatar.jpg"}
           alt="Profile Picture"

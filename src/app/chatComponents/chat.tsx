@@ -5,11 +5,9 @@ import ChatInput from "./ChatInput";
 import Contacts from "../contact/Contacts";
 import ChatBody from "./ChatBody";
 import Profile from "./../profile";
-import { act, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useChat } from "../Context";
 import { useSocket } from "../SocketContext";
-import { Message } from "../contact/types";
-import { profile } from "console";
 
 interface ChatProps {
   user: {
@@ -25,10 +23,21 @@ interface ChatProps {
 }
 
 function Chat({ user }: ChatProps) {
-  const { activeChat, setActiveChat } = useChat();
+  const { activeChat } = useChat();
   const socket = useSocket();
   const { conversations } = useChat();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [notUser, setNotUser] = useState(false);
+
+  const profile = (user: boolean) => {
+    if (user) {
+      setNotUser(false);
+      setIsProfileOpen(true);
+    } else {
+      setNotUser(true);
+      setIsProfileOpen(true);
+    }
+  };
 
   useEffect(() => {
     console.log("changed");
@@ -43,20 +52,23 @@ function Chat({ user }: ChatProps) {
     <>
       <div className="bg-[#191A22] w-screen h-screen flex p-4">
         {/* Left Side */}
-        <Contacts user={user} socket={socket} />
+        <Contacts user={user} socket={socket} profile={profile} />
 
         {/* Right Side */}
         <div className="grow flex flex-col border-l-2 border-[#1E1E1E]">
-          {isProfileOpen && activeChat?.participantDetails[0] ? (
+          {isProfileOpen && (
             <Profile
-              user={activeChat?.participantDetails[0]}
+              user={notUser ? activeChat?.participantDetails[0] : user}
               setIsProfileOpen={setIsProfileOpen}
-              notUser={true}
+              notUser={notUser}
             />
-          ) : activeChat && activeChat.participantDetails[0]?.username ? (
+          )}
+          {!isProfileOpen &&
+          activeChat &&
+          activeChat.participantDetails[0]?.username ? (
             <>
               <ChatHeader
-                setIsProfileOpen={setIsProfileOpen}
+                profile={profile}
                 displayName={activeChat.participantDetails[0].displayName}
                 username={activeChat.participantDetails[0].username}
                 profilePicture={activeChat.participantDetails[0].profilePicture}
@@ -69,9 +81,11 @@ function Chat({ user }: ChatProps) {
               <ChatInput socket={socket} user={user} />
             </>
           ) : (
-            <div className="flex items-center justify-center h-full text-gray-500">
-              Select a conversation to start chatting.
-            </div>
+            !isProfileOpen && (
+              <div className="flex items-center justify-center grow flex-col text-gray-500">
+                Select a conversation to start chatting.
+              </div>
+            )
           )}
         </div>
       </div>

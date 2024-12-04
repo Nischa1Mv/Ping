@@ -21,9 +21,10 @@ interface contactProps {
     isVerified: boolean;
     isAdmin: boolean;
   };
+  profile: (user: boolean) => void;
 }
 
-export default function Contacts({ socket, user }: contactProps) {
+export default function Contacts({ socket, user, profile }: contactProps) {
   const [message, setMessage] = useState<string>("");
   const { setConversations, conversations } = useChat();
   const [loading, setLoading] = useState(true);
@@ -91,7 +92,11 @@ export default function Contacts({ socket, user }: contactProps) {
       <div
         className={` w-[35%]    border-4 border-[#1E1E1E] border-r-2  flex flex-col gap-2`}
       >
-        <ContactHeader userPic={user.profilePicture} startChat={startChat} />{" "}
+        <ContactHeader
+          userPic={user.profilePicture}
+          startChat={startChat}
+          profile={profile}
+        />{" "}
         <AddFrnd />
         <Status />
         <FrndList

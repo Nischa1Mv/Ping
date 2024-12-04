@@ -8,7 +8,19 @@ import { useRouter } from "next/navigation";
 import { ParticipantDetails } from "./contact/types";
 
 interface ProfileProps {
-  user: ParticipantDetails;
+  user:
+    | ParticipantDetails
+    | {
+        _id: string;
+        username: string;
+        displayName: string;
+        bio: string;
+        profilePicture: string;
+        banner: string;
+        isVerified: boolean;
+        isAdmin: boolean;
+      }
+    | undefined;
   notUser?: boolean;
   setIsProfileOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -50,14 +62,14 @@ const Profile: React.FC<ProfileProps> = ({
             setShowImageOverlay(false);
           }}
         >
-          <ImageOverlay src={user.profilePicture || "/nothing"} />
+          <ImageOverlay src={user?.profilePicture || "/nothing"} />
         </div>
       )}
       <div className="w-full h-full relative flex flex-col ">
         <div
           className="flex flex-col border-2 border-[#1f2029] bg-[rgba(143,143,202,0.1)] h-[35%] relative bg-no-repeat bg-center bg-cover"
           style={{
-            backgroundImage: `url(${user.banner})`, // Ternary for backgroundImage
+            backgroundImage: `url(${user?.banner})`, // Ternary for backgroundImage
           }}
         >
           <div className="flex gap-4 w-full px-4 py-2 bg-transparent">
@@ -96,7 +108,7 @@ const Profile: React.FC<ProfileProps> = ({
             onClick={() => {
               setShowImageOverlay(true);
             }}
-            src={user.profilePicture || "/avatar.jpg"}
+            src={user?.profilePicture || "/avatar.jpg"}
             height={150}
             width={150}
             alt="ProfilePicture"
@@ -130,7 +142,7 @@ const Profile: React.FC<ProfileProps> = ({
         </div>
 
         <div className="font-bold w-full tracking-widest pl-8   text-3xl flex gap-3 text-[#CACA8F] items-center mt-4 ">
-          {user.displayName}
+          {user?.displayName}
           {!notUser && (
             <svg
               onClick={handleEdit}
@@ -147,14 +159,14 @@ const Profile: React.FC<ProfileProps> = ({
 
         <div className="pl-8 flex flex-col gap-5 grow  ">
           <div className="text-xs  text-[#adaeb7] tracking-widest ">
-            @{user.username}{" "}
+            @{user?.username}{" "}
           </div>
           <div className="  flex flex-col gap-2  h-full  ">
             <div className="text-[#8888d5] text-lg font-semibold">
               Description
             </div>
             <div className=" text-sm font-medium  px-5  py-5 w-[90%] h-[40%]   text-[#adaeb7] bg-[#1f212b] text-pretty">
-              {user.bio}
+              {user?.bio}
             </div>
           </div>
           <div className="w-full flex justify-end px-4 py-4  ">

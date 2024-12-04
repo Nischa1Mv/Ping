@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import FriendSearch from "./FriendSearch";
 import Image from "next/image";
 import User from "server/UserModal";
+import { tr } from "@faker-js/faker";
 
 const kanit = Kanit({
   subsets: ["latin"],
@@ -16,9 +17,10 @@ const kanit = Kanit({
 interface ContactHeaderProps {
   startChat: (id: string) => void;
   userPic: string;
+  profile: (user: boolean) => void;
 }
 
-function ContactHeader({ startChat, userPic }: ContactHeaderProps) {
+function ContactHeader({ startChat, userPic, profile }: ContactHeaderProps) {
   const [isQuery, setIsQuery] = useState("");
   const [isSearch, setIsSearch] = useState(false);
   const [showFriends, setShowFriends] = useState(false);
@@ -325,6 +327,9 @@ function ContactHeader({ startChat, userPic }: ContactHeaderProps) {
       </span>
       <span className="cursor-pointer transform transition-transform duration-300 hover:scale-110 hover:outline rounded-full hover:outline-1 hover:outline-[#caca8f] hover:outline-offset-2">
         <Image
+          onClick={() => {
+            profile(true);
+          }}
           src={userPic || "/profile.png"}
           alt="profile"
           width={30}
