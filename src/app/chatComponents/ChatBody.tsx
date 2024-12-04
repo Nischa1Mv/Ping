@@ -10,7 +10,7 @@ import axios from "axios";
 
 interface ChatBodyProps {
   conversationId: string | undefined;
-  messages: Message[];
+
   user: {
     _id: string;
     username: string;
@@ -24,9 +24,9 @@ interface ChatBodyProps {
   socket: Socket | null;
 }
 
-function ChatBody({ messages, user, conversationId, socket }: ChatBodyProps) {
+function ChatBody({ user, conversationId, socket }: ChatBodyProps) {
   const { activeChat } = useChat();
-  const [message, setMessage] = useState<ChatBodyProps["messages"]>([]);
+  const [message, setMessage] = useState<Message[] | null>(null);
   useEffect(() => {
     if (!socket) return;
     if (!activeChat) {
@@ -36,7 +36,7 @@ function ChatBody({ messages, user, conversationId, socket }: ChatBodyProps) {
 
     ///have to fix this code
     socket.on("message:receive", (message: Message) => {
-      setMessage((prevMessages) => [...prevMessages, message]);
+      setMessage((prevMessages) => [...(prevMessages ?? []), message]);
     });
   }, []);
 
@@ -75,17 +75,17 @@ function ChatBody({ messages, user, conversationId, socket }: ChatBodyProps) {
   }, [activeChat]);
 
   return (
-    <div className="flex grow relative flex-col p-4 gap-2">
+    <div className="flex grow relative flex-col p-4 gap-2 overflow-auto">
       {activeChat && !message ? (
         <div className="w-full flex items-center justify-center text-[#8f8fca] italic border border-gray-700 py-1">
           Be the first to Ping⚡
         </div> // Show message if there are no messages
       ) : activeChat ? (
-        message.map((msg) =>
+        message?.map((msg) =>
           msg.sender === user._id ? (
-            <SenderBubble key={msg.timestamp} message={msg.content} />
-          ) : (
             <ReceiverBubble key={msg.timestamp} message={msg.content} />
+          ) : (
+            <SenderBubble key={msg.timestamp} message={msg.content} />
           )
         )
       ) : (

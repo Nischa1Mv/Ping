@@ -58,7 +58,7 @@ export async function SocketServer() {
         // Broadcast the message to the room (conversation)
 
         //to receive message in a conversation
-        io.to(conversationId).emit("message:receive", message);
+        io.emit("message:receive", message);
         console.log("Message stored and broadcasted:", message);
       } catch (error) {
         console.error("Error saving message:", error);

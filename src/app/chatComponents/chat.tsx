@@ -26,7 +26,6 @@ interface ChatProps {
 function Chat({ user }: ChatProps) {
   const { activeChat, setActiveChat } = useChat();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
   const socket = useSocket();
   const { conversations } = useChat();
 
@@ -75,7 +74,6 @@ function Chat({ user }: ChatProps) {
               <ChatBody
                 socket={socket}
                 conversationId={activeChat?.conversationId}
-                messages={messages}
                 user={user}
               />
               <ChatInput socket={socket} user={user} />
