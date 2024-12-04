@@ -5,7 +5,7 @@ import ChatInput from "./ChatInput";
 import Contacts from "../contact/Contacts";
 import ChatBody from "./ChatBody";
 import Profile from "./../profile";
-import { useEffect, useState } from "react";
+import { act, useEffect, useState } from "react";
 import { useChat } from "../Context";
 import { useSocket } from "../SocketContext";
 import { Message } from "../contact/types";
@@ -50,34 +50,33 @@ function Chat({ user }: ChatProps) {
 
   return (
     <>
-      <div className="bg-[#191A22] w-screen h-screen flex  p-4">
+      <div className="bg-[#191A22] w-screen h-screen flex p-4">
         {/* Left Side */}
         <Contacts socket={socket} />
-        {/* Right Side */}
 
-        <div className="grow flex flex-col  border-4 border-l-2 border-[#1E1E1E] ">
+        {/* Right Side */}
+        <div className="grow flex flex-col border-l-2 border-[#1E1E1E]">
           {isProfileOpen ? (
+            <Profile user={user} setIsProfileOpen={setIsProfileOpen} />
+          ) : activeChat && activeChat.participantDetails[0]?.username ? (
             <>
-              <Profile user={user} setIsProfileOpen={setIsProfileOpen} />
-            </>
-          ) : (
-            <>
-              {" "}
               <ChatHeader
                 setIsProfileOpen={setIsProfileOpen}
-                displayName={activeChat?.participantDetails[0]?.displayName}
-                username={activeChat?.participantDetails[0]?.username}
-                profilePicture={
-                  activeChat?.participantDetails[0]?.profilePicture
-                }
+                displayName={activeChat.participantDetails[0].displayName}
+                username={activeChat.participantDetails[0].username}
+                profilePicture={activeChat.participantDetails[0].profilePicture}
               />
               <ChatBody
                 socket={socket}
-                conversationId={activeChat?.conversationId}
+                conversationId={activeChat.conversationId}
                 user={user}
               />
               <ChatInput socket={socket} user={user} />
             </>
+          ) : (
+            <div className="flex items-center justify-center h-full text-gray-500">
+              Select a conversation to start chatting.
+            </div>
           )}
         </div>
       </div>
