@@ -9,6 +9,7 @@ import { act, useEffect, useState } from "react";
 import { useChat } from "../Context";
 import { useSocket } from "../SocketContext";
 import { Message } from "../contact/types";
+import { profile } from "console";
 
 interface ChatProps {
   user: {
@@ -25,9 +26,9 @@ interface ChatProps {
 
 function Chat({ user }: ChatProps) {
   const { activeChat, setActiveChat } = useChat();
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const socket = useSocket();
   const { conversations } = useChat();
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   useEffect(() => {
     console.log("changed");
@@ -37,16 +38,6 @@ function Chat({ user }: ChatProps) {
       console.log("this is the array abject", conversations);
     }
   }, [socket?.connected]);
-  // Join the conversation once the socket is available
-
-  // socket.emit("joinConversation", activeChat._id);
-
-  // Listen for incoming messages
-  // socket.on("message:receive", (message: Message) => {
-  //   setMessages((prevMessages) => [...prevMessages, message]);
-  // });
-
-  // Cleanup listeners on unmount
 
   return (
     <>
@@ -56,8 +47,12 @@ function Chat({ user }: ChatProps) {
 
         {/* Right Side */}
         <div className="grow flex flex-col border-l-2 border-[#1E1E1E]">
-          {isProfileOpen ? (
-            <Profile user={user} setIsProfileOpen={setIsProfileOpen} />
+          {isProfileOpen && activeChat?.participantDetails[0] ? (
+            <Profile
+              user={activeChat?.participantDetails[0]}
+              setIsProfileOpen={setIsProfileOpen}
+              notUser={true}
+            />
           ) : activeChat && activeChat.participantDetails[0]?.username ? (
             <>
               <ChatHeader
