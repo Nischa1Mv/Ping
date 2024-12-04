@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReceiverBubble from "./ReceiverBubble";
 import SenderBubble from "./SenderBubble";
 import { useChat } from "../Context";
@@ -26,6 +26,7 @@ interface ChatBodyProps {
 
 function ChatBody({ user, conversationId, socket }: ChatBodyProps) {
   const { activeChat } = useChat();
+  const chatContainerRef = useRef<HTMLDivElement>(null);
   const [message, setMessage] = useState<Message[] | null>(null);
   useEffect(() => {
     if (!socket) return;
@@ -35,10 +36,17 @@ function ChatBody({ user, conversationId, socket }: ChatBodyProps) {
     socket.emit("joinConversation", conversationId);
 
     ///have to fix this code
+  }, []);
+
+  useEffect(() => {
+    if (!socket) return;
     socket.on("message:receive", (message: Message) => {
       setMessage((prevMessages) => [...(prevMessages ?? []), message]);
     });
-  }, []);
+    return () => {
+      socket.off("message:receive"); // Clean up the listener
+    };
+  }, [socket]);
 
   const fetchMessages = async () => {
     try {
@@ -74,8 +82,19 @@ function ChatBody({ user, conversationId, socket }: ChatBodyProps) {
     if (activeChat) fetchMessages();
   }, [activeChat]);
 
+  useEffect(() => {
+    // Scroll to the bottom whenever a new message is added
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  }, [message]);
+
   return (
-    <div className="flex grow relative flex-col p-4 gap-2 overflow-auto">
+    <div
+      ref={chatContainerRef}
+      className="flex grow relative flex-col p-4 gap-2 h-full overflow-y-auto scrollbar-hide "
+    >
       {activeChat && !message ? (
         <div className="w-full flex items-center justify-center text-[#8f8fca] italic border border-gray-700 py-1">
           Be the first to Ping⚡

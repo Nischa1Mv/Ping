@@ -25,7 +25,7 @@ export interface Conversation {
   participantDetails: ParticipantDetails[];
 }
 export interface Message {
-  // _id: string; // The message's identifier
+  _id: string; // The message's identifier
   sender: string; // The sender's identifier (user's ID)
   content: string; // The message content
   timestamp: string; // Timestamp when the message was sent
