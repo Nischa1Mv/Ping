@@ -22,9 +22,15 @@ interface contactProps {
     isAdmin: boolean;
   };
   profile: (user: boolean) => void;
+  setIsProfileOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Contacts({ socket, user, profile }: contactProps) {
+export default function Contacts({
+  socket,
+  user,
+  profile,
+  setIsProfileOpen,
+}: contactProps) {
   const [message, setMessage] = useState<string>("");
   const { setConversations, conversations } = useChat();
   const [loading, setLoading] = useState(true);
@@ -62,6 +68,7 @@ export default function Contacts({ socket, user, profile }: contactProps) {
         fetchConversations();
         return;
       }
+      setIsProfileOpen(false);
       fetchConversations();
       toast.success("Conversation Created");
     } catch (error: any) {
@@ -100,6 +107,7 @@ export default function Contacts({ socket, user, profile }: contactProps) {
         <AddFrnd />
         <Status />
         <FrndList
+          setIsProfileOpen={setIsProfileOpen}
           message={message}
           conversations={conversations}
           loading={loading}

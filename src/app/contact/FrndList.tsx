@@ -10,6 +10,7 @@ interface FrndListProps {
   loading: boolean;
   fetchConversations: () => void;
   message: string;
+  setIsProfileOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function FrndList({
@@ -17,6 +18,7 @@ function FrndList({
   conversations,
   loading,
   fetchConversations,
+  setIsProfileOpen,
 }: FrndListProps) {
   const removeChat = async (chatId: string) => {
     try {
@@ -39,6 +41,7 @@ function FrndList({
     const activeChat = conversations.filter((chat) => chat._id === chatId)[0];
     setActiveChat(activeChat);
     toast.success(activeChat._id);
+    setIsProfileOpen(false);
   };
 
   return (
