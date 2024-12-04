@@ -18,6 +18,7 @@ export async function GET(request: NextRequest) {
   }
   try {
     const users = await User.find({
+      _id: { $ne: userId },
       username: { $regex: query, $options: "i" },
     }).populate("friends", "username profilePicture");
     return NextResponse.json(users, { status: 200 });
