@@ -74,7 +74,7 @@ function Chat({ user }: ChatProps) {
               />
               <ChatBody
                 socket={socket}
-                conversationId={activeChat?._id}
+                conversationId={activeChat?.conversationId}
                 messages={messages}
                 user={user}
               />
