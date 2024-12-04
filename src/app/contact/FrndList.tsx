@@ -26,6 +26,7 @@ function FrndList({
       console.log("Chat deleted", response.data);
       fetchConversations();
       toast.success("Chat deleted successfully");
+      setActiveChat(null);
     } catch (err) {
       console.error("Error deleting chat:", err);
       toast.error("Error deleting chat");
