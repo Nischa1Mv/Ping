@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-// import { useChat } from "../Context";
 import { Socket } from "socket.io-client";
 import { useChat } from "../Context";
 import toast from "react-hot-toast";
@@ -59,11 +58,8 @@ function ChatInput({ user, socket }: ChatInputProps) {
       className=" px-6 py-2 pt-4 flex  items-center gap-6  "
       style={{
         background: "rgba(143, 143, 202, 0.1)",
-        //   boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
         backdropFilter: "blur(2.5px)",
-        WebkitBackdropFilter: "blur(2.5px)", // Vendor prefix for Safari
-        //   borderRadius: "10px",
-        //   border: "1px solid rgba(255, 255, 255, 0.18)",
+        WebkitBackdropFilter: "blur(2.5px)",
       }}
     >
       <input
@@ -74,11 +70,9 @@ function ChatInput({ user, socket }: ChatInputProps) {
         placeholder="Message"
         style={{
           background: "rgba(143, 143, 202, 0.005)",
-          // boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
           backdropFilter: "blur(4px)",
-          WebkitBackdropFilter: "blur(4px)", // Safari-specific property
+          WebkitBackdropFilter: "blur(4px)",
           borderRadius: "10px",
-          // border: "1px solid rgba(255, 255, 255, 0.18)",
         }}
       />
       <div>

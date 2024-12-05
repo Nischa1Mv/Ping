@@ -25,10 +25,10 @@ export interface Conversation {
   participantDetails: ParticipantDetails[];
 }
 export interface Message {
-  _id: string; // The message's identifier
-  sender: string; // The sender's identifier (user's ID)
-  content: string; // The message content
-  timestamp: string; // Timestamp when the message was sent
-  read: boolean; // Whether the message has been read
-  deleted: boolean; // Whether the message has been deleted
+  _id: string;
+  sender: string;
+  content: string;
+  timestamp: string;
+  read: boolean;
+  deleted: boolean;
 }

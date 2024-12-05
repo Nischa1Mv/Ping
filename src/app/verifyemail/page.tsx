@@ -31,7 +31,6 @@ function Page() {
     }
   };
 
-  // Handle the token from the URL query only once (on page load)
   useEffect(() => {
     setError(false);
     const urlToken = window.location.search.split("=")[1];
@@ -46,10 +45,10 @@ function Page() {
         setTimer((prevTimer) => prevTimer - 1);
       }, 1000);
     } else if (timer === 0) {
-      router.push("/"); // Redirect to the home page when timer reaches 0
+      router.push("/");
     }
 
-    return () => clearInterval(interval); // Clean up interval on component unmount
+    return () => clearInterval(interval);
   }, [verified, timer, router]);
 
   return (

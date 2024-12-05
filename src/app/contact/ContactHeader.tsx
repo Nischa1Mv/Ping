@@ -5,8 +5,6 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import FriendSearch from "./FriendSearch";
 import Image from "next/image";
-import User from "server/UserModal";
-import { tr } from "@faker-js/faker";
 
 const kanit = Kanit({
   subsets: ["latin"],

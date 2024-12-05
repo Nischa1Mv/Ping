@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import axios from "axios";
 import Friendsmsg from "./Friendsmsg";
 import { Conversation } from "./types";
 import toast from "react-hot-toast";
 import { useChat } from "../Context";
-import { set } from "mongoose";
-import { Convergence } from "next/font/google";
 
 interface FrndListProps {
   conversations: Conversation[];

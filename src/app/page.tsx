@@ -27,7 +27,7 @@ export default function Home() {
     isAdmin: false,
   });
 
-  const [loadingConversations, setLoadingConversations] = useState(true); // New state for loading
+  const [loadingConversations, setLoadingConversations] = useState(true);
   const { conversations } = useChat();
 
   const getUser = async () => {
@@ -43,7 +43,6 @@ export default function Home() {
   useEffect(() => {
     getUser();
 
-    // Simulating conversation fetching
     if (conversations) {
       setLoadingConversations(false);
     }
@@ -53,7 +52,6 @@ export default function Home() {
     <div className="relative">
       {loadingConversations && user ? (
         <div className="flex justify-center items-center h-screen">
-          {/* Replace with your loading animation */}
           <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
         </div>
       ) : (

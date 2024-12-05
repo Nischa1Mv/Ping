@@ -1,36 +1,33 @@
 import axios from "axios";
 import Image from "next/image";
-
 import React, { useEffect, useState } from "react";
-
 import toast from "react-hot-toast";
 
 function AddFrnd() {
-  const [query, setQuery] = useState(""); // State for search query
+  const [query, setQuery] = useState("");
   const [users, setUsers] = useState([
     { username: "", profilePicture: "", _id: "" },
-  ]); // State for storing user search results
-  const [isSearch, setIsSearch] = useState(false); // State to toggle search visibility
+  ]);
+  const [isSearch, setIsSearch] = useState(false);
 
   // Function to search users based on query
   const searchUser = async () => {
-    setUsers([{ username: "", profilePicture: "", _id: "" }]); // Clear previous results
+    setUsers([{ username: "", profilePicture: "", _id: "" }]);
     try {
       const response = await axios.get(`/api/users/search`, {
-        params: { query }, // Send query as parameter
+        params: { query },
       });
-      setUsers(response.data); // Set fetched users
+      setUsers(response.data);
     } catch (error: any) {
       console.error("Error fetching users:", error.message);
     }
   };
 
-  // Trigger search when query changes
   useEffect(() => {
     if (query) {
       searchUser();
     } else {
-      setUsers([{ username: "", profilePicture: "", _id: "" }]); // Clear users if query is empty
+      setUsers([{ username: "", profilePicture: "", _id: "" }]);
     }
   }, [query]);
 
@@ -61,10 +58,9 @@ function AddFrnd() {
   return (
     <>
       <div
-        // Toggle search input visibility
-        className={` ${isSearch} && " text-[#caca8f]"  cursor-pointer hover:text-[#caca8f]   text-[#8F8FCA] relative font-semibold flex  flex-col justify-center items-center border-[#8F8FCA] border rounded-xl mx-auto min-w-fit w-[80%] py-2 gap-4 `}
+        className={` ${isSearch} && "  text-[#caca8f]"  cursor-pointer hover:text-[#caca8f]   text-[#8F8FCA] relative font-semibold flex  flex-col justify-center items-center border-[#8F8FCA] border rounded-xl mx-auto min-w-fit w-[80%] py-2 gap-4 `}
       >
-        <div className="flex gap-4" onClick={() => setIsSearch(!isSearch)}>
+        <div className="flex gap-4 " onClick={() => setIsSearch(!isSearch)}>
           <svg
             className={`${
               isSearch ? "rotate-45" : ""
@@ -89,7 +85,7 @@ function AddFrnd() {
                 type="search"
                 placeholder="Search users..."
                 value={query}
-                onChange={(e) => setQuery(e.target.value)} // Update query on input change
+                onChange={(e) => setQuery(e.target.value)}
                 className="text-white px-2 bg-transparent focus:outline-none font-medium tracking-wider border-b-2 border-[#8F8FCA]"
               />
             </div>
@@ -117,7 +113,7 @@ function AddFrnd() {
                           <svg
                             onClick={() => {
                               sendRequest(user._id);
-                            }} // Placeholder for sending friend request
+                            }}
                             xmlns="http://www.w3.org/2000/svg"
                             height="24px"
                             viewBox="0 -960 960 960"

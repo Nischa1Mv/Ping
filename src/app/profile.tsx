@@ -69,7 +69,7 @@ const Profile: React.FC<ProfileProps> = ({
         <div
           className="flex flex-col border-2 border-[#1f2029] bg-[rgba(143,143,202,0.1)] h-[35%] relative bg-no-repeat bg-center bg-cover"
           style={{
-            backgroundImage: `url(${user?.banner})`, // Ternary for backgroundImage
+            backgroundImage: `url(${user?.banner})`,
           }}
         >
           <div className="flex gap-4 w-full px-4 py-2 bg-transparent">

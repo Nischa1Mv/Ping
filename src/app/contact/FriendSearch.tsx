@@ -18,10 +18,8 @@ function FriendSearch({
     <div
       className=" pl-4 px-2 py-1 flex gap-4 items-center hover:text-[#caca8f] text-[#8F8FCA] cursor-pointer border-2 border-gray-600  hover:border-[#caca8f]  "
       style={{
-        // background: "rgba(31, 38, 135, 0.1)",
         boxShadow: "0 0px 10px 0 rgba(31, 38, 135, 0.2)",
         backdropFilter: "blur(3px)",
-        // Vendor prefix for Safari
         borderRadius: "10px",
       }}
     >
