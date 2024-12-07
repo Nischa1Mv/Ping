@@ -90,7 +90,7 @@ function Login() {
           </div>
         </>
       ) : (
-        <form className="flex flex-col justify-center items-center gap-7 w-[35%] py-10 rounded-lg bg-[#21222e] border-[#1E1E1E]">
+        <form className="flex flex-col justify-center items-center gap-7 md:w-[70%] md:h-[80%] lg:w-[40%] lg:h-[70%] h-screen  py-10  rounded-lg bg-[#21222e] border-[#1E1E1E] w-full">
           <span
             className={`${kanit.className} text-6xl gap-1 flex text-[#CACA8F]`}
           >

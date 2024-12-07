@@ -78,7 +78,7 @@ function SignUp() {
           </div>
         </>
       ) : (
-        <form className="flex flex-col justify-center items-center gap-7 w-[35%] py-10 rounded-lg bg-[#21222e] border-[#1E1E1E]">
+        <form className="flex flex-col justify-center items-center gap-7 h-full w-full  md:w-[70%] md:h-[90%] md:py-10   lg:w-[50%] lg:h-fit lg:py-10   rounded-lg bg-[#21222e] border-[#1E1E1E] ">
           <span
             className={`${kanit.className} text-6xl gap-1 flex text-[#CACA8F]`}
           >
