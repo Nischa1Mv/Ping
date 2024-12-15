@@ -34,8 +34,6 @@ function ChatBody({ user, conversationId, socket }: ChatBodyProps) {
       toast.error("Select a chat to start messaging");
     }
     socket.emit("joinConversation", conversationId);
-
-    ///have to fix this code
   }, []);
 
   useEffect(() => {
@@ -44,24 +42,19 @@ function ChatBody({ user, conversationId, socket }: ChatBodyProps) {
       setMessage((prevMessages) => [...(prevMessages ?? []), message]);
     });
     return () => {
-      socket.off("message:receive"); // Clean up the listener
+      socket.off("message:receive");
     };
   }, [socket]);
 
   const fetchMessages = async () => {
     try {
-      // Show loading state here
-      // setLoading(true);
-
-      // Fetch messages from API
       const response = await axios.get(
         `/api/conversation/message/?conversationId=${conversationId}`
       );
 
-      // Check if messages exist in the response
       if (!response.data) {
         toast.error("No messages found");
-        setMessage([]); // Clear any existing messages
+        setMessage([]);
         return;
       }
 
@@ -71,15 +64,21 @@ function ChatBody({ user, conversationId, socket }: ChatBodyProps) {
     } catch (err: any) {
       console.error("Error fetching messages:", err);
       toast.error("Error fetching messages");
-      setMessage([]); // Handle error by clearing messages
+      setMessage([]);
     } finally {
-      // Hide loading state here
-      // setLoading(false);
     }
   };
 
+  const isInitialRender = useRef(true);
+
   useEffect(() => {
-    if (activeChat) fetchMessages();
+    if (isInitialRender.current) {
+      // Skip the initial render
+      isInitialRender.current = false;
+    } else {
+      // Call your function when activeChat changes
+      fetchMessages();
+    }
   }, [activeChat]);
 
   useEffect(() => {
