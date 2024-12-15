@@ -49,7 +49,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       }
     };
     if (id) fetchUser();
-  }, [id]); // Fetch user data on page load
+  }, [id]);
 
   const updateProfile = async () => {
     setIsDisabled(true);

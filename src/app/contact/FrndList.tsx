@@ -4,6 +4,7 @@ import Friendsmsg from "./Friendsmsg";
 import { Conversation } from "./types";
 import toast from "react-hot-toast";
 import { useChat } from "../Context";
+import { ac } from "node_modules/@faker-js/faker/dist/airline-BLb3y-7w";
 
 interface FrndListProps {
   conversations: Conversation[];
@@ -34,13 +35,14 @@ function FrndList({
       toast.error("Error deleting chat");
     }
   };
-  const { setActiveChat } = useChat();
+  const { setActiveChat, activeChat } = useChat();
 
   const openChat = async (chatId: string) => {
+    if (chatId === activeChat?._id) return;
     console.log(conversations);
-    const activeChat = conversations.filter((chat) => chat._id === chatId)[0];
-    setActiveChat(activeChat);
-    toast.success(activeChat._id);
+    const currentChat = conversations.filter((chat) => chat._id === chatId)[0];
+    setActiveChat(currentChat);
+    toast.success(currentChat._id);
     setIsProfileOpen(false);
   };
 
