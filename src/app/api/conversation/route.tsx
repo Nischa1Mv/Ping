@@ -20,25 +20,28 @@ export async function POST(request: NextRequest) {
     const participants = [userId, friendId].sort();
 
     const existingConversation = await Conversation.findOne({
-      participants: { $all: participants },
+      $and: [
+        { "participants.userId": participants[0] }, // the first userId
+        { "participants.userId": participants[1] }, // the second friendId
+      ],
     });
 
     if (existingConversation) {
+      console.log("Updating conversation status");
       await Conversation.findOneAndUpdate(
         {
           conversationId: existingConversation.conversationId,
-          "participants.userId": userId, // Find the participant by userId
+          "participants.userId": userId, // Match the participant by userId
         },
         {
           $set: {
-            "participants.$.status": "active", // Set the status to closed (or 'active')
+            "participants.$.status": "active", // update the status field
           },
         }
       );
-
       return NextResponse.json(
         {
-          message: "Conversation already exists, status updated",
+          message: "conversation already exists",
           conversation: existingConversation,
         },
         { status: 200 }
