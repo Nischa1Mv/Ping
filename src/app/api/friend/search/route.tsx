@@ -20,6 +20,7 @@ export async function GET(request: NextRequest) {
     const users = await User.find({
       _id: { $ne: userId },
       username: { $regex: query, $options: "i" },
+      isProfile: false,
     }).populate("friends", "username profilePicture");
     return NextResponse.json(users, { status: 200 });
   } catch (error: any) {
