@@ -21,6 +21,7 @@ export async function GET(request: NextRequest) {
       _id: { $ne: userId },
       username: { $regex: query, $options: "i" },
       isProfile: false,
+      friends: { $in: [userId] },
     }).populate("friends", "username profilePicture");
     return NextResponse.json(users, { status: 200 });
   } catch (error: any) {
