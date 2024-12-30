@@ -8,6 +8,7 @@ import Profile from "./../profile";
 import { useEffect, useState } from "react";
 import { useChat } from "../Context";
 import { useSocket } from "../SocketContext";
+// import toast from "react-hot-toast";
 
 interface ChatProps {
   user: {
@@ -38,6 +39,9 @@ function Chat({ user }: ChatProps) {
       setIsProfileOpen(true);
     }
   };
+  // useEffect(() => {
+  //   openChat(activeChat?._id!);
+  // }, [activeChat]);
 
   useEffect(() => {
     console.log("changed");
@@ -47,6 +51,16 @@ function Chat({ user }: ChatProps) {
       console.log("this is the array abject", conversations);
     }
   }, [socket?.connected]);
+  const { setActiveChat } = useChat();
+
+  const openChat = async (chatId: string) => {
+    if (chatId === activeChat?._id) return;
+    console.log(conversations);
+    const currentChat = conversations.filter((chat) => chat._id === chatId)[0];
+    setActiveChat(currentChat);
+    // toast.success(currentChat._id);
+    setIsProfileOpen(false);
+  };
 
   return (
     <>
@@ -57,6 +71,7 @@ function Chat({ user }: ChatProps) {
           socket={socket}
           profile={profile}
           setIsProfileOpen={setIsProfileOpen}
+          openChat={openChat}
         />
 
         {/* Right Side */}

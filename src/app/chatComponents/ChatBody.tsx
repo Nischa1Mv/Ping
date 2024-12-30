@@ -60,7 +60,8 @@ function ChatBody({ user, conversationId, socket }: ChatBodyProps) {
 
       // Successfully fetched messages
       setMessage(response.data);
-      toast.success("Messages fetched successfully");
+      console.log("Messages fetched successfully");
+      // toast.success("Messages fetched successfully");
     } catch (err: any) {
       console.error("Error fetching messages:", err);
       toast.error("Error fetching messages");

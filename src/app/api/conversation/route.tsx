@@ -27,7 +27,10 @@ export async function POST(request: NextRequest) {
       existingConversation.closed = false;
       await existingConversation.save();
       return NextResponse.json(
-        { message: "conversation already exists" },
+        {
+          message: "conversation already exists",
+          conversation: existingConversation,
+        },
         { status: 200 }
       );
     }
@@ -39,7 +42,7 @@ export async function POST(request: NextRequest) {
 
     await conversation.save();
     return NextResponse.json(
-      { message: "conversation created" },
+      { message: "conversation created", conversation: conversation },
       { status: 200 }
     );
   } catch (err) {
