@@ -26,8 +26,12 @@ interface ChatBodyProps {
 
 function ChatBody({ user, conversationId, socket }: ChatBodyProps) {
   const { activeChat } = useChat();
+  const { conversations } = useChat();
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const [message, setMessage] = useState<Message[] | null>(null);
+  const [ReceiverProfilePicture, setReceiverProfilePicture] = useState<
+    string | null
+  >(null);
   useEffect(() => {
     if (!socket) return;
     if (!activeChat) {
@@ -79,6 +83,19 @@ function ChatBody({ user, conversationId, socket }: ChatBodyProps) {
     } else {
       // Call your function when activeChat changes
       fetchMessages();
+      const conversationIndex = conversations.findIndex(
+        (conversation) => conversation.conversationId === conversationId
+      );
+
+      if (conversationIndex !== -1) {
+        const selectedConversation = conversations[conversationIndex];
+        const ReceiverProfilePicture =
+          selectedConversation.participantDetails[0].profilePicture;
+        if (ReceiverProfilePicture)
+          setReceiverProfilePicture(ReceiverProfilePicture);
+      } else {
+        console.log("Conversation not found");
+      }
     }
   }, [activeChat]);
 
@@ -93,18 +110,26 @@ function ChatBody({ user, conversationId, socket }: ChatBodyProps) {
   return (
     <div
       ref={chatContainerRef}
-      className="flex grow relative flex-col p-4 gap-2 h-full overflow-y-auto scrollbar-hide "
+      className="flex grow relative flex-col p-4 gap-0 h-full overflow-y-auto scrollbar-hide "
     >
       {activeChat && !message ? (
-        <div className="w-full flex items-center justify-center text-[#8f8fca] italic border border-gray-700 py-1">
+        <div className="w-full flex items-center justify-center text-[#8f8fca] italic border border-gray-700 py-1 ">
           Be the first to Ping⚡
         </div> // Show message if there are no messages
       ) : activeChat ? (
         message?.map((msg) =>
           msg.sender === user._id ? (
-            <ReceiverBubble key={msg.timestamp} message={msg.content} />
+            <SenderBubble
+              key={msg.timestamp}
+              message={msg.content}
+              profilePicture={user.profilePicture}
+            />
           ) : (
-            <SenderBubble key={msg.timestamp} message={msg.content} />
+            <ReceiverBubble
+              key={msg.timestamp}
+              message={msg.content}
+              profilePicture={ReceiverProfilePicture || "defaultProfilePicUrl"}
+            />
           )
         )
       ) : (
