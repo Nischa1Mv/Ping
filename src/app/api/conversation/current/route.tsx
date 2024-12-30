@@ -3,6 +3,7 @@ import Conversation from "server/MessageSchema";
 import { connectDB } from "server/server";
 import { getTokenData } from "src/app/helper/getTokenData";
 import mongoose from "mongoose";
+import { Conversation as ConversationType } from "src/app/contact/types";
 
 connectDB();
 
@@ -17,7 +18,7 @@ export async function GET(request: NextRequest) {
     const userObjectId = new mongoose.Types.ObjectId(userId);
 
     // Fetch all unclosed conversations involving the current user
-    const conversations = await Conversation.find({
+    const conversations: ConversationType[] = await Conversation.find({
       "participants.userId": userObjectId,
       "participants.status": "active",
     });
@@ -38,7 +39,7 @@ export async function GET(request: NextRequest) {
       {
         $lookup: {
           from: "users", // Name of the users collection
-          localField: "participants", // Field in Conversation (array of IDs)
+          localField: "participants.userId", // Field in Conversation (array of IDs)
           foreignField: "_id", // Field in Users
           as: "participantDetails", // Output array with matched user details
         },
