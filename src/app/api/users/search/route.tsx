@@ -26,6 +26,8 @@ export async function GET(request: NextRequest) {
     const users = await User.find({
       _id: { $ne: userId },
       username: { $regex: query, $options: "i" },
+      isProfile: false,
+      friends: { $ne: [userId] },
     });
     return NextResponse.json(users, { status: 200 }); //users is an array of obj , acess it will users[0].username
   } catch (error: any) {
