@@ -2,7 +2,11 @@
 import Image from "next/image";
 import React from "react";
 
-function SenderBubble({ message }: { message: any }) {
+interface SenderBubbleProps {
+  message: string;
+}
+
+function SenderBubble({ message }: SenderBubbleProps) {
   return (
     <div className="flex gap-1 ">
       <div>
