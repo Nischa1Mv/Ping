@@ -14,11 +14,15 @@ export interface ParticipantDetails {
 }
 //removed closed: boolean
 // cause i am not using it
+// export interface Participant {
+//   userId: string; // Reference to the User's ID
+//   status: "active" | "closed"; // Status of the conversation for this participant
+// }
 
 export interface Conversation {
   _v: number;
   _id: string;
-  participants: string[];
+  // participants: Participant[];
   conversationId: string;
   messages: any[];
   createdAt: string;
