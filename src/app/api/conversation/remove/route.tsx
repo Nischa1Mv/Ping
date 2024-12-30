@@ -1,12 +1,19 @@
 import { connectDB } from "server/server";
 import { NextRequest, NextResponse } from "next/server";
 import Conversation from "server/MessageSchema";
+import { getTokenData } from "src/app/helper/getTokenData";
 
 connectDB();
 
 export async function POST(request: NextRequest) {
   const requestBody = await request.json();
   const { conversationId } = requestBody;
+  const userId = await getTokenData(request);
+
+  if (!userId) {
+    return NextResponse.json({ message: "User not found" }, { status: 400 });
+  }
+
   if (!conversationId) {
     return NextResponse.json(
       { message: "conversation Id not found" },
@@ -21,13 +28,17 @@ export async function POST(request: NextRequest) {
         { status: 404 }
       );
     }
-    if (conversation.closed) {
+    const participantIndex = conversation.participants.findIndex(
+      (participant: any) => participant.userId.toString() === userId
+    );
+    if (participantIndex === -1) {
       return NextResponse.json(
-        { message: "conversation already closed" },
+        { message: "User not in conversation" },
         { status: 400 }
       );
     }
-    conversation.closed = true;
+    conversation.participants[participantIndex].status = "closed";
+
     await conversation.save();
     return NextResponse.json(
       { message: "conversation removed" },

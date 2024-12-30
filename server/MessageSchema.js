@@ -11,9 +11,17 @@ const conversationSchema = new mongoose.Schema(
     participants: {
       type: [
         {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
-          required: true,
+          userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+          },
+          //status of conversation closed or open for each participant
+          status: {
+            type: String,
+            enum: ["active", "closed"],
+            default: "closed", // Default status is 'active'
+          },
         },
       ],
       validate: {
@@ -46,10 +54,6 @@ const conversationSchema = new mongoose.Schema(
         },
       },
     ],
-    closed: {
-      type: Boolean,
-      default: false, // Initially, conversations are open
-    },
     lastMessage: {
       type: String, // Store the content of the last message
     },

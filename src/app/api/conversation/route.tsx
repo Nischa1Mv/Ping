@@ -8,46 +8,63 @@ export async function POST(request: NextRequest) {
   const requestBody = await request.json();
   const userId = getTokenData(request);
   const { friendId } = requestBody;
+
   if (!userId || !friendId) {
     return NextResponse.json(
-      { message: "user Id or FriendId not found" },
+      { message: "User ID or Friend ID not found" },
       { status: 400 }
     );
   }
+
   try {
     const participants = [userId, friendId].sort();
 
-    // Check if a conversation already exists between these two users
     const existingConversation = await Conversation.findOne({
       participants: { $all: participants },
     });
-    //if existing then return the conversation
 
     if (existingConversation) {
-      existingConversation.closed = false;
-      await existingConversation.save();
+      await Conversation.findOneAndUpdate(
+        {
+          conversationId: existingConversation.conversationId,
+          "participants.userId": userId, // Find the participant by userId
+        },
+        {
+          $set: {
+            "participants.$.status": "active", // Set the status to closed (or 'active')
+          },
+        }
+      );
+
       return NextResponse.json(
         {
-          message: "conversation already exists",
+          message: "Conversation already exists, status updated",
           conversation: existingConversation,
         },
         { status: 200 }
       );
     }
 
-    //create new conversation
+    // If no existing conversation, create a new conversation
     const conversation = new Conversation({
-      participants,
+      participants: [
+        { userId, status: "active" },
+        { userId: friendId, status: "closed" },
+      ],
     });
 
     await conversation.save();
+
     return NextResponse.json(
-      { message: "conversation created", conversation: conversation },
+      { message: "Conversation created", conversation: conversation },
       { status: 200 }
     );
-  } catch (err) {
+  } catch (err: any) {
     return NextResponse.json(
-      { message: "conversation not created" },
+      {
+        message: "Error in creating or updating conversation",
+        error: err.message,
+      },
       { status: 400 }
     );
   }

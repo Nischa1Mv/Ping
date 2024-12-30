@@ -12,12 +12,13 @@ export interface ParticipantDetails {
   lastLogin: string;
   displayName?: string;
 }
+//removed closed: boolean
+// cause i am not using it
 
 export interface Conversation {
   _v: number;
   _id: string;
   participants: string[];
-  closed: boolean;
   conversationId: string;
   messages: any[];
   createdAt: string;

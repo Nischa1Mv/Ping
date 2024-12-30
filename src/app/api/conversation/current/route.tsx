@@ -18,8 +18,8 @@ export async function GET(request: NextRequest) {
 
     // Fetch all unclosed conversations involving the current user
     const conversations = await Conversation.find({
-      participants: userObjectId,
-      closed: false,
+      "participants.userId": userObjectId,
+      "participants.status": "active",
     });
 
     if (conversations.length === 0) {
