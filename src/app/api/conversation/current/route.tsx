@@ -31,33 +31,33 @@ export async function GET(request: NextRequest) {
     }
 
     // Extract conversation IDs
-    const conversationIds = conversations.map((conv) => conv._id);
+    // const conversationIds = conversations.map((conv) => conv._id);
 
     // Aggregate to join participant data with user collection
-    const result = await Conversation.aggregate([
-      { $match: { _id: { $in: conversationIds } } },
-      {
-        $lookup: {
-          from: "users", // Name of the users collection
-          localField: "participants.userId", // Field in Conversation (array of IDs)
-          foreignField: "_id", // Field in Users
-          as: "participantDetails", // Output array with matched user details
-        },
-      },
-      {
-        $addFields: {
-          participantDetails: {
-            $filter: {
-              input: "$participantDetails", // Array to filter
-              as: "participant", // Alias for each item
-              cond: { $ne: ["$$participant._id", userObjectId] }, // Condition to exclude current user
-            },
-          },
-        },
-      },
-    ]);
+    // const result = await Conversation.aggregate([
+    //   { $match: { _id: { $in: conversationIds } } },
+    //   {
+    //     $lookup: {
+    //       from: "users", // Name of the users collection
+    //       localField: "participants.userId", // Field in Conversation (array of IDs)
+    //       foreignField: "_id", // Field in Users
+    //       as: "participantDetails", // Output array with matched user details
+    //     },
+    //   },
+    //   {
+    //     $addFields: {
+    //       participantDetails: {
+    //         $filter: {
+    //           input: "$participantDetails", // Array to filter
+    //           as: "participant", // Alias for each item
+    //           cond: { $ne: ["$$participant._id", userObjectId] }, // Condition to exclude current user
+    //         },
+    //       },
+    //     },
+    //   },
+    // ]);
 
-    return NextResponse.json(result, { status: 200 });
+    return NextResponse.json(conversations, { status: 200 });
   } catch (err) {
     console.error("Error fetching conversations:", err);
     return NextResponse.json(

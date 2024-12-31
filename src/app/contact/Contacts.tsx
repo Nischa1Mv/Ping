@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useChat } from "../Context";
 import { Socket } from "socket.io-client";
+import { Conversation } from "./types";
 
 interface contactProps {
   socket: Socket | null;
@@ -93,7 +94,7 @@ export default function Contacts({
     console.log("Conversations fetched successfully", conversations);
     if (socket?.connected) {
       fetchConversations();
-      console.log("Socket connecfasdfasted");
+      console.log("Socket connected");
     }
   }, [socket?.connected]);
 
@@ -106,6 +107,47 @@ export default function Contacts({
     }
   }, [conversations]);
 
+  useEffect(() => {
+    if (!socket) return;
+
+    // Adding listener for conversation status update
+    socket.on("conversation:status", (updatedConversation: Conversation) => {
+      toast.success("Conversation status updated");
+      console.log("this is the updated conversation", updatedConversation);
+      console.log("Updated Conversation:", updatedConversation);
+      console.log("Conversation ID:", updatedConversation._id);
+      console.log("Participants:", updatedConversation.participants);
+      console.log("Messages:", updatedConversation.messages);
+      console.log(conversations);
+      //the above working fine
+      setConversations((prevConversations) => {
+        // Ensure that prevConversations is always an array (handle edge cases)
+        if (prevConversations.length == 0) {
+          return [updatedConversation]; // In case prevConversations is undefined
+        }
+
+        // Find the index of the conversation with the matching conversationId
+        const conversationIndex = prevConversations.findIndex(
+          (conversation: Conversation) =>
+            conversation.conversationId === updatedConversation.conversationId
+        );
+
+        // If conversation exists, replace it, otherwise, add the new conversation
+        if (conversationIndex !== -1) {
+          return prevConversations.map((conversation, index) =>
+            index === conversationIndex ? updatedConversation : conversation
+          );
+        } else {
+          return [...prevConversations, updatedConversation];
+        }
+      });
+    });
+
+    // Cleanup listener on unmount
+    return () => {
+      socket.off("conversation:status");
+    };
+  }, [socket]);
   return (
     <>
       <div

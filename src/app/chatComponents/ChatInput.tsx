@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 import { useChat } from "../Context";
 import toast from "react-hot-toast";
@@ -23,6 +23,19 @@ function ChatInput({ user, socket }: ChatInputProps) {
 
   const [messageContent, setMessageContent] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const [receiverId, setReceiverId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (activeChat?.participants) {
+      const receiver = activeChat.participants.find(
+        (participant) => participant.userId !== user._id
+      );
+      if (receiver) {
+        setReceiverId(receiver.userId);
+      }
+    }
+  }, [activeChat, user._id]);
+  // getting the sender id from active chat
 
   const sendMessage = () => {
     try {
@@ -33,8 +46,11 @@ function ChatInput({ user, socket }: ChatInputProps) {
         };
 
         // Emit the message to the server
+        // sending both receiver and sender ids to the server
+
         socket.emit("message:send", {
           conversationId: activeChat?.conversationId,
+          receiver: receiverId,
           sender: user._id,
           content: message.content,
         });

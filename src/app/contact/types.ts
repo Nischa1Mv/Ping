@@ -8,23 +8,21 @@ export interface ParticipantDetails {
   bio?: string;
   profilePicture?: string;
   banner?: string;
-  status: string;
   lastLogin: string;
   displayName?: string;
 }
-//removed closed: boolean
-// cause i am not using it
-// export interface Participant {
-//   userId: string; // Reference to the User's ID
-//   status: "active" | "closed"; // Status of the conversation for this participant
-// }
+
+export interface Participant {
+  userId: string; // Reference to the User's ID
+  status: "active" | "closed"; // Status of the conversation for this participant
+}
 
 export interface Conversation {
   _v: number;
   _id: string;
-  // participants: Participant[];
+  participants: Participant[];
   conversationId: string;
-  messages: any[];
+  messages: Message[];
   createdAt: string;
   updatedAt: string;
   participantDetails: ParticipantDetails[];

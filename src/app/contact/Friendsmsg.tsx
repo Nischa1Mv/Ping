@@ -10,7 +10,7 @@ const kanit = Kanit({
 interface FriendsmsgProps {
   chatId: string;
   name: string;
-  message?: string[];
+  message?: string;
   avatar?: string;
   username?: string;
   removeChat: () => void;

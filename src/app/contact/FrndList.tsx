@@ -34,6 +34,7 @@ function FrndList({
       toast.error("Error deleting chat");
     }
   };
+
   const { setActiveChat } = useChat();
 
   return (
@@ -45,27 +46,32 @@ function FrndList({
         </div>
       ) : (
         <ul className="h-full px-4 py-2 flex flex-col gap-3 overflow-y-auto scrollbar-hide">
-          {message && (
+          {/* {message && (
             <div className="h-full items-center justify-center flex flex-col gap-3">
               <p>{message}</p>
               <p>Click On the Search Icon to Start a Conversation</p>
             </div>
+          )} */}
+          {conversations && conversations.length > 0 ? (
+            (console.log("Conversations:", conversations),
+            conversations.map((chat) => (
+              <Friendsmsg
+                removeChat={() => removeChat(chat._id)}
+                key={chat._id}
+                chatId={chat._id}
+                name={chat.participantDetails?.[1]?.displayName || "known User"}
+                message={
+                  chat.messages[0]?.content ||
+                  "No messages yet, start the conversation!"
+                }
+                avatar={chat.participantDetails?.[1]?.profilePicture}
+                username={chat.participantDetails?.[1]?.username || "knownUser"}
+                openChat={(chatId) => openChat(chatId)}
+              />
+            )))
+          ) : (
+            <div>No conversations found.</div>
           )}
-          {conversations.map((chat) => (
-            <Friendsmsg
-              removeChat={() => removeChat(chat._id)}
-              key={chat._id}
-              chatId={chat._id}
-              name={chat.participantDetails[0]?.displayName || "known User"}
-              message={
-                chat.messages[0]?.content ||
-                "No messages yet, start the conversation!"
-              }
-              avatar={chat.participantDetails[0]?.profilePicture}
-              username={chat.participantDetails[0]?.username || "knownUser"}
-              openChat={(chatId) => openChat(chatId)}
-            />
-          ))}
         </ul>
       )}
     </>

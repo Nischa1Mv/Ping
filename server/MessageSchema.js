@@ -29,6 +29,43 @@ const conversationSchema = new mongoose.Schema(
         message: "A conversation must have exactly two participants.",
       },
     },
+    participantDetails: [
+      {
+        _id: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
+        username: {
+          type: String,
+          required: true,
+        },
+        email: {
+          type: String,
+          required: true,
+        },
+        isVerified: {
+          type: Boolean,
+          required: true,
+        },
+        isAdmin: {
+          type: Boolean,
+          required: true,
+        },
+        isOnline: {
+          type: Boolean,
+          required: true,
+        },
+        bio: String,
+        profilePicture: String,
+        banner: String,
+        lastLogin: {
+          type: Date,
+          required: true,
+        },
+        displayName: String,
+      },
+    ],
     messages: [
       {
         sender: {

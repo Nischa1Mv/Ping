@@ -89,9 +89,9 @@ function Chat({ user }: ChatProps) {
             <>
               <ChatHeader
                 profile={profile}
-                displayName={activeChat.participantDetails[0].displayName}
-                username={activeChat.participantDetails[0].username}
-                profilePicture={activeChat.participantDetails[0].profilePicture}
+                displayName={activeChat.participantDetails[1].displayName}
+                username={activeChat.participantDetails[1].username}
+                profilePicture={activeChat.participantDetails[1].profilePicture}
               />
               <ChatBody
                 socket={socket}

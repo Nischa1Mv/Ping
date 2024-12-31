@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Conversation from "server/MessageSchema";
 import { connectDB } from "server/server";
+import User from "server/UserModal";
 import { getTokenData } from "src/app/helper/getTokenData";
 connectDB();
 
@@ -49,13 +50,55 @@ export async function POST(request: NextRequest) {
     }
 
     // If no existing conversation, create a new conversation
+    const userDetails = await User.findById(userId);
+    const friendDetails = await User.findById(friendId);
+
+    // Check if both users exist
+    if (!userDetails || !friendDetails) {
+      return NextResponse.json(
+        { message: "User or friend not found" },
+        { status: 404 }
+      );
+    }
+
+    // Create the participant details
+    const participantDetails = [
+      {
+        _id: userDetails._id,
+        username: userDetails.username,
+        email: userDetails.email,
+        isVerified: userDetails.isVerified,
+        isAdmin: userDetails.isAdmin,
+        isOnline: userDetails.isOnline,
+        bio: userDetails.bio,
+        profilePicture: userDetails.profilePicture,
+        banner: userDetails.banner,
+        lastLogin: userDetails.lastLogin,
+        displayName: userDetails.displayName,
+      },
+      {
+        _id: friendDetails._id,
+        username: friendDetails.username,
+        email: friendDetails.email,
+        isVerified: friendDetails.isVerified,
+        isAdmin: friendDetails.isAdmin,
+        isOnline: friendDetails.isOnline,
+        bio: friendDetails.bio,
+        profilePicture: friendDetails.profilePicture,
+        banner: friendDetails.banner,
+        lastLogin: friendDetails.lastLogin,
+        displayName: friendDetails.displayName,
+      },
+    ];
+
     const conversation = new Conversation({
       participants: [
         { userId, status: "active" },
         { userId: friendId, status: "closed" },
       ],
+      participantDetails,
     });
-
+    //have to populate participants details here and remove from , fetchConversations
     await conversation.save();
 
     return NextResponse.json(

@@ -3,6 +3,7 @@ import express from "express";
 import { createServer } from "node:http";
 import Conversation from "./MessageSchema.js";
 import { connectDB } from "./server.js";
+
 export async function SocketServer() {
   connectDB();
   const app = express();
@@ -34,37 +35,56 @@ export async function SocketServer() {
 
     //to send message in a conversation
 
-    socket.on("message:send", async ({ conversationId, sender, content }) => {
-      try {
-        const message = {
-          sender,
-          content,
-          timestamp: new Date(),
-        };
+    socket.on(
+      "message:send",
+      async ({ conversationId, sender, content, receiver }) => {
+        try {
+          const message = {
+            sender,
+            content,
+            timestamp: new Date(),
+          };
 
-        const conversation = await Conversation.findOneAndUpdate(
-          { conversationId },
-          {
-            $push: { messages: { $each: [message], $position: 0 } },
-            $set: { lastMessage: content },
-          },
-          { new: true, upsert: true }
-        );
+          const conversation = await Conversation.findOneAndUpdate(
+            { conversationId },
+            {
+              $push: { messages: { $each: [message], $position: 0 } },
+              $set: { lastMessage: content },
+            },
+            { new: true, upsert: true }
+          );
 
-        if (!conversation) {
-          socket.emit("error", "Conversation not found");
-          return;
+          if (!conversation) {
+            socket.emit("error", "Conversation not found");
+            return;
+          }
+          // Broadcast the message to the room (conversation)
+
+          io.emit("message:receive", message);
+          //to receive message in a conversation
+
+          ///need to add here about the receiver id to set converstion active at his side and give hima pop up
+          const updatedConversation = await Conversation.findOneAndUpdate(
+            {
+              conversationId,
+              "participants.userId": receiver,
+              "participants.status": "closed",
+            },
+            { $set: { "participants.$.status": "active" } },
+            { new: true }
+          );
+          if (updatedConversation) {
+            console.log("Conversation updated:", updatedConversation);
+            io.emit("conversation:status", updatedConversation);
+
+            console.log("Message stored and broadcasted:", message);
+          }
+        } catch (error) {
+          console.error("Error saving message:", error);
+          socket.emit("error", "Error saving message");
         }
-        // Broadcast the message to the room (conversation)
-
-        //to receive message in a conversation
-        io.emit("message:receive", message);
-        console.log("Message stored and broadcasted:", message);
-      } catch (error) {
-        console.error("Error saving message:", error);
-        socket.emit("error", "Error saving message");
       }
-    });
+    );
 
     socket.on("disconnect", () => {
       console.log("user disconnected", socket.id);
