@@ -95,10 +95,23 @@ function Chat({ user }: ChatProps) {
             <>
               <ChatHeader
                 profile={profile}
-                displayName={activeChat.participantDetails[1].displayName}
-                username={activeChat.participantDetails[1].username}
-                profilePicture={activeChat.participantDetails[1].profilePicture}
+                displayName={
+                  activeChat.participantDetails?.find(
+                    (participant) => participant._id !== user._id
+                  )?.displayName || "Unknown User"
+                }
+                username={
+                  activeChat.participantDetails?.find(
+                    (participant) => participant._id !== user._id
+                  )?.username || "UnknownUser"
+                }
+                profilePicture={
+                  activeChat.participantDetails?.find(
+                    (participant) => participant._id !== user._id
+                  )?.profilePicture
+                }
               />
+
               <ChatBody
                 socket={socket}
                 conversationId={activeChat.conversationId}
