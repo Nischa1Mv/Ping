@@ -11,6 +11,9 @@ interface FrndListProps {
   fetchConversations: () => void;
   message: string;
   openChat: (chatId: string) => void;
+  user: {
+    _id: string;
+  };
 }
 
 function FrndList({
@@ -19,7 +22,10 @@ function FrndList({
   loading,
   fetchConversations,
   openChat,
+  user,
 }: FrndListProps) {
+  const { setActiveChat } = useChat();
+
   const removeChat = async (chatId: string) => {
     try {
       const response = await axios.post("/api/conversation/remove", {
@@ -35,8 +41,6 @@ function FrndList({
     }
   };
 
-  const { setActiveChat } = useChat();
-
   return (
     <>
       {loading ? (
@@ -46,29 +50,34 @@ function FrndList({
         </div>
       ) : (
         <ul className="h-full px-4 py-2 flex flex-col gap-3 overflow-y-auto scrollbar-hide">
-          {/* {message && (
+          {message && (
             <div className="h-full items-center justify-center flex flex-col gap-3">
               <p>{message}</p>
-              <p>Click On the Search Icon to Start a Conversation</p>
+              <p>Click on the Search Icon to Start a Conversation</p>
             </div>
-          )} */}
+          )}
           {conversations && conversations.length > 0 ? (
-            (console.log("Conversations:", conversations),
-            conversations.map((chat) => (
-              <Friendsmsg
-                removeChat={() => removeChat(chat._id)}
-                key={chat._id}
-                chatId={chat._id}
-                name={chat.participantDetails?.[1]?.displayName || "known User"}
-                message={
-                  chat.messages[0]?.content ||
-                  "No messages yet, start the conversation!"
-                }
-                avatar={chat.participantDetails?.[1]?.profilePicture}
-                username={chat.participantDetails?.[1]?.username || "knownUser"}
-                openChat={(chatId) => openChat(chatId)}
-              />
-            )))
+            conversations.map((chat) => {
+              const participantDetails = chat.participantDetails?.find(
+                (participant) => participant._id !== user._id
+              );
+
+              return (
+                <Friendsmsg
+                  key={chat._id}
+                  chatId={chat._id}
+                  name={participantDetails?.displayName || "Unknown User"}
+                  message={
+                    chat.messages?.[0]?.content ||
+                    "No messages yet, start the conversation!"
+                  }
+                  avatar={participantDetails?.profilePicture}
+                  username={participantDetails?.username || "UnknownUser"}
+                  openChat={openChat}
+                  removeChat={() => removeChat(chat._id)}
+                />
+              );
+            })
           ) : (
             <div>No conversations found.</div>
           )}

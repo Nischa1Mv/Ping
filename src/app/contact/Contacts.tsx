@@ -161,6 +161,7 @@ export default function Contacts({
         <AddFrnd />
         <Status />
         <FrndList
+          user={user}
           openChat={openChat}
           message={message}
           conversations={conversations}
