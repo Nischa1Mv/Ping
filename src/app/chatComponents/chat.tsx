@@ -78,7 +78,13 @@ function Chat({ user }: ChatProps) {
         <div className="grow flex flex-col border-l-2 border-[#1E1E1E]">
           {isProfileOpen && (
             <Profile
-              user={notUser ? activeChat?.participantDetails[0] : user}
+              user={
+                notUser
+                  ? activeChat?.participantDetails?.find(
+                      (participant) => participant._id !== user._id
+                    )
+                  : user
+              }
               setIsProfileOpen={setIsProfileOpen}
               notUser={notUser}
             />
