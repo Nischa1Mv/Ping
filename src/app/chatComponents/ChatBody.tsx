@@ -88,11 +88,17 @@ function ChatBody({ user, conversationId, socket }: ChatBodyProps) {
       );
 
       if (conversationIndex !== -1) {
+        // If conversation is found
         const selectedConversation = conversations[conversationIndex];
         const ReceiverProfilePicture =
-          selectedConversation.participantDetails[0].profilePicture;
+          selectedConversation.participantDetails?.find(
+            (participant) => participant._id !== user._id
+          )?.profilePicture || "The Sender Profile Picture";
+
         if (ReceiverProfilePicture)
-          setReceiverProfilePicture(ReceiverProfilePicture);
+          setReceiverProfilePicture(
+            ReceiverProfilePicture || "defaultProfilePicUrl"
+          );
       } else {
         console.log("Conversation not found");
       }
