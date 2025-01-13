@@ -50,12 +50,6 @@ function FrndList({
         </div>
       ) : (
         <ul className="h-full px-4 py-2 flex flex-col gap-3 overflow-y-auto scrollbar-hide">
-          {message && (
-            <div className="h-full items-center justify-center flex flex-col gap-3">
-              <p>{message}</p>
-              <p>Click on the Search Icon to Start a Conversation</p>
-            </div>
-          )}
           {conversations && conversations.length > 0 ? (
             conversations.map((chat) => {
               const participantDetails = chat.participantDetails?.find(
@@ -79,7 +73,12 @@ function FrndList({
               );
             })
           ) : (
-            <div>No conversations found.</div>
+            <>
+              <div className="flex justify-center text-lg items-center h-full text-gray-500">
+                No conversations found. Search for a user to start a
+                conversation.
+              </div>
+            </>
           )}
         </ul>
       )}
