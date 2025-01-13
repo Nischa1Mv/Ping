@@ -15,7 +15,21 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      animation: {
+        dots: "dots 1.5s steps(4, end) infinite",
+      },
+      keyframes: {
+        dots: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '25%': { transform: 'translateY(-5px)' },
+          '50%': { transform: 'translateY(-10px)' },
+          '75%': { transform: 'translateY(-5px)' },
+        },
+      },
     },
   },
-  plugins: [require("tailwind-scrollbar-hide"), require("tailwind-scrollbar")],
+  plugins: [
+    require("tailwind-scrollbar-hide"),
+    require("tailwind-scrollbar"),
+  ],
 } satisfies Config;

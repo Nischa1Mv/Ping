@@ -8,7 +8,6 @@ import Profile from "./../profile";
 import { useEffect, useState } from "react";
 import { useChat } from "../Context";
 import { useSocket } from "../SocketContext";
-// import toast from "react-hot-toast";
 
 interface ChatProps {
   user: {
@@ -29,6 +28,7 @@ function Chat({ user }: ChatProps) {
   const { conversations } = useChat();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [notUser, setNotUser] = useState(false);
+  const [recordMsg, setRecordMsg] = useState(false);
 
   const profile = (user: boolean) => {
     if (user) {
@@ -61,6 +61,9 @@ function Chat({ user }: ChatProps) {
     // toast.success(currentChat._id);
     setIsProfileOpen(false);
   };
+  const [isRecording, setisRecording] = useState(false);
+
+  const recordMessage = () => {};
 
   return (
     <>
@@ -117,7 +120,12 @@ function Chat({ user }: ChatProps) {
                 conversationId={activeChat.conversationId}
                 user={user}
               />
-              <ChatInput socket={socket} user={user} />
+              <ChatInput
+                setRecordMsg={setRecordMsg}
+                recordMsg={recordMsg}
+                socket={socket}
+                user={user}
+              />
             </>
           ) : (
             !isProfileOpen && (
@@ -128,6 +136,54 @@ function Chat({ user }: ChatProps) {
           )}
         </div>
       </div>
+      {recordMsg && (
+        <div
+          onClick={() => {
+            setRecordMsg(false);
+          }}
+          className="absolute bottom-0 right-0 w-screen h-screen bg-[rgba(0,0,0,0.4)] flex items-center justify-center"
+        >
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+            className=" bg-[rgba(255,255,255,0.2)] flex-col gap-10  w-[40%] aspect-video border items-center justify-center  flex p-4"
+          >
+            <p className="text-lg font-medium text-white">
+              {!isRecording ? (
+                "Click on the mic to start Recording"
+              ) : (
+                <>
+                  The mic is listening {"  "}
+                  <span className="after:content-['.....'] after:animate-dots after:absolute after:ml-1"></span>
+                </>
+              )}
+            </p>
+            <svg
+              className={` p-5 rounded-full aspect-square cursor-pointer ${
+                isRecording
+                  ? "text-[#8f8fca] bg-[#191a22] "
+                  : "text-[#191A22] bg-[#8f8fca]"
+              } `}
+              onClick={(e) => {
+                e.stopPropagation();
+                recordMessage();
+                setisRecording(!isRecording);
+              }}
+              xmlns="http://www.w3.org/2000/svg"
+              height="100px"
+              viewBox="0 -960 960 960"
+              width="100px"
+              fill="currentColor"
+            >
+              <path d="M480-400q-50 0-85-35t-35-85v-240q0-50 35-85t85-35q50 0 85 35t35 85v240q0 50-35 85t-85 35Zm0-240Zm-40 520v-123q-104-14-172-93t-68-184h80q0 83 58.5 141.5T480-320q83 0 141.5-58.5T680-520h80q0 105-68 184t-172 93v123h-80Zm40-360q17 0 28.5-11.5T520-520v-240q0-17-11.5-28.5T480-800q-17 0-28.5 11.5T440-760v240q0 17 11.5 28.5T480-480Z" />
+            </svg>
+            <p className="mx-auto text-lg font-semibold text-white">
+              text will be generated here......
+            </p>
+          </div>
+        </div>
+      )}
     </>
   );
 }
