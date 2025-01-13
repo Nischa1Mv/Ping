@@ -19,9 +19,16 @@ interface ChatInputProps {
   socket: Socket | null;
   setRecordMsg: React.Dispatch<React.SetStateAction<boolean>>;
   recordMsg: boolean;
+  input: string;
 }
 
-function ChatInput({ user, socket, setRecordMsg, recordMsg }: ChatInputProps) {
+function ChatInput({
+  user,
+  socket,
+  setRecordMsg,
+  recordMsg,
+  input,
+}: ChatInputProps) {
   const { activeChat } = useChat();
 
   const [messageContent, setMessageContent] = useState<string>("");
@@ -39,7 +46,6 @@ function ChatInput({ user, socket, setRecordMsg, recordMsg }: ChatInputProps) {
     }
   }, [activeChat, user._id]);
   // getting the sender id from active chat
-
   const sendMessage = () => {
     try {
       if (messageContent.trim() && socket) {
@@ -71,6 +77,9 @@ function ChatInput({ user, socket, setRecordMsg, recordMsg }: ChatInputProps) {
       setMessageContent("");
     }
   };
+  useEffect(() => {
+    setMessageContent(input);
+  }, [input]);
 
   return (
     <div

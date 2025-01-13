@@ -8,6 +8,9 @@ import Profile from "./../profile";
 import { useEffect, useState } from "react";
 import { useChat } from "../Context";
 import { useSocket } from "../SocketContext";
+interface SpeechRecognitionEvent extends Event {
+  results: SpeechRecognitionResultList;
+}
 
 interface ChatProps {
   user: {
@@ -29,6 +32,7 @@ function Chat({ user }: ChatProps) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [notUser, setNotUser] = useState(false);
   const [recordMsg, setRecordMsg] = useState(false);
+  const [input, setInput] = useState("");
 
   const profile = (user: boolean) => {
     if (user) {
@@ -61,9 +65,47 @@ function Chat({ user }: ChatProps) {
     // toast.success(currentChat._id);
     setIsProfileOpen(false);
   };
-  const [isRecording, setisRecording] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const [message, setMessage] = useState("");
 
-  const recordMessage = () => {};
+  const recordMessage = () => {
+    if (!("webkitSpeechRecognition" in window)) {
+      alert("Speech recognition is not supported in this browser.");
+      setRecordMsg(false);
+      setIsRecording(false);
+      return;
+    }
+
+    const SpeechRecognition =
+      window.webkitSpeechRecognition || (window as any).SpeechRecognition;
+    const recognition = new SpeechRecognition();
+
+    recognition.lang = "en-US";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onstart = () => {
+      setIsRecording(true);
+      console.log("Recording started...");
+    };
+
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
+      const transcript = event.results[0][0].transcript;
+      setMessage(transcript);
+      console.log("Transcript:", transcript);
+    };
+
+    recognition.onerror = (event: any) => {
+      console.error("Error occurred in recognition:", event.error);
+    };
+
+    recognition.onend = () => {
+      setIsRecording(false);
+      console.log("Recording stopped.");
+    };
+
+    recognition.start();
+  };
 
   return (
     <>
@@ -121,6 +163,7 @@ function Chat({ user }: ChatProps) {
                 user={user}
               />
               <ChatInput
+                input={input}
                 setRecordMsg={setRecordMsg}
                 recordMsg={recordMsg}
                 socket={socket}
@@ -147,9 +190,9 @@ function Chat({ user }: ChatProps) {
             onClick={(e) => {
               e.stopPropagation();
             }}
-            className=" bg-[rgba(255,255,255,0.2)] flex-col gap-10  w-[40%] aspect-video border items-center justify-center  flex p-4"
+            className=" bg-[rgba(255,255,255,0.9)] flex-col gap-10  w-[40%] aspect-video border items-center justify-center  flex p-4"
           >
-            <p className="text-lg font-medium text-white">
+            <p className="text-lg font-medium text-[#191A22]">
               {!isRecording ? (
                 "Click on the mic to start Recording"
               ) : (
@@ -168,7 +211,6 @@ function Chat({ user }: ChatProps) {
               onClick={(e) => {
                 e.stopPropagation();
                 recordMessage();
-                setisRecording(!isRecording);
               }}
               xmlns="http://www.w3.org/2000/svg"
               height="100px"
@@ -178,9 +220,19 @@ function Chat({ user }: ChatProps) {
             >
               <path d="M480-400q-50 0-85-35t-35-85v-240q0-50 35-85t85-35q50 0 85 35t35 85v240q0 50-35 85t-85 35Zm0-240Zm-40 520v-123q-104-14-172-93t-68-184h80q0 83 58.5 141.5T480-320q83 0 141.5-58.5T680-520h80q0 105-68 184t-172 93v123h-80Zm40-360q17 0 28.5-11.5T520-520v-240q0-17-11.5-28.5T480-800q-17 0-28.5 11.5T440-760v240q0 17 11.5 28.5T480-480Z" />
             </svg>
-            <p className="mx-auto text-lg font-semibold text-white">
-              text will be generated here......
+            <p className="mx-auto text-lg font-semibold text-[#191A22]">
+              " {message} "
             </p>
+            <button
+              onClick={() => {
+                setInput(message);
+                setRecordMsg(false);
+                setRecordMsg(false);
+              }}
+              className="px-4 py-1 bg-[#8f8fca] rounded-xl text-lg font-bold text-medium text-[#191A22]"
+            >
+              Send
+            </button>
           </div>
         </div>
       )}
