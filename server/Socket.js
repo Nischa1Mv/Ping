@@ -1,7 +1,7 @@
 import { Server } from "socket.io";
 import express from "express";
 import { createServer } from "node:http";
-import Conversation from "./MessageSchema.js";
+import Conversation from "./MessageSchema.js"
 import { connectDB } from "./server.js";
 
 export async function SocketServer() {
