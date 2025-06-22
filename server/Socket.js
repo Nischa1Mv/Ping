@@ -5,6 +5,7 @@ import Conversation from "./MessageSchema.js"
 import { connectDB } from "./server.js";
 
 export async function SocketServer() {
+  const PORT = process.env.PORT || 3001;
   connectDB();
   const app = express();
   const server = createServer(app);
@@ -90,7 +91,7 @@ export async function SocketServer() {
       console.log("user disconnected", socket.id);
     });
   });
-  server.listen(3001, () => {
+  server.listen(PORT, () => {
     console.log("Server is running on port 3001");
   });
 }
