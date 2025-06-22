@@ -120,8 +120,14 @@ function Chat({ user }: ChatProps) {
         />
 
         {/* Right Side */}
-        <div className="grow flex flex-col border-l-2 border-[#1E1E1E]">
-          {isProfileOpen && (
+        <div className="grow flex flex-col border-l-2 border-[#1E1E1E] relative">
+          <div
+            className={`absolute inset-0 z-10 transition-all duration-300 ${
+              isProfileOpen
+                ? "opacity-100 pointer-events-auto"
+                : "opacity-0 pointer-events-none"
+            }`}
+          >
             <Profile
               user={
                 notUser
@@ -133,11 +139,14 @@ function Chat({ user }: ChatProps) {
               setIsProfileOpen={setIsProfileOpen}
               notUser={notUser}
             />
-          )}
-          {!isProfileOpen &&
-          activeChat &&
-          activeChat.participantDetails[0]?.username ? (
-            <>
+          </div>
+
+          {activeChat && activeChat.participantDetails[0]?.username ? (
+            <div
+              className={`flex flex-col h-full transition-opacity duration-300 ${
+                isProfileOpen ? "opacity-0" : "opacity-100"
+              }`}
+            >
               <ChatHeader
                 profile={profile}
                 displayName={
@@ -169,7 +178,7 @@ function Chat({ user }: ChatProps) {
                 socket={socket}
                 user={user}
               />
-            </>
+            </div>
           ) : (
             !isProfileOpen && (
               <div className="flex items-center justify-center grow flex-col text-gray-500">
