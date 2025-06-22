@@ -74,14 +74,15 @@ function ChatBody({ user, conversationId, socket }: ChatBodyProps) {
     }
   };
 
-  const isInitialRender = useRef(true);
+  // const isInitialRender = useRef(true);
 
-  useEffect(() => {
-    if (isInitialRender.current) {
-      // Skip the initial render
-      isInitialRender.current = false;
-    } else {
-      // Call your function when activeChat changes
+  useEffect(
+    () => {
+      // if (isInitialRender.current) {
+      //   // Skip the initial render
+      //   isInitialRender.current = false;
+      // } else {
+      //   // Call your function when activeChat changes
       fetchMessages();
       const conversationIndex = conversations.findIndex(
         (conversation) => conversation.conversationId === conversationId
@@ -102,8 +103,10 @@ function ChatBody({ user, conversationId, socket }: ChatBodyProps) {
       } else {
         console.log("Conversation not found");
       }
-    }
-  }, [activeChat]);
+    },
+    // }
+    [activeChat]
+  );
 
   useEffect(() => {
     // Scroll to the bottom whenever a new message is added
