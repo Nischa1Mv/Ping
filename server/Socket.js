@@ -12,7 +12,7 @@ export async function SocketServer() {
 
   const io = new Server(server, {
     cors: {
-      origin: "https://ping-6n4m.onrender.com", // Correct the protocol to match the frontend
+      origin: "https://pings-iota.vercel.app", // Correct the protocol to match the frontend
       methods: ["GET", "POST"],
       credentials: true, // Allow cookies and headers if needed
     },
