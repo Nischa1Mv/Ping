@@ -5,14 +5,13 @@ import Conversation from "./MessageSchema.js"
 import { connectDB } from "./server.js";
 
 export async function SocketServer() {
-  const PORT = process.env.PORT || 3001;
   connectDB();
   const app = express();
   const server = createServer(app);
 
   const io = new Server(server, {
     cors: {
-      origin: "https://pings-iota.vercel.app", // Correct the protocol to match the frontend
+      origin: "http://localhost:3000", // Correct the protocol to match the frontend
       methods: ["GET", "POST"],
       credentials: true, // Allow cookies and headers if needed
     },
@@ -91,7 +90,7 @@ export async function SocketServer() {
       console.log("user disconnected", socket.id);
     });
   });
-  server.listen(PORT, () => {
+  server.listen(3001, () => {
     console.log("Server is running on port 3001");
   });
 }

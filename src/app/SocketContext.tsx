@@ -13,7 +13,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
-    const newSocket = io("https://ping-6n4m.onrender.com");
+    const newSocket = io("http://localhost:3001");
     newSocket.on("connect", () => {
       console.log("Socket connected:", newSocket.id);
     });
